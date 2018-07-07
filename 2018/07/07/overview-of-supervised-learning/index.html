@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="无病呻吟">
 <meta property="og:description" content="名词解释bivariate gaussian二元高斯分布 linear regresion VS KNN1、linear regression 具有低偏差 高方差的特点2、KNN具有高偏差 低方差的特点KNN所产生的误差随k的增加而增加,在高维度下面会出现维度爆炸问题，本质上就是数据稀疏化，如果遇到特殊的分布，函数值还可能只集中在边缘部分。 模型选择准则1、EPE(Expected Predi">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-07-07T15:06:11.027Z">
+<meta property="og:updated_time" content="2018-07-07T15:16:10.618Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="overview of supervised learning">
 <meta name="twitter:description" content="名词解释bivariate gaussian二元高斯分布 linear regresion VS KNN1、linear regression 具有低偏差 高方差的特点2、KNN具有高偏差 低方差的特点KNN所产生的误差随k的增加而增加,在高维度下面会出现维度爆炸问题，本质上就是数据稀疏化，如果遇到特殊的分布，函数值还可能只集中在边缘部分。 模型选择准则1、EPE(Expected Predi">
@@ -304,7 +304,7 @@
 
 <h3 id="名词解释"><a href="#名词解释" class="headerlink" title="名词解释"></a>名词解释</h3><p>bivariate gaussian二元高斯分布<br></p>
 <h3 id="linear-regresion-VS-KNN"><a href="#linear-regresion-VS-KNN" class="headerlink" title="linear regresion VS KNN"></a>linear regresion VS KNN</h3><p>1、linear regression 具有低偏差 高方差的特点<br><br>2、KNN具有高偏差 低方差的特点<br><br>KNN所产生的误差随k的增加而增加,在高维度下面会出现维度爆炸问题，本质上就是数据稀疏化，如果遇到特殊的分布，函数值还可能只集中在边缘部分。</p>
-<h3 id="模型选择准则"><a href="#模型选择准则" class="headerlink" title="模型选择准则"></a>模型选择准则</h3><p><strong>1、EPE(Expected Predictor Error)</strong> 期望预测误差<br><br>$$EPE=E(Y-E(X))^2=\int[y-f(x)]^2Pr(dx,dy)$$</p>
+<h3 id="模型选择准则"><a href="#模型选择准则" class="headerlink" title="模型选择准则"></a>模型选择准则</h3><p><strong>1、EPE(Expected Predictor Error)</strong> 期望预测误差<br><br>$$<br>EPE=E(Y-E(X))^2=\int[y-f(x)]^2Pr(dx,dy)<br>$$</p>
 <p>进一步化简：<br><br>$$EPE(f)=ExE_{Y|X}([Y-f(X)]^2|X)$$<br><br>$$f(x)=argmin_cE_{Y|X}([Y-c]^2|X=x)$$<br></p>
 <h2 id="当采用均方差时，最好的预测是条件均值：f-x-E-Y-X-x"><a href="#当采用均方差时，最好的预测是条件均值：f-x-E-Y-X-x" class="headerlink" title="当采用均方差时，最好的预测是条件均值：f(x)=E(Y|X=x)"></a>当采用均方差时，最好的预测是条件均值：f(x)=E(Y|X=x)</h2><p><strong>2、EPE(x0)</strong> 的计算 <br><br>令$$u=E_{y_0|x_0}(y_0)=x_0^Tβ$$<br><br>$$EPE(x_0)=E_{y_0|x_0}E_D(y_0-y)^2=(y_0^2-u^2)+(E_D(y^2)-(E_D(y))^2)+((E_D(y))^2-2y_0E_Dy+u^2)$$<br></p>
 <h2 id="即：-E-y-0-x-0-E-D-y-0-y-2-Var-y-0-x-0-Var-y-Bias-2-y"><a href="#即：-E-y-0-x-0-E-D-y-0-y-2-Var-y-0-x-0-Var-y-Bias-2-y" class="headerlink" title="即：$$E_{y_0|x_0}E_D((y_0-y)^2)=Var(y_0|x_0)+Var(y)+Bias^2(y)$$"></a>即：$$E_{y_0|x_0}E_D((y_0-y)^2)=Var(y_0|x_0)+Var(y)+Bias^2(y)$$<br></h2><p>3、如果一个算法在等方向的相邻区域产生局部变化函数无法克服高维爆炸问题；克服了等方向问题，又会出现在各个方向不等变化。<br></p>
