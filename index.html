@@ -313,7 +313,11 @@
       
         
           
-            
+            <h4 id="问题描述："><a href="#问题描述：" class="headerlink" title="问题描述："></a>问题描述：</h4><p></p><p> 线上遇到的一个问题，这里做一个变形。有若干行数据（2000w）左右，每行有若干个属性，比如姓名、邮箱、地址等等；如果两行数据有至少一个属性值相同，就认为这两个行是连通的；并且连通性有转移，比如A与B连通，B与C连通，就可以认为A与C连通。那么这两千万行数据哪些是连通的？</p><br>| name | address | tel | …|<br>| ————- |:————-:| —–:| —–: |<br>| A | abc | 135 |<br>| A | bcd | 136 |<br>| B | cde | 136 |<br>如上第一行与第二行name相同，可认为行1连通行2；<br>第二行与第三行第三个属性相同，可认为行2连通行3；<br>于是1 2 3可认为是一个组。<p></p>
+<h6 id="暴力解法：对每个属性遍历，对每行数据遍历，时间复杂度最少为-m-n-2-n为行数"><a href="#暴力解法：对每个属性遍历，对每行数据遍历，时间复杂度最少为-m-n-2-n为行数" class="headerlink" title="暴力解法：对每个属性遍历，对每行数据遍历，时间复杂度最少为$m*n^2$ (n为行数)"></a>暴力解法：对每个属性遍历，对每行数据遍历，时间复杂度最少为$m*n^2$ (n为行数)</h6><h6 id="思路1：看到连通性立马可以想到并查集，但是并查集是已经知道哪些行数据是连通的，然后再根据并查集构造的数判断哪些属于一个组，这是整体思路。对并查集不清楚可参考-https-blog-csdn-net-u011730199-article-details-80909373"><a href="#思路1：看到连通性立马可以想到并查集，但是并查集是已经知道哪些行数据是连通的，然后再根据并查集构造的数判断哪些属于一个组，这是整体思路。对并查集不清楚可参考-https-blog-csdn-net-u011730199-article-details-80909373" class="headerlink" title="思路1：看到连通性立马可以想到并查集，但是并查集是已经知道哪些行数据是连通的，然后再根据并查集构造的数判断哪些属于一个组，这是整体思路。对并查集不清楚可参考 https://blog.csdn.net/u011730199/article/details/80909373"></a>思路1：看到连通性立马可以想到并查集，但是并查集是已经知道哪些行数据是连通的，然后再根据并查集构造的数判断哪些属于一个组，这是整体思路。对并查集不清楚可参考 <a href="https://blog.csdn.net/u011730199/article/details/80909373" target="_blank" rel="noopener">https://blog.csdn.net/u011730199/article/details/80909373</a></h6><p><a href="https://blog.csdn.net/dm_vincent/article/details/7655764" target="_blank" rel="noopener">https://blog.csdn.net/dm_vincent/article/details/7655764</a></p>
+<h6 id="接下来，如何判断行与行之间的连通性呢？"><a href="#接下来，如何判断行与行之间的连通性呢？" class="headerlink" title="接下来，如何判断行与行之间的连通性呢？"></a>接下来，如何判断行与行之间的连通性呢？</h6><p>遍历做法直接舍弃。考虑到一行有若干属性，可以联想到树的层级结构。对每行数据，如果对应的属性值已经存在，则连通。判断属性值是否已经存在最快的是使用HashMap的key来判断。<br>每行数据有m个属性，初始化m个$HashMap&lt;String,Integer&gt; $ String为属性值，int为行号。对每行数据判断对应层级的map，是否存在，若存在<br>uf.union(m1,m2);若不存在map.put(string,m);<br>时间复杂度为$m*n$ m为属性个数，n为行数<br>如果想要判断哪些连通，需要使用BFS或者DFS。这里略过。<br>代码如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">public class Vert &#123;</span><br><span class="line">	private static ArrayList&lt;HashMap&lt;String,Integer&gt;&gt; list = new ArrayList&lt;HashMap&lt;String,Integer&gt;&gt;();</span><br><span class="line">	public static void main(String[] args) &#123;</span><br><span class="line">		String[][] line = &#123;&#123;&quot;136&quot;,&quot;11@qq.com&quot;,&quot;22@c.com&quot;&#125;,&#123;&quot;137&quot;,&quot;11@qq.com&quot;,&quot;23@c.com&quot;&#125;,</span><br><span class="line">				&#123;&quot;138&quot;,&quot;110@qq.com&quot;,&quot;23@c.com&quot;&#125;,&#123;&quot;139&quot;,&quot;1100@qq.com&quot;,&quot;24@c.com&quot;&#125;&#125;;</span><br><span class="line">		Union_Find u = new Union_Find(line.length);</span><br><span class="line">		for(int i = 0;i&lt;line.length;i++) &#123;</span><br><span class="line">			for(int j = 0;j&lt;line[i].length;j++) &#123;</span><br><span class="line">				if(i == 0) &#123;</span><br><span class="line">					HashMap&lt;String,Integer&gt; t = new HashMap&lt;String,Integer&gt;();</span><br><span class="line">					arr[i] = 1;</span><br><span class="line">					t.put(line[i][j], i);</span><br><span class="line">					list.add(t);</span><br><span class="line">				&#125;else &#123;</span><br><span class="line">				HashMap&lt;String,Integer&gt; temp = list.get(j);</span><br><span class="line">				if(temp.containsKey(line[i][j]))</span><br><span class="line">					u.union(temp.get(line[i][j]), i);</span><br><span class="line">				else</span><br><span class="line">					list.get(j).put(line[i][j], i);</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		System.out.println(u.isConnected(1, 2));</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>Union_Find是一个并查集实现，这里略过。如果有更好的解法或者bug。欢迎留言+交流，vx：LEILE111,邮箱<a href="mailto:hcy_xy@qq.com" target="_blank" rel="noopener">hcy_xy@qq.com</a></p>
+
           
         
       
@@ -540,6 +544,15 @@
 
             
 
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
             
 
           </nav>
