@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="机器学习 统计学," />
 
 
 
@@ -79,16 +79,18 @@
 
 
 
-<meta name="description" content="a dreamer">
-<meta property="og:type" content="website">
-<meta property="og:title" content="无病呻吟">
-<meta property="og:url" content="http://hcyxy.tech/index.html">
+<meta name="description" content="名词解释bivariate gaussian二元高斯分布 linear regresion VS KNN1、linear regression 具有低偏差 高方差的特点2、KNN具有高偏差 低方差的特点KNN所产生的误差随k的增加而增加,在高维度下面会出现维度爆炸问题，本质上就是数据稀疏化，如果遇到特殊的分布，函数值还可能只集中在边缘部分。 模型选择准则1、EPE(Expected Predi">
+<meta name="keywords" content="机器学习 统计学">
+<meta property="og:type" content="article">
+<meta property="og:title" content="overview of supervised learning">
+<meta property="og:url" content="http://hcyxy.tech/2018/07/07/overview-of-supervised-learning/index.html">
 <meta property="og:site_name" content="无病呻吟">
-<meta property="og:description" content="a dreamer">
+<meta property="og:description" content="名词解释bivariate gaussian二元高斯分布 linear regresion VS KNN1、linear regression 具有低偏差 高方差的特点2、KNN具有高偏差 低方差的特点KNN所产生的误差随k的增加而增加,在高维度下面会出现维度爆炸问题，本质上就是数据稀疏化，如果遇到特殊的分布，函数值还可能只集中在边缘部分。 模型选择准则1、EPE(Expected Predi">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-07-07T14:39:28.542Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="无病呻吟">
-<meta name="twitter:description" content="a dreamer">
+<meta name="twitter:title" content="overview of supervised learning">
+<meta name="twitter:description" content="名词解释bivariate gaussian二元高斯分布 linear regresion VS KNN1、linear regression 具有低偏差 高方差的特点2、KNN具有高偏差 低方差的特点KNN所产生的误差随k的增加而增加,在高维度下面会出现维度爆炸问题，本质上就是数据稀疏化，如果遇到特殊的分布，函数值还可能只集中在边缘部分。 模型选择准则1、EPE(Expected Predi">
 
 
 
@@ -118,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="http://hcyxy.tech/"/>
+  <link rel="canonical" href="http://hcyxy.tech/2018/07/07/overview-of-supervised-learning/"/>
 
 
 
 
 
-  <title>无病呻吟</title>
+  <title>overview of supervised learning | 无病呻吟</title>
   
 
 
@@ -143,8 +145,7 @@
     
   
 
-  <div class="container sidebar-position-left 
-  page-home">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -217,9 +218,9 @@
         <div class="content-wrap">
           <div id="content" class="content">
             
-  <section id="posts" class="posts-expand">
+
+  <div id="posts" class="posts-expand">
     
-      
 
   
 
@@ -249,9 +250,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/07/07/overview-of-supervised-learning/" itemprop="url">overview of supervised learning</a></h1>
+          <h1 class="post-title" itemprop="name headline">overview of supervised learning</h1>
         
 
         <div class="post-meta">
@@ -311,9 +310,7 @@
       
 
       
-        
-          
-            <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default"></script>
+        <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default"></script>
 
 <h3 id="名词解释"><a href="#名词解释" class="headerlink" title="名词解释"></a>名词解释</h3><p>bivariate gaussian二元高斯分布<br></p>
 <h3 id="linear-regresion-VS-KNN"><a href="#linear-regresion-VS-KNN" class="headerlink" title="linear regresion VS KNN"></a>linear regresion VS KNN</h3><p>1、linear regression 具有低偏差 高方差的特点<br><br>2、KNN具有高偏差 低方差的特点<br><br>KNN所产生的误差随k的增加而增加,在高维度下面会出现维度爆炸问题，本质上就是数据稀疏化，如果遇到特殊的分布，函数值还可能只集中在边缘部分。</p>
@@ -331,8 +328,6 @@
 <p>5、期望预测误差<br></p>
 <h2 id="EPE-k-X-0-E-Y-f-k-x-0-2-X-x-0-θ-2-Bias-2-f-k-x-0-Var-D-f-k-x-0-θ-2-f-x-0-frac-1-k-sum-l-1-kf-x-k-2-θ-2-k"><a href="#EPE-k-X-0-E-Y-f-k-x-0-2-X-x-0-θ-2-Bias-2-f-k-x-0-Var-D-f-k-x-0-θ-2-f-x-0-frac-1-k-sum-l-1-kf-x-k-2-θ-2-k" class="headerlink" title="$$EPE_k(X_0)=E[(Y-f_k(x_0))^2|X=x_0]=θ^2+[Bias^2(f_k(x_0))+Var_D(f_k(x_0))]=θ^2+[f(x_0)-\frac{1}{k}\sum_{l=1}^kf(x_k)]^2+θ^2/k$$"></a>$$EPE_k(X_0)=E[(Y-f_k(x_0))^2|X=x_0]=θ^2+[Bias^2(f_k(x_0))+Var_D(f_k(x_0))]=θ^2+[f(x_0)-\frac{1}{k}\sum_{l=1}^kf(x_k)]^2+θ^2/k$$<br></h2><p>利用加权最小二乘解决异方差问题，异方差问题就是随着变量变化，方差值会不同，比如高收入家庭支出占比变化大；</p>
 
-          
-        
       
     </div>
     
@@ -347,178 +342,36 @@
 
     <footer class="post-footer">
       
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://hcyxy.tech/2018/07/07/多属性连通性检测/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="hecy">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="无病呻吟">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/07/07/多属性连通性检测/" itemprop="url">多属性连通性检测</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-07T12:00:04+08:00">
-                2018-07-07
-              </time>
-            
-
-            
-
-            
-          </span>
-
+        <div class="post-tags">
           
-
+            <a href="/tags/机器学习-统计学/" rel="tag"># 机器学习 统计学</a>
           
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2018/07/07/多属性连通性检测/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/07/07/多属性连通性检测/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
         </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="问题描述："><a href="#问题描述：" class="headerlink" title="问题描述："></a>问题描述：</h4><p></p><p> 线上遇到的一个问题，这里做一个变形。有若干行数据（2000w）左右，每行有若干个属性，比如姓名、邮箱、地址等等；如果两行数据有至少一个属性值相同，就认为这两个行是连通的；并且连通性有转移，比如A与B连通，B与C连通，就可以认为A与C连通。那么这两千万行数据哪些是连通的？</p><p></p>
-<table>
-<thead>
-<tr>
-<th>name</th>
-<th style="text-align:center">address</th>
-<th style="text-align:right">tel</th>
-<th style="text-align:right">…</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>A</td>
-<td style="text-align:center">abc</td>
-<td style="text-align:right">135</td>
-<td style="text-align:right">…</td>
-</tr>
-<tr>
-<td>A</td>
-<td style="text-align:center">bcd</td>
-<td style="text-align:right">136</td>
-<td style="text-align:right">…</td>
-</tr>
-<tr>
-<td>B</td>
-<td style="text-align:center">cde</td>
-<td style="text-align:right">136</td>
-<td style="text-align:right">…</td>
-</tr>
-</tbody>
-</table>
-<p>如上第一行与第二行name相同，可认为行1连通行2；<br>第二行与第三行第三个属性相同，可认为行2连通行3；<br>于是1 2 3可认为是一个组。</p>
-<h6 id="暴力解法：对每个属性遍历，对每行数据遍历，时间复杂度最少为-m-n-2-n为行数"><a href="#暴力解法：对每个属性遍历，对每行数据遍历，时间复杂度最少为-m-n-2-n为行数" class="headerlink" title="暴力解法：对每个属性遍历，对每行数据遍历，时间复杂度最少为 m*n^2(n为行数)"></a>暴力解法：对每个属性遍历，对每行数据遍历，时间复杂度最少为 m*n^2(n为行数)</h6><h6 id="思路1：看到连通性立马可以想到并查集，但是并查集是已经知道哪些行数据是连通的，然后再根据并查集构造的数判断哪些属于一个组，这是整体思路。对并查集不清楚可参考"><a href="#思路1：看到连通性立马可以想到并查集，但是并查集是已经知道哪些行数据是连通的，然后再根据并查集构造的数判断哪些属于一个组，这是整体思路。对并查集不清楚可参考" class="headerlink" title="思路1：看到连通性立马可以想到并查集，但是并查集是已经知道哪些行数据是连通的，然后再根据并查集构造的数判断哪些属于一个组，这是整体思路。对并查集不清楚可参考"></a>思路1：看到连通性立马可以想到并查集，但是并查集是已经知道哪些行数据是连通的，然后再根据并查集构造的数判断哪些属于一个组，这是整体思路。对并查集不清楚可参考</h6><p><a href="https://blog.csdn.net/u011730199/article/details/80909373" target="_blank" rel="noopener">https://blog.csdn.net/u011730199/article/details/80909373</a><br><a href="https://blog.csdn.net/dm_vincent/article/details/7655764" target="_blank" rel="noopener">https://blog.csdn.net/dm_vincent/article/details/7655764</a></p>
-<h6 id="接下来，如何判断行与行之间的连通性呢？"><a href="#接下来，如何判断行与行之间的连通性呢？" class="headerlink" title="接下来，如何判断行与行之间的连通性呢？"></a>接下来，如何判断行与行之间的连通性呢？</h6><p>遍历做法直接舍弃。考虑到一行有若干属性，可以联想到树的层级结构。对每行数据，如果对应的属性值已经存在，则连通。判断属性值是否已经存在最快的是使用HashMap的key来判断。<br>每行数据有m个属性，初始化m个HashMap&lt;String,Integer&gt;  String为属性值，int为行号。对每行数据判断对应层级的map，是否存在，若存在<br>uf.union(m1,m2);若不存在map.put(string,m);<br>时间复杂度为m*n m为属性个数，n为行数<br>如果想要判断哪些连通，需要使用BFS或者DFS。这里略过。<br>代码如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">public class Vert &#123;</span><br><span class="line">	private static ArrayList&lt;HashMap&lt;String,Integer&gt;&gt; list = new ArrayList&lt;HashMap&lt;String,Integer&gt;&gt;();</span><br><span class="line">	public static void main(String[] args) &#123;</span><br><span class="line">		String[][] line = &#123;&#123;&quot;136&quot;,&quot;11@qq.com&quot;,&quot;22@c.com&quot;&#125;,&#123;&quot;137&quot;,&quot;11@qq.com&quot;,&quot;23@c.com&quot;&#125;,</span><br><span class="line">				&#123;&quot;138&quot;,&quot;110@qq.com&quot;,&quot;23@c.com&quot;&#125;,&#123;&quot;139&quot;,&quot;1100@qq.com&quot;,&quot;24@c.com&quot;&#125;&#125;;</span><br><span class="line">		Union_Find u = new Union_Find(line.length);</span><br><span class="line">		for(int i = 0;i&lt;line.length;i++) &#123;</span><br><span class="line">			for(int j = 0;j&lt;line[i].length;j++) &#123;</span><br><span class="line">				if(i == 0) &#123;</span><br><span class="line">					HashMap&lt;String,Integer&gt; t = new HashMap&lt;String,Integer&gt;();</span><br><span class="line">					arr[i] = 1;</span><br><span class="line">					t.put(line[i][j], i);</span><br><span class="line">					list.add(t);</span><br><span class="line">				&#125;else &#123;</span><br><span class="line">				HashMap&lt;String,Integer&gt; temp = list.get(j);</span><br><span class="line">				if(temp.containsKey(line[i][j]))</span><br><span class="line">					u.union(temp.get(line[i][j]), i);</span><br><span class="line">				else</span><br><span class="line">					list.get(j).put(line[i][j], i);</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		System.out.println(u.isConnected(1, 2));</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>Union_Find是一个并查集实现，这里略过。如果有更好的解法或者bug。欢迎留言+交流，vx：LEILE111,邮箱<a href="mailto:hcy_xy@qq.com" target="_blank" rel="noopener">hcy_xy@qq.com</a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
       
 
       
       
-        <div class="post-eof"></div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/07/07/多属性连通性检测/" rel="next" title="多属性连通性检测">
+                <i class="fa fa-chevron-left"></i> 多属性连通性检测
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
       
     </footer>
   </div>
@@ -528,10 +381,11 @@
   </article>
 
 
-    
-  </section>
 
-  
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -539,6 +393,17 @@
 
 
           
+
+  
+    <div class="comments" id="comments">
+      <div class="ds-thread" data-thread-key="2018/07/07/overview-of-supervised-learning/"
+           data-title="overview of supervised learning" data-url="http://hcyxy.tech/2018/07/07/overview-of-supervised-learning/">
+      </div>
+    </div>
+
+  
+
+
 
         </div>
         
@@ -559,8 +424,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -611,6 +485,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#名词解释"><span class="nav-number">1.</span> <span class="nav-text">名词解释</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#linear-regresion-VS-KNN"><span class="nav-number">2.</span> <span class="nav-text">linear regresion VS KNN</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#模型选择准则"><span class="nav-number">3.</span> <span class="nav-text">模型选择准则</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#当采用均方差时，最好的预测是条件均值：f-x-E-Y-X-x"><span class="nav-number"></span> <span class="nav-text">当采用均方差时，最好的预测是条件均值：f(x)=E(Y|X=x)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#即：-E-y-0-x-0-E-D-y-0-y-2-Var-y-0-x-0-Var-y-Bias-2-y"><span class="nav-number"></span> <span class="nav-text">即：$$E_{y_0|x_0}E_D((y_0-y)^2)=Var(y_0|x_0)+Var(y)+Bias^2(y)$$</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#EPE得到的是一个随机变量-XX-T-线性模型得到的是一个数据矩阵：-X-TX"><span class="nav-number"></span> <span class="nav-text">EPE得到的是一个随机变量$$XX^T$$ 线性模型得到的是一个数据矩阵：$$X^TX$$</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#EPE-k-X-0-E-Y-f-k-x-0-2-X-x-0-θ-2-Bias-2-f-k-x-0-Var-D-f-k-x-0-θ-2-f-x-0-frac-1-k-sum-l-1-kf-x-k-2-θ-2-k"><span class="nav-number"></span> <span class="nav-text">$$EPE_k(X_0)=E[(Y-f_k(x_0))^2|X=x_0]=θ^2+[Bias^2(f_k(x_0))+Var_D(f_k(x_0))]=θ^2+[f(x_0)-\frac{1}{k}\sum_{l=1}^kf(x_k)]^2+θ^2/k$$</span></a></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -744,6 +634,10 @@
   
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
 
   
 
