@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="机器学习 统计学," />
+  <meta name="keywords" content="Hexo, NexT" />
 
 
 
@@ -79,18 +79,17 @@
 
 
 
-<meta name="description" content="名词解释bivariate gaussian二元高斯分布 linear regresion VS KNN1、linear regression 具有低偏差 高方差的特点2、KNN具有高偏差 低方差的特点KNN所产生的误差随k的增加而增加,在高维度下面会出现维度爆炸问题，本质上就是数据稀疏化，如果遇到特殊的分布，函数值还可能只集中在边缘部分。 模型选择准则1、EPE(Expected Predi">
-<meta name="keywords" content="机器学习 统计学">
+<meta name="description" content="数学中有很多空间，比如欧几里得空间、赋范空间、希尔伯特空间，空间之间有什么关系。说空间要从距离说起，距离是一个抽象的概念，定义为：设X为任一非空集，对X任意两点x,y，有一实数d(x,y)与之对应且满足:  1、$$d(x,y)\geq 0$$当且仅当x=y; 2、$$d(x,y)=d(y,x)$$ 3、$$d(x,y)\leq d(x,z)+d(z,y)$$  定义了距离后，再加上线性结构">
 <meta property="og:type" content="article">
-<meta property="og:title" content="overview of supervised learning">
-<meta property="og:url" content="http://hcyxy.tech/2018/07/07/overview-of-supervised-learning/index.html">
+<meta property="og:title" content="数学空间">
+<meta property="og:url" content="http://hcyxy.tech/2018/07/08/数学空间/index.html">
 <meta property="og:site_name" content="无病呻吟">
-<meta property="og:description" content="名词解释bivariate gaussian二元高斯分布 linear regresion VS KNN1、linear regression 具有低偏差 高方差的特点2、KNN具有高偏差 低方差的特点KNN所产生的误差随k的增加而增加,在高维度下面会出现维度爆炸问题，本质上就是数据稀疏化，如果遇到特殊的分布，函数值还可能只集中在边缘部分。 模型选择准则1、EPE(Expected Predi">
+<meta property="og:description" content="数学中有很多空间，比如欧几里得空间、赋范空间、希尔伯特空间，空间之间有什么关系。说空间要从距离说起，距离是一个抽象的概念，定义为：设X为任一非空集，对X任意两点x,y，有一实数d(x,y)与之对应且满足:  1、$$d(x,y)\geq 0$$当且仅当x=y; 2、$$d(x,y)=d(y,x)$$ 3、$$d(x,y)\leq d(x,z)+d(z,y)$$  定义了距离后，再加上线性结构">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-07-07T15:38:18.573Z">
+<meta property="og:updated_time" content="2018-07-08T01:26:18.562Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="overview of supervised learning">
-<meta name="twitter:description" content="名词解释bivariate gaussian二元高斯分布 linear regresion VS KNN1、linear regression 具有低偏差 高方差的特点2、KNN具有高偏差 低方差的特点KNN所产生的误差随k的增加而增加,在高维度下面会出现维度爆炸问题，本质上就是数据稀疏化，如果遇到特殊的分布，函数值还可能只集中在边缘部分。 模型选择准则1、EPE(Expected Predi">
+<meta name="twitter:title" content="数学空间">
+<meta name="twitter:description" content="数学中有很多空间，比如欧几里得空间、赋范空间、希尔伯特空间，空间之间有什么关系。说空间要从距离说起，距离是一个抽象的概念，定义为：设X为任一非空集，对X任意两点x,y，有一实数d(x,y)与之对应且满足:  1、$$d(x,y)\geq 0$$当且仅当x=y; 2、$$d(x,y)=d(y,x)$$ 3、$$d(x,y)\leq d(x,z)+d(z,y)$$  定义了距离后，再加上线性结构">
 
 
 
@@ -120,13 +119,13 @@
 
 
 
-  <link rel="canonical" href="http://hcyxy.tech/2018/07/07/overview-of-supervised-learning/"/>
+  <link rel="canonical" href="http://hcyxy.tech/2018/07/08/数学空间/"/>
 
 
 
 
 
-  <title>overview of supervised learning | 无病呻吟</title>
+  <title>数学空间 | 无病呻吟</title>
   
 
 
@@ -233,7 +232,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://hcyxy.tech/2018/07/07/overview-of-supervised-learning/">
+    <link itemprop="mainEntityOfPage" href="http://hcyxy.tech/2018/07/08/数学空间/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="hecy">
@@ -250,7 +249,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">overview of supervised learning</h1>
+          <h1 class="post-title" itemprop="name headline">数学空间</h1>
         
 
         <div class="post-meta">
@@ -262,8 +261,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-07T22:24:48+08:00">
-                2018-07-07
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-08T09:24:28+08:00">
+                2018-07-08
               </time>
             
 
@@ -322,22 +321,48 @@
       
 
       
-        <p><script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"> </script></p>
-<h3 id="名词解释"><a href="#名词解释" class="headerlink" title="名词解释"></a>名词解释</h3><p>bivariate gaussian二元高斯分布<br></p>
-<h3 id="linear-regresion-VS-KNN"><a href="#linear-regresion-VS-KNN" class="headerlink" title="linear regresion VS KNN"></a>linear regresion VS KNN</h3><p>1、linear regression 具有低偏差 高方差的特点<br><br>2、KNN具有高偏差 低方差的特点<br><br>KNN所产生的误差随k的增加而增加,在高维度下面会出现维度爆炸问题，本质上就是数据稀疏化，如果遇到特殊的分布，函数值还可能只集中在边缘部分。</p>
-<h3 id="模型选择准则"><a href="#模型选择准则" class="headerlink" title="模型选择准则"></a>模型选择准则</h3><p><strong>1、EPE(Expected Predictor Error)</strong> 期望预测误差<br><br>$$EPE=E(Y-E(X))^2=\int[y-f(x)]^2Pr(dx,dy)$$</p>
-<p>进一步化简：<br><br>$$EPE(f)=ExE_{Y|X}([Y-f(X)]^2|X)$$<br><br>$$f(x)=argmin_cE_{Y|X}([Y-c]^2|X=x)$$<br></p>
-<h2 id="当采用均方差时，最好的预测是条件均值：f-x-E-Y-X-x"><a href="#当采用均方差时，最好的预测是条件均值：f-x-E-Y-X-x" class="headerlink" title="当采用均方差时，最好的预测是条件均值：f(x)=E(Y|X=x)"></a>当采用均方差时，最好的预测是条件均值：f(x)=E(Y|X=x)</h2><p><strong>2、EPE(x0)</strong> 的计算 <br><br>令$$u=E_{y_0|x_0}(y_0)=x_0^Tβ$$<br><br>$$EPE(x_0)=E_{y_0|x_0}E_D(y_0-y)^2=(y_0^2-u^2)+(E_D(y^2)-(E_D(y))^2)+((E_D(y))^2-2y_0E_Dy+u^2)$$<br></p>
-<h2 id="即：-E-y-0-x-0-E-D-y-0-y-2-Var-y-0-x-0-Var-y-Bias-2-y"><a href="#即：-E-y-0-x-0-E-D-y-0-y-2-Var-y-0-x-0-Var-y-Bias-2-y" class="headerlink" title="即：$$E_{y_0|x_0}E_D((y_0-y)^2)=Var(y_0|x_0)+Var(y)+Bias^2(y)$$"></a>即：$$E_{y_0|x_0}E_D((y_0-y)^2)=Var(y_0|x_0)+Var(y)+Bias^2(y)$$<br></h2><p>3、如果一个算法在等方向的相邻区域产生局部变化函数无法克服高维爆炸问题；克服了等方向问题，又会出现在各个方向不等变化。<br></p>
-<h2 id="EPE得到的是一个随机变量-XX-T-线性模型得到的是一个数据矩阵：-X-TX"><a href="#EPE得到的是一个随机变量-XX-T-线性模型得到的是一个数据矩阵：-X-TX" class="headerlink" title="EPE得到的是一个随机变量$$XX^T$$ 线性模型得到的是一个数据矩阵：$$X^TX$$"></a>EPE得到的是一个随机变量$$XX^T$$ 线性模型得到的是一个数据矩阵：$$X^TX$$<br></h2><p><strong>4、模型的决定</strong><br><br>模型需要确定一个平滑的或者是复杂的参数：</p>
-<ol>
-<li>惩罚项的乘数</li>
-<li>核的宽度</li>
-<li>或基函数的数量</li>
-</ol>
-<hr>
-<p>5、期望预测误差<br></p>
-<h2 id="EPE-k-X-0-E-Y-f-k-x-0-2-X-x-0-θ-2-Bias-2-f-k-x-0-Var-D-f-k-x-0-θ-2-f-x-0-frac-1-k-sum-l-1-kf-x-k-2-θ-2-k"><a href="#EPE-k-X-0-E-Y-f-k-x-0-2-X-x-0-θ-2-Bias-2-f-k-x-0-Var-D-f-k-x-0-θ-2-f-x-0-frac-1-k-sum-l-1-kf-x-k-2-θ-2-k" class="headerlink" title="$$EPE_k(X_0)=E[(Y-f_k(x_0))^2|X=x_0]=θ^2+[Bias^2(f_k(x_0))+Var_D(f_k(x_0))]=θ^2+[f(x_0)-\frac{1}{k}\sum_{l=1}^kf(x_k)]^2+θ^2/k$$"></a>$$EPE_k(X_0)=E[(Y-f_k(x_0))^2|X=x_0]=θ^2+[Bias^2(f_k(x_0))+Var_D(f_k(x_0))]=θ^2+[f(x_0)-\frac{1}{k}\sum_{l=1}^kf(x_k)]^2+θ^2/k$$<br></h2><p>利用加权最小二乘解决异方差问题，异方差问题就是随着变量变化，方差值会不同，比如高收入家庭支出占比变化大；</p>
+        <script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"> </script>
+
+<p>数学中有很多空间，比如欧几里得空间、赋范空间、希尔伯特空间，空间之间有什么关系。<br><br>说空间要从距离说起，距离是一个抽象的概念，定义为：设X为任一非空集，对X任意两点x,y，有一实数d(x,y)与之对应且满足:</p>
+<ul>
+<li>1、$$d(x,y)\geq 0$$当且仅当x=y;</li>
+<li>2、$$d(x,y)=d(y,x)$$</li>
+<li>3、$$d(x,y)\leq d(x,z)+d(z,y)$$</li>
+</ul>
+<p>定义了距离后，再加上线性结构，如向量加法、数乘，使其满足加法交换律、结合律、零元、负元；数乘的交换律、单位一；数乘与加法的结合律共八点要求，形成一个线性空间，这个线性空间就是向量空间。<br></p>
+<p>向量空间中，定义了范数的概念，表示某点到空间零点的距离：<br></p>
+<ul>
+<li>$$||x||\geq 0$$</li>
+<li>$$||ax||=|a|||x||$$</li>
+<li>$$||x+y||\leq ||x||+||y||$$</li>
+</ul>
+<p>范数与距离比较，可知距离多了一个条件2，数乘的运算表明了其是一个强化了的距离概念。<br></p>
+<p>对范数和距离进行扩展，形成：<br></p>
+<ul>
+<li>范数集合$$\rightarrow$$赋范空间+线性结构$$\rightarrow$$线性赋范空间<br></li>
+<li>距离集合$$\rightarrow$$度量空间+线性结构$$\rightarrow$$线性度量空间<br></li>
+</ul>
+<p>在已经构成的线性赋范空间上继续扩展，添加内积运算，使空间中有角的概念，形成如下：<br></p>
+<ul>
+<li>线性赋范空间+内积运算$$\rightarrow$$内积空间<br></li>
+</ul>
+<p>这时内积空间已经有了距离、长度、角，有限维的内积空间就是我们熟悉的欧式空间。<br></p>
+<p>继续在内积空间上扩展，使得内积空间满足完备性，形成希尔伯特空间：<br></p>
+<ul>
+<li>内积空间+完备性$$\rightarrow$$希尔伯特空间<br></li>
+</ul>
+<p>完备性的意思就是空间中的极限运算不能跑出该空间，如有理数空间中的$$\sqrt 2$$的小数表示，其极限随着小数位数增加收敛到$$\sqrt 2$$,但其属于无理数，并不在有理数，不满足完备性。<br></p>
+<p>距离 $$\rightarrow$$范数 $$\rightarrow$$内积 <br></p>
+<p>(向量空间+范数)$$\rightarrow$$(赋范空间+线性结构)$$\rightarrow$$(线性赋范空间+内积运算)$$\rightarrow$$(内积空间+完备性)$$\rightarrow$$(希尔伯特空间)<br></p>
+<p>(内积空间+有限维)$$\rightarrow$$(欧几里得空间)<br></p>
+<p>(赋范空间+完备性)$$\rightarrow$$(巴拿赫空间)<br></p>
+<p>对距离弱化，保留距离的极限和连续概念，就形成了拓扑概念。</p>
+<p>定义一个函数空间中无穷维的矩阵K(x,y)<br><br>其满足：<br><br>1、正定性，即对于任意函数f(x)，都有<br><br>$$\int\int f(x)K(x,y)f(y)dxdy\geq 0$$<br></p>
+<p>2、对称性即K(x,y)=K(y,x)<br><br>$$\int K(x,y)\phi(x)dx=\lambda\phi(y)$$<br><br>则这个二元函数可称为核函数，可证明一个核函数的特征函数之间是正交的。<br><br>$$&lt;\phi_1,\phi_2&gt;=\int\phi_1(x)\phi_2(x)dx=0$$<br><br>所以$${\phi_i}^\infty_{i=1}$$是原来函数空间的一组基底。<br></p>
+<p>同时原来的核函数也可以分解成为核函数之间相乘的结果：<br></p>
+<h2 id="K-x-y-sum-i-0-infty-lambda-i-phi-i-x-phi-i-y"><a href="#K-x-y-sum-i-0-infty-lambda-i-phi-i-x-phi-i-y" class="headerlink" title="$$K(x,y)=\sum_{i=0}^\infty\lambda_i\phi_i(x)\phi_i(y)$$"></a>$$K(x,y)=\sum_{i=0}^\infty\lambda_i\phi_i(x)\phi_i(y)$$<br></h2><p><strong>再生核希尔伯特空间RKHS</strong><br><br>RKHS是由核函数构成的空间。基底为$${\sqrt\lambda_i\phi_i}<em>{i=1}^\infty$$<br><br>任意函数都可以由基底表示:<br><br>$$f=\sum</em>{i=1}^{\infty}f_i\sqrt\lambda_i\phi_i$$<br><br>选取其中两个函数，按照坐标表示如下：<br><br>$$f=(f_1,f_2,..)^T_h$$和$$g=(g_1,g_2,…)^T_h$$<br><br>其内积为:$$&lt;f,g&gt;<em>h=\sum</em>{i=1}^{\infty}f_ig_i$$<br><br>再来看核函数K(x,y)将其中一个元素固定K(x0,y),则其也可以看成一个函数<br><br>$$K(x_0,y)=\sum_{i=0}^{\infty}\lambda_i\phi_i(x)\phi_i$$<br></p>
+<p>化成向量坐标表示形式：<br><br>$$K(x_0,y)=(\sqrt\lambda_1\phi_1(x),\sqrt\lambda_2\phi_2(x),…)_h^T$$<br><br>所以计算内积：<br><br>$$&lt;K(x_0,y),K(y_0,x)&gt;<em>h=\sum</em>{i=0}^{\infty}\lambda_i\phi_i(x_0)\phi_i(y_0)=K(x_0,y_0)$$<br><br>这个性质就叫做再生性reproducing property，所以这个空间才叫再生希尔伯特空间。这个性质很好，原本函数之间计算内积需要算无穷维积分的，但是现在只需要计算核函数就好了。<br><br>所以给定一个点的映射一个点x给其映射到一个无穷维的特征空间【即先将这个点变成一个函数，而这个函数可以看成一个无穷维的特征空间】：<br><br>$$\phi(x)=K(x,\cdot)=(\sqrt\lambda_1\phi_1(x),\sqrt\lambda_2\phi_2(x),…)^T$$<br></p>
+<p>得到两个特征空间上内积为：<br><br>$$&lt;\phi(x),\phi(y)&gt;_h=&lt;K(x,\cdot),K(y,\cdot)&gt;_h=K(x,y)$$<br>这就是kernel trick</p>
 
       
     </div>
@@ -353,12 +378,6 @@
 
     <footer class="post-footer">
       
-        <div class="post-tags">
-          
-            <a href="/tags/机器学习-统计学/" rel="tag"># 机器学习 统计学</a>
-          
-        </div>
-      
 
       
       
@@ -368,8 +387,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/07/07/多属性连通性检测/" rel="next" title="多属性连通性检测">
-                <i class="fa fa-chevron-left"></i> 多属性连通性检测
+              <a href="/2018/07/07/假设检验/" rel="next" title="假设检验">
+                <i class="fa fa-chevron-left"></i> 假设检验
               </a>
             
           </div>
@@ -377,10 +396,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/07/07/假设检验/" rel="prev" title="假设检验">
-                假设检验 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -512,7 +527,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#名词解释"><span class="nav-number">1.</span> <span class="nav-text">名词解释</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#linear-regresion-VS-KNN"><span class="nav-number">2.</span> <span class="nav-text">linear regresion VS KNN</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#模型选择准则"><span class="nav-number">3.</span> <span class="nav-text">模型选择准则</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#当采用均方差时，最好的预测是条件均值：f-x-E-Y-X-x"><span class="nav-number"></span> <span class="nav-text">当采用均方差时，最好的预测是条件均值：f(x)=E(Y|X=x)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#即：-E-y-0-x-0-E-D-y-0-y-2-Var-y-0-x-0-Var-y-Bias-2-y"><span class="nav-number"></span> <span class="nav-text">即：$$E_{y_0|x_0}E_D((y_0-y)^2)=Var(y_0|x_0)+Var(y)+Bias^2(y)$$</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#EPE得到的是一个随机变量-XX-T-线性模型得到的是一个数据矩阵：-X-TX"><span class="nav-number"></span> <span class="nav-text">EPE得到的是一个随机变量$$XX^T$$ 线性模型得到的是一个数据矩阵：$$X^TX$$</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#EPE-k-X-0-E-Y-f-k-x-0-2-X-x-0-θ-2-Bias-2-f-k-x-0-Var-D-f-k-x-0-θ-2-f-x-0-frac-1-k-sum-l-1-kf-x-k-2-θ-2-k"><span class="nav-number"></span> <span class="nav-text">$$EPE_k(X_0)=E[(Y-f_k(x_0))^2|X=x_0]=θ^2+[Bias^2(f_k(x_0))+Var_D(f_k(x_0))]=θ^2+[f(x_0)-\frac{1}{k}\sum_{l=1}^kf(x_k)]^2+θ^2/k$$</span></a></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#K-x-y-sum-i-0-infty-lambda-i-phi-i-x-phi-i-y"><span class="nav-number">1.</span> <span class="nav-text">$$K(x,y)=\sum_{i=0}^\infty\lambda_i\phi_i(x)\phi_i(y)$$</span></a></li></ol></div>
             
 
           </div>
