@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="查找," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="题目Count of Smaller Numbers After Self(数组计数)给定一个数组nums,返回一个计数数组count，count[i]表示nums中第i个右边有多少个数小于nums[i] Example: nums = [5, 2, 6, 1] 输出[2,1,1,0]下面是给出的利用线段树，来处理的，时间复杂度O(NlogN)123456789101112131415161718">
+<meta name="keywords" content="查找">
+<meta property="og:type" content="article">
+<meta property="og:title" content="计数数组">
+<meta property="og:url" content="http://hcyxy.tech/2018/10/26/计数数组/index.html">
+<meta property="og:site_name" content="无病呻吟">
+<meta property="og:description" content="题目Count of Smaller Numbers After Self(数组计数)给定一个数组nums,返回一个计数数组count，count[i]表示nums中第i个右边有多少个数小于nums[i] Example: nums = [5, 2, 6, 1] 输出[2,1,1,0]下面是给出的利用线段树，来处理的，时间复杂度O(NlogN)123456789101112131415161718">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-10-31T15:12:56.152Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="计数数组">
+<meta name="twitter:description" content="题目Count of Smaller Numbers After Self(数组计数)给定一个数组nums,返回一个计数数组count，count[i]表示nums中第i个右边有多少个数小于nums[i] Example: nums = [5, 2, 6, 1] 输出[2,1,1,0]下面是给出的利用线段树，来处理的，时间复杂度O(NlogN)123456789101112131415161718">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://hcyxy.tech/2018/10/26/计数数组/"/>
+
+
+
+
+
+  <title>计数数组 | 无病呻吟</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">无病呻吟</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">hcy && xy</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://hcyxy.tech/2018/10/26/计数数组/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="hecy">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="无病呻吟">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">计数数组</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-26T22:28:35+08:00">
+                2018-10-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/算法与数据结构/" itemprop="url" rel="index">
+                    <span itemprop="name">算法与数据结构</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h4 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h4><h5 id="Count-of-Smaller-Numbers-After-Self-数组计数"><a href="#Count-of-Smaller-Numbers-After-Self-数组计数" class="headerlink" title="Count of Smaller Numbers After Self(数组计数)"></a>Count of Smaller Numbers After Self(数组计数)</h5><p>给定一个数组nums,返回一个计数数组count，count[i]表示nums中第i个右边有多少个数小于nums[i]</p>
+<p>Example:</p>
+<p>nums = [5, 2, 6, 1]</p>
+<p>输出[2,1,1,0]<br>下面是给出的利用线段树，来处理的，时间复杂度O(NlogN)<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br></pre></td><td class="code"><pre><span class="line">class SegmentTreeNode(s: Int, e: Int) &#123;</span><br><span class="line">    var start: Int = s</span><br><span class="line">    var end: Int = e</span><br><span class="line">    var count: Int = <span class="number">0</span></span><br><span class="line">    var left: SegmentTreeNode? = <span class="keyword">null</span></span><br><span class="line">    var right: SegmentTreeNode? = <span class="keyword">null</span></span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">fun <span class="title">countSmaller</span><span class="params">(nums: IntArray)</span>: List&lt;Int&gt; </span>&#123;</span><br><span class="line">    val result = ArrayList&lt;Int&gt;()</span><br><span class="line"></span><br><span class="line">    var min = Integer.MAX_VALUE</span><br><span class="line">    var max = Integer.MIN_VALUE</span><br><span class="line">    <span class="keyword">for</span> (i in nums) &#123;</span><br><span class="line">        min = Math.min(min, i)</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (min &lt; <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">for</span> (i in nums.indices) &#123;</span><br><span class="line">            nums[i] -= min </span><br><span class="line">            &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> (i in nums) &#123;</span><br><span class="line">        max = Math.max(max, i)</span><br><span class="line">    &#125;</span><br><span class="line">    val root = build(<span class="number">0</span>, max)</span><br><span class="line">    <span class="keyword">for</span> (i in nums.indices) &#123;</span><br><span class="line">        updateAdd(root, nums[i])</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> (i in nums.indices) &#123;</span><br><span class="line">        updateDel(root, nums[i])</span><br><span class="line">        result.add(query(root, <span class="number">0</span>, nums[i] - <span class="number">1</span>))</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> result</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">fun <span class="title">build</span><span class="params">(start: Int, end: Int)</span>: SegmentTreeNode? </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (start &gt; end) <span class="keyword">return</span> <span class="keyword">null</span></span><br><span class="line">    <span class="keyword">if</span> (start == end) <span class="keyword">return</span> SegmentTreeNode(start, end)</span><br><span class="line">    val mid = (start + end) / <span class="number">2</span></span><br><span class="line">    val root = SegmentTreeNode(start, end)</span><br><span class="line">    root.left = build(start, mid)</span><br><span class="line">    root.right = build(mid + <span class="number">1</span>, end)</span><br><span class="line">    root.count = root.left!!.count + root.right!!.count</span><br><span class="line">    <span class="keyword">return</span> root</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">fun <span class="title">query</span><span class="params">(root: SegmentTreeNode?, start: Int, end: Int)</span>: Int </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (root == <span class="keyword">null</span>) <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">    <span class="keyword">if</span> (root.start == start &amp;&amp; root.end == end) <span class="keyword">return</span> root.count</span><br><span class="line">    val mid = (root.start + root.end) / <span class="number">2</span></span><br><span class="line">    <span class="keyword">return</span> when &#123;</span><br><span class="line">        end &lt; mid -&gt; query(root.left, start, end)</span><br><span class="line">        start &gt; end -&gt; query(root.right, start, end)</span><br><span class="line">        <span class="keyword">else</span> -&gt; query(root.left, start, mid) + query(root.right, mid + <span class="number">1</span>, end)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function">fun <span class="title">updateAdd</span><span class="params">(root: SegmentTreeNode?, num: Int)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (root == <span class="keyword">null</span> || root.start &gt; num || root.end &lt; num) <span class="keyword">return</span></span><br><span class="line">    <span class="keyword">if</span> (root.start == num &amp;&amp; root.end == num) &#123;</span><br><span class="line">        root.count++</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    &#125;</span><br><span class="line">    val mid = (root.start + root.end) / <span class="number">2</span></span><br><span class="line">    <span class="keyword">if</span> (num &lt;= mid) &#123;</span><br><span class="line">        updateAdd(root.left, num)</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        updateAdd(root.right, num)</span><br><span class="line">    &#125;</span><br><span class="line">    root.count = root.left!!.count + root.right!!.count</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">fun <span class="title">updateDel</span><span class="params">(root: SegmentTreeNode?, num: Int)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (root == <span class="keyword">null</span> || root.start &gt; num || root.end &lt; num) <span class="keyword">return</span></span><br><span class="line">    <span class="keyword">if</span> (root.start == num &amp;&amp; root.end == num) &#123;</span><br><span class="line">        root.count--</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    &#125;</span><br><span class="line">    val mid = (root.start + root.end) / <span class="number">2</span></span><br><span class="line">    <span class="keyword">if</span> (num &lt;= mid) &#123;</span><br><span class="line">        updateDel(root.left, num)</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        updateDel(root.right, num)</span><br><span class="line">    &#125;</span><br><span class="line">    root.count = root.left!!.count + root.right!!.count</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">fun <span class="title">main</span><span class="params">(vararg args: String)</span> </span>&#123;</span><br><span class="line">    val number = intArrayOf(<span class="number">5</span>, <span class="number">2</span>, <span class="number">6</span>, <span class="number">1</span>,<span class="number">100000</span>)</span><br><span class="line">    println(countSmaller(number))</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>树状数组解法O(nLogN)<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">fun <span class="title">main</span><span class="params">(vararg args: String)</span> </span>&#123;</span><br><span class="line">    val number = intArrayOf(<span class="number">5</span>, <span class="number">2</span>, <span class="number">6</span>, <span class="number">1</span>, <span class="number">100000</span>)</span><br><span class="line">    println(countSmaller(number))</span><br><span class="line">    println(<span class="number">6</span> and -<span class="number">6</span>)</span><br><span class="line">    println(-<span class="number">6</span> and <span class="number">0xFF</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> fun <span class="title">lowbit</span><span class="params">(x: Int)</span>: Int </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> x and -x</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> fun <span class="title">add</span><span class="params">(bit: IntArray, i: Int, num: Int)</span> </span>&#123;</span><br><span class="line">    var j = i</span><br><span class="line">    <span class="keyword">while</span> (j &lt; bit.size) &#123;</span><br><span class="line">        bit[j] += num</span><br><span class="line">        j += lowbit(i)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> fun <span class="title">query</span><span class="params">(bit: IntArray, i: Int)</span>: Int </span>&#123;</span><br><span class="line">    var j = i</span><br><span class="line">    var ans = <span class="number">0</span></span><br><span class="line">    <span class="keyword">while</span> (j &gt; <span class="number">0</span>) &#123;</span><br><span class="line">        ans += bit[j]</span><br><span class="line">        j -= lowbit(i)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> ans</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">fun <span class="title">countSmaller</span><span class="params">(nums: IntArray)</span>: List&lt;Int&gt; </span>&#123;</span><br><span class="line">    val tmp = nums.clone()</span><br><span class="line">    Arrays.sort(tmp) <span class="comment">//asc升序</span></span><br><span class="line">    <span class="keyword">for</span> (i in nums.indices) nums[i] = Arrays.binarySearch(tmp, nums[i]) <span class="comment">//原数组各个元素在有序数组中的位置</span></span><br><span class="line">    val bit = IntArray(nums.size)</span><br><span class="line">    val ans = arrayOfNulls&lt;Int&gt;(nums.size)</span><br><span class="line">    <span class="keyword">for</span> (i in nums.indices.reversed()) &#123;</span><br><span class="line">        ans[i] = query(bit, nums[i])</span><br><span class="line">        add(bit, nums[i] + <span class="number">1</span>, <span class="number">1</span>)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> Arrays.asList&lt;Int&gt;(*ans)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/查找/" rel="tag"># 查找</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/10/24/k个不同字符的最长子字符串/" rel="next" title="k个不同字符的最长子字符串">
+                <i class="fa fa-chevron-left"></i> k个不同字符的最长子字符串
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/10/27/有趣的条件概率/" rel="prev" title="条件概率">
+                条件概率 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">hecy</p>
+              <p class="site-description motion-element" itemprop="description">a dreamer</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">24</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#题目"><span class="nav-number">1.</span> <span class="nav-text">题目</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Count-of-Smaller-Numbers-After-Self-数组计数"><span class="nav-number">1.1.</span> <span class="nav-text">Count of Smaller Numbers After Self(数组计数)</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">hecy</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

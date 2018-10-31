@@ -232,6 +232,823 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://hcyxy.tech/2018/10/07/动态规划/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="hecy">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="无病呻吟">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/10/07/动态规划/" itemprop="url">动态规划</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-07T19:09:14+08:00">
+                2018-10-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/算法与数据结构/" itemprop="url" rel="index">
+                    <span itemprop="name">算法与数据结构</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h5 id="什么是动态规划？"><a href="#什么是动态规划？" class="headerlink" title="什么是动态规划？"></a>什么是动态规划？</h5><p>动态规划算法通常基于一个递推公式及一个或多个初始状态。 当前子问题的解将由上一次子问题的解推出。使用动态规划来解题只需要多项式时间复杂度， 因此它比回溯法、暴力法等要快许多。</p>
+<h5 id="“状态”代表什么及如何找到这些状态？"><a href="#“状态”代表什么及如何找到这些状态？" class="headerlink" title="“状态”代表什么及如何找到这些状态？"></a>“状态”代表什么及如何找到这些状态？</h5><p>“状态”用来描述该问题的子问题的解。</p>
+<h6 id="用一个例子说明"><a href="#用一个例子说明" class="headerlink" title="用一个例子说明"></a>用一个例子说明</h6><p>如果我们有面值为1元、3元和5元的硬币若干枚，如何用最少的硬币凑够11元？ (表面上这道题可以用贪心算法，但贪心算法无法保证可以求出解，比如1元换成2元的时候)</p>
+<p>首先我们思考一个问题，如何用最少的硬币凑够i元(i&lt;11)？为什么要这么问呢？<br> 两个原因：</p>
+<ol>
+<li>当我们遇到一个大问题时，总是习惯把问题的规模变小，这样便于分析讨论。 </li>
+<li>这个规模变小后的问题和原来的问题是同质的，除了规模变小，其它的都是一样的， 本质上它还是同一个问题(规模变小后的问题其实是原问题的子问题)。</li>
+</ol>
+<p>从最小的i开始吧。当i=0，即我们需要多少个硬币来凑够0元。  由于1，3，5都大于0，即没有比0小的币值，因此凑够0元我们最少需要0个硬币。 这时候我们发现用一个标记来表示这句“凑够0元我们最少需要0个硬币。”会比较方便。<br>那么，用d(i)=j来表示凑够i元最少需要j个硬币。于是我们已经得到了d(0)=0， 表示凑够0元最小需要0个硬币。</p>
+<ul>
+<li>当i=1时，只有面值为1元的硬币可用， 因此我们拿起一个面值为1的硬币，接下来只需要凑够0元即可，而这个是已经知道答案的， 即d(0)=0。所以，d(1)=d(1-1)+1=d(0)+1=0+1=1。</li>
+<li>当i=2时， 仍然只有面值为1的硬币可用，于是我拿起一个面值为1的硬币， 接下来我只需要再凑够2-1=1元即可(记得要用最小的硬币数量)，而这个答案也已经知道了。 所以d(2)=d(2-1)+1=d(1)+1=1+1=2。<br>一直到这里，你都可能会觉得，好无聊， 感觉像做小学生的题目似的。因为我们一直都只能操作面值为1的硬币！ </li>
+<li>让我们看看i=3时的情况。当i=3时，我们能用的硬币就有两种了：1元的和3元的 既然能用的硬币有两种，我就有两种方案。如果我拿了一个1元的硬币，我的目标就变为了： 凑够3-1=2元需要的最少硬币数量。即d(3)=d(3-1)+1=d(2)+1=2+1=3。 这个方案说的是，我拿3个1元的硬币；第二种方案是我拿起一个3元的硬币， 我的目标就变成：凑够3-3=0元需要的最少硬币数量。即d(3)=d(3-3)+1=d(0)+1=0+1=1. 这个方案说的是，我拿1个3元的硬币。好了，这两种方案哪种更优呢？ 记得我们可是要用最少的硬币数量来凑够3元的。所以， 选择d(3)=1，怎么来的呢？具体是这样得到的：d(3)=min{d(3-1)+1, d(3-3)+1}。</li>
+</ul>
+<p><b>从以上的文字中， 我们要抽出动态规划里非常重要的两个概念：状态和状态转移方程。</b></p>
+<p>上文中d(i)表示凑够i元需要的最少硬币数量，我们将它定义为该问题的”状态”，<br>根据子问题定义状态。找到子问题，状态也就浮出水面了。 最终我们要求解的问题，可以用这个状态来表示：d(11)，即凑够11元最少需要多少个硬币。 那状态转移方程是什么呢？既然我们用d(i)表示状态，那么状态转移方程自然包含d(i)， 上文中包含状态d(i)的方程是：d(3)=min{d(3-1)+1, d(3-3)+1}。没错， 它就是状态转移方程，描述状态之间是如何转移的。当然，我们要对它抽象一下，</p>
+<p>d(i)=min{ d(i-vj)+1 }，其中i-vj &gt;=0，vj表示第j个硬币的面值;</p>
+<h6 id="例子2-一个序列有N个数：A-1-A-2-…-A-N-，求出最长非降子序列的长度。"><a href="#例子2-一个序列有N个数：A-1-A-2-…-A-N-，求出最长非降子序列的长度。" class="headerlink" title="例子2 一个序列有N个数：A[1],A[2],…,A[N]，求出最长非降子序列的长度。"></a>例子2 一个序列有N个数：A[1],A[2],…,A[N]，求出最长非降子序列的长度。</h6><p>首先要找到“状态”和“状态转移方程”<br>假设要求的这N个数的序列是：5，3，4，8，6，7<br>根据上面找到的状态，我们可以得到：（下文的最长非降子序列都用LIS表示）</p>
+<ul>
+<li><p>前1个数的LIS长度d(1)=1(序列：5)</p>
+</li>
+<li><p>前2个数的LIS长度d(2)=1(序列：3；3前面没有比3小的)</p>
+</li>
+<li><p>前3个数的LIS长度d(3)=2(序列：3，4；4前面有个比它小的3，所以d(3)=d(2)+1)</p>
+</li>
+<li><p>前4个数的LIS长度d(4)=3(序列：3，4，8；8前面比它小的有3个数，所以 d(4)=max{d(1),d(2),d(3)}+1=3)</p>
+</li>
+</ul>
+<p>状态转移方程已经很明显了，如果我们已经求出了d(1)到d(i-1)， 那么d(i)可以用下面的状态转移方程得到：<br>d(i) = max{1, d(j)+1},其中j&#60;i, A[j]&#60;=A[i]<br>用大白话解释就是，想要求d(i)，就把i前面的各个子序列中， 最后一个数不大于A[i]的序列长度加1，然后取出最大的长度即为d(i)。 当然了，有可能i前面的各个子序列中最后一个数都大于A[i]，那么d(i)=1， 即它自身成为一个长度为1的子序列。</p>
+<p>该算法的时间复杂度是O(n2 )，并不是最优的解法。 还有一种很巧妙的算法可以将时间复杂度降到O(nlogn)，网上已经有各种文章介绍它。</p>
+<h5 id="动态规划原理"><a href="#动态规划原理" class="headerlink" title="动态规划原理"></a>动态规划原理</h5><p>何时该使用动态规划方法解决问题呢？<br>问题应该具备两个要素：</p>
+<ul>
+<li>最优子结构</li>
+<li>子问题重叠</li>
+</ul>
+<h6 id="最优子结构"><a href="#最优子结构" class="headerlink" title="最优子结构"></a>最优子结构</h6><p>如果一个问题的最优解包含其子问题的最优解，称此问题具有最优子结构性质。【具有最优子结构性质可能意味着可以使用贪心策略】</p>
+<h6 id="重叠子问题"><a href="#重叠子问题" class="headerlink" title="重叠子问题"></a>重叠子问题</h6><p>子问题空间必须足够小，递归算法反复求解相同子问题，不是一直生成新的子问题，不同子问题的总数是输入规模的多项式函数最好。如果递归算法反复求解相同的子问题，称最优化问题具有重叠子问题性质。<br><b>适合分治算法求解的问题通常在递归的每一步都会生成全新子问题。</b></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://hcyxy.tech/2018/10/06/prepare/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="hecy">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="无病呻吟">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/10/06/prepare/" itemprop="url">others' advice</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-06T14:09:24+08:00">
+                2018-10-06
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/算法与数据结构/" itemprop="url" rel="index">
+                    <span itemprop="name">算法与数据结构</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h5 id="面试前简历准备"><a href="#面试前简历准备" class="headerlink" title="面试前简历准备"></a>面试前简历准备</h5><p>如果没有好的简历，就没有面试，没有好的经历，就没有好的简历。因此第一步就是要获取有用的经历。<br>对于学生而言：</p>
+<ul>
+<li>参加大型项目，获取优秀的项目经验、设计思路、代码经历</li>
+<li>大型公司的实习经历，学习大公司的编码规范、设计流程、运作规律</li>
+<li>利用自己的空闲时间，设计一些开源项目、有意义的项目<br>对于已工作的、想要从小公司跳槽去大公司：</li>
+<li>工作中，尽可能承担更大的责任，挑战难度大的项目，将其添加到简历中</li>
+<li>利用空闲时间，建立开源项目、网站、app。总结技术，展示自己。</li>
+</ul>
+<h5 id="面试前问题准备"><a href="#面试前问题准备" class="headerlink" title="面试前问题准备"></a>面试前问题准备</h5><ol>
+<li>以下面试表格需要思考：<br><img src="https://raw.githubusercontent.com/hecyxy/expand/master/src/main/resources/pic/table.png" alt="表格" title="table"></li>
+<li>你的缺点是什么？<br>不要自作聪明的回答：我的缺点就是太努力…<br>你可以这么回答：有时我对细节没有很好地把控，但是有时也有好的一方面，能让我很快的执行，同时也意味着很容易犯一些低级错误，我也想到一些方法来解决，比如让我的同事帮我review。</li>
+<li>问面试官的问题？<br>真诚的问题：<ul>
+<li>公司的测试、开发之间如何交流？比例多少？项目计划是怎样的</li>
+<li>公司能给我带来什么？对我来说最挑战的是什么<br>见解的问题：</li>
+<li>你们公司用的是X语言，怎么解决Y问题的</li>
+<li>为什么选择使用X协议，不使用Y。优缺点是什么<br>激情的问题：</li>
+<li>我对扩展性很有兴趣，想学习的更多，在贵公司什么地方能学到相关的知识</li>
+<li>对X不太熟悉，听起来很有趣，能告诉更多关于它是如何工作的么</li>
+</ul>
+</li>
+</ol>
+<h4 id="面试过程"><a href="#面试过程" class="headerlink" title="面试过程"></a>面试过程</h4><h5 id="分析过程"><a href="#分析过程" class="headerlink" title="分析过程"></a>分析过程</h5><p>比如，给你一个文件让你从北京传到上海，根绝文件大小，选用网络传输还是交通工具运输。</p>
+<h5 id="时间复杂度"><a href="#时间复杂度" class="headerlink" title="时间复杂度"></a>时间复杂度</h5><p>包括最好情况、最坏情况、期望情况</p>
+<h5 id="空间复杂度"><a href="#空间复杂度" class="headerlink" title="空间复杂度"></a>空间复杂度</h5><h5 id="专业问题回答过程"><a href="#专业问题回答过程" class="headerlink" title="专业问题回答过程"></a>专业问题回答过程</h5><p>以下基础知识需要掌握：<br><img src="https://raw.githubusercontent.com/hecyxy/expand/master/src/main/resources/pic/algorithm.png" alt="表格" title="table"></p>
+<pre><code>- 仔细听
+- 示例
+- 暴力解法
+- 优化
+- 通过
+- 实现
+- 测试
+</code></pre><h6 id="优化："><a href="#优化：" class="headerlink" title="优化："></a>优化：</h6><pre><code>- 找出最耗时的关键步骤，比如算法时间复杂度O(N)+O(nlogN)，很明显要解决第二步
+- 去除不必要的步骤、重复的步骤
+- 代入实际问题，形象化
+- 找出最适合的数据结构 队列、栈、hashmap、heap、tree
+- BCR（最好的时间复杂度应该是多少）。 比如你想要找出A、B数组[AB为长度]的公共元素，最好的时间复杂度应该是O(A+B)
+</code></pre><h6 id="好的代码"><a href="#好的代码" class="headerlink" title="好的代码"></a>好的代码</h6><pre><code>正确、高效、简单、可读性强、健壮、可维护
+使用datastructure、附庸代码、模块化、灵活健壮、错误检测、
+</code></pre>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://hcyxy.tech/2018/10/06/找出无序整数数数组未出现最小整数/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="hecy">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="无病呻吟">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/10/06/找出无序整数数数组未出现最小整数/" itemprop="url">找出无序数组未出现的最小整数</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-06T12:10:04+08:00">
+                2018-10-06
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/算法与数据结构/" itemprop="url" rel="index">
+                    <span itemprop="name">算法与数据结构</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h5 id="给定一个无序的整数数组，怎么找到第一个大于0，并且不在此数组的最小整数。比如-1-2-0-返回-3-3-4-1-1-返回-2。最好能O-1-空间和O-n-时间"><a href="#给定一个无序的整数数组，怎么找到第一个大于0，并且不在此数组的最小整数。比如-1-2-0-返回-3-3-4-1-1-返回-2。最好能O-1-空间和O-n-时间" class="headerlink" title="给定一个无序的整数数组，怎么找到第一个大于0，并且不在此数组的最小整数。比如[1,2,0] 返回 3, [3,4,-1,1] 返回 2。最好能O(1)空间和O(n)时间"></a>给定一个无序的整数数组，怎么找到第一个大于0，并且不在此数组的最小整数。比如[1,2,0] 返回 3, [3,4,-1,1] 返回 2。最好能O(1)空间和O(n)时间</h5><h5 id="问题分析："><a href="#问题分析：" class="headerlink" title="问题分析："></a>问题分析：</h5><h6 id="问题1：给定一个数组，长度为n，除a-0-以外，其他元素都是a-i-i。那么请找出第一个大于0，且不在此数组中的最小整数。"><a href="#问题1：给定一个数组，长度为n，除a-0-以外，其他元素都是a-i-i。那么请找出第一个大于0，且不在此数组中的最小整数。" class="headerlink" title="问题1：给定一个数组，长度为n，除a[0]以外，其他元素都是a[i] == i。那么请找出第一个大于0，且不在此数组中的最小整数。"></a>问题1：给定一个数组，长度为n，除a[0]以外，其他元素都是a[i] == i。那么请找出第一个大于0，且不在此数组中的最小整数。</h6><p>答案就是:  n + (a[0] == n)</p>
+<h6 id="给定一个数组，长度为n，某几个位置的元素满足-a-x-lt-0-或者-a-x-gt-n，余下的元素都满足a-i-i。那么请找出第一个大于0，且不在此数组中的最小整数。"><a href="#给定一个数组，长度为n，某几个位置的元素满足-a-x-lt-0-或者-a-x-gt-n，余下的元素都满足a-i-i。那么请找出第一个大于0，且不在此数组中的最小整数。" class="headerlink" title="给定一个数组，长度为n，某几个位置的元素满足 a[x] &lt; 0 或者 a[x] &gt; n，余下的元素都满足a[i] == i。那么请找出第一个大于0，且不在此数组中的最小整数。"></a>给定一个数组，长度为n，某几个位置的元素满足 a[x] &lt; 0 或者 a[x] &gt; n，余下的元素都满足a[i] == i。那么请找出第一个大于0，且不在此数组中的最小整数。</h6><p>答：<br>很明显：当x的值限定为0时。就变成了问题1。<br>除此之外，这个问题的解也容易求得。<br>情况1： 首先从1-n开始扫描，当发现i != a[i]时，直接返回i。此时的i必定是最小的未出现的整数。<br>情况2： 当扫描完1-n之后，那么就回归至问题1了。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>;i&lt;n;++i)&#123;</span><br><span class="line">	<span class="keyword">if</span>(i!=a[i]) <span class="keyword">return</span> i;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">return</span> (n+(n == a[<span class="number">0</span>]));</span><br></pre></td></tr></table></figure>
+<h6 id="问题3"><a href="#问题3" class="headerlink" title="问题3"></a>问题3</h6><p>当给出问题2之后，就需要考虑如何把原题目转换成为问题2了。<br>实际上要完成的任务就变成了，如何把一个数组中的元素归位。也就是让a[i] == i。如果能让这些元素元神归位，那么就转换成为问题2了。就很容易求解了。<br>算法如下：<br>       我们从后往前扫描，i = n - 1 to 0;<br>                  step1如果发现a[i] &lt; 0 || a[i] &gt; n; 则 continue;<br>                  step2 如果发现a[i] == a[a[i]]; 则continue;<br>                  step3 如果发现0 &lt; a[i] &lt; n<br>                          说明需要将a[i]元神归位。也就是放到a[a[i]]上去。<br>                           swap(a[i], a[a[i]]).<br>                           再跳转至step2。<br>Note: 需要注意一种有重复数的情况，比如a[11] = 2, a[2] = 2。这时候，就不用进行交换了。直接处理下一个元素。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> i = n, t, temp;</span><br><span class="line"><span class="keyword">if</span> (!a || n &lt;= <span class="number">0</span>) <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line"> </span><br><span class="line"><span class="keyword">while</span> ((--i) &gt;= <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="keyword">while</span> (<span class="number">0</span> &lt; a[i] &amp;&amp; a[i] &lt; n &amp;&amp; i != a[i]) &#123;</span><br><span class="line">        t = a[i];</span><br><span class="line">        <span class="keyword">if</span> (a[i] == a[t]) <span class="keyword">break</span>;</span><br><span class="line">        temp = a[i];</span><br><span class="line">        a[i] = a[t];</span><br><span class="line">        a[t] = temp;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h5 id="原题答案："><a href="#原题答案：" class="headerlink" title="原题答案："></a>原题答案：</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">find</span><span class="params">(<span class="keyword">int</span> *a, <span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> i = n, t, temp;</span><br><span class="line">    <span class="keyword">if</span> (!a || n &lt;= <span class="number">0</span>) <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> ((--i) &gt;= <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">while</span> (<span class="number">0</span> &lt; a[i] &amp;&amp; a[i] &lt; n &amp;&amp; i != a[i]) &#123;</span><br><span class="line">            t = a[i];</span><br><span class="line">            <span class="keyword">if</span> (a[i] == a[t]) <span class="keyword">break</span>;</span><br><span class="line">            temp = a[i];</span><br><span class="line">            a[i] = a[t];</span><br><span class="line">            a[t] = temp;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    <span class="keyword">for</span> (i = <span class="number">1</span>; i &lt; n; ++i)</span><br><span class="line">        <span class="keyword">if</span> (a[i] != i) <span class="keyword">return</span> i;</span><br><span class="line"> </span><br><span class="line">    <span class="keyword">return</span> (n + (a[<span class="number">0</span>] == n));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h6 id="另一种解法-这种方法代码简洁，主要思想是将数组的每个位置i，使num-i-i-1"><a href="#另一种解法-这种方法代码简洁，主要思想是将数组的每个位置i，使num-i-i-1" class="headerlink" title="另一种解法 这种方法代码简洁，主要思想是将数组的每个位置i，使num[i]=i+1"></a>另一种解法 这种方法代码简洁，主要思想是将数组的每个位置i，使num[i]=i+1</h6><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">missNum</span><span class="params">(vector&lt;<span class="keyword">int</span>&gt; nums)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> l = <span class="number">0</span>; <span class="comment">// 下标从0开始，</span></span><br><span class="line">    <span class="keyword">int</span> r = nums.size(); </span><br><span class="line">    <span class="keyword">while</span> (l &lt; r)<span class="comment">//从0开始找到每个位置应放入正确的元素</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (nums[l] == l + <span class="number">1</span>)<span class="comment">//当前位置正确放置跳过</span></span><br><span class="line">        &#123;</span><br><span class="line">            l++;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// nums[l] 减去 1 表示数nums[l] 应该在的位置</span></span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (nums[l] &lt; l + <span class="number">1</span> || nums[l] &gt; r || nums[nums[l] - <span class="number">1</span>] == nums[l])</span><br><span class="line">        &#123;</span><br><span class="line">            r--;</span><br><span class="line">            nums[l] = nums[r];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span>&#123;</span><br><span class="line">            swap(nums[l], nums[nums[l] - <span class="number">1</span>]);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> l + <span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://hcyxy.tech/2018/10/04/基于互信息 左右熵挖掘新词/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="hecy">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="无病呻吟">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/10/04/基于互信息 左右熵挖掘新词/" itemprop="url">基于互信息 左右熵挖掘新词</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-04T13:42:30+08:00">
+                2018-10-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/NLP/" itemprop="url" rel="index">
+                    <span itemprop="name">NLP</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="成词标准一：熵-左右熵"><a href="#成词标准一：熵-左右熵" class="headerlink" title="成词标准一：熵-左右熵"></a>成词标准一：熵-左右熵</h3><p>通常我们认为两个片段可以成词的一个条件就是这个词语会在很多的语境中被提到。熵就是一个用来衡量这个维度的指标。熵是一种表示信息量的指标，熵越高就意味着信息含量越大，不确定性越高，越难以预测。通常对于一个随机变量 X, 它的熵可以被表示成：</p>
+<p><img src="https://raw.githubusercontent.com/hecyxy/expand/master/src/main/resources/pic/v2-ab2f5003c9822fab020bdeddbb9c801f_hd.jpg" alt="pic" title="Markdown"></p>
+<h3 id="成词标准二：内部聚合程度-互信息-mutual-information-amp-点间互信息-pointwise-mutual-information"><a href="#成词标准二：内部聚合程度-互信息-mutual-information-amp-点间互信息-pointwise-mutual-information" class="headerlink" title="成词标准二：内部聚合程度 - 互信息 (mutual information) &amp; 点间互信息 (pointwise mutual information)"></a>成词标准二：内部聚合程度 - 互信息 (mutual information) &amp; 点间互信息 (pointwise mutual information)</h3><p>互信息 (MI) 表示了两个随机变量 X, Y 共享的信息量。也可以说，互信息代表着知道了任意一个变量之后对另一个变量不确定性的减少。</p>
+<p><img src="https://raw.githubusercontent.com/hecyxy/expand/master/src/main/resources/pic/v2-61bc0fa7cf105d74adb2e9b8cac342f9_hd.jpg" alt="pic2" title="Markdown"><br>步骤：</p>
+<ol>
+<li>对输入文本进行清洗和分词，没有任何分词词库情况下，直接将文本按照字符分割；<br>将字符两两组合作为候选词，因为需要前缀和后缀计算信息熵，需要存储长度为3的片段。后续设计到前后缀的查找饿词频的统计，选择trie树来存储数据。用3-gram序列构建前缀trie树和后缀树，trie树以单个字符为节点，每个节点记录从根节点到当前节点构成词汇出现的频次；</li>
+<li>查询trie树，获取前缀和后缀的频次列表，计算候选词的左右信息熵以及候选词构成片段的左右信息熵。涉及到信息熵比较多，对每个信息熵作如下区分表及，（candidate为后选词，left为左边构成的片段，right为右边构成的片段）<br><img src="https://raw.githubusercontent.com/hecyxy/expand/master/src/main/resources/pic/v2-5a79911d6fc250cfc82960e2a936e992_hd.jpg" alt="avatar" title="Markdown"></li>
+<li>查询trie树，获取候选词的词频以及左右片段的词频，有了词频可以计算实际出现的概率P(x,y）和期望出现的概率P(x)P(y)，从而计算出凝合度和互信息。为了防止冷启动前出现过高的概率p，预先跑一些基础词汇词频，在词频库基础上，保证刚开始拿到比较争取的概率p<br>增加准确率，设定词频和互信息阈值，排除低词频和低凝合度的词汇。所有满足条件的词汇，通过调用jieba的suggest_freq函数都能使其被分出来。词频大于2，PMI不小于24.<br>针对新词成词特点，分数计算：<br><img src="https://raw.githubusercontent.com/hecyxy/expand/master/src/main/resources/pic/v2-daf8dad77b7e7cc11f8c973d09f770cd_hd.jpg" alt="avatar" title="Markdown"></li>
+</ol>
+<p>分数由三个对应部分组成：<br><br>1）点间互信息：点间互信息越高，内部聚合程度越高<br>2）两个单词片段信息熵 h_r_l 和 h_l_r 的最小值：这个数值越大，则意味着两个单词一起出现的可能性越小<br>3）单词左右信息熵的最小值：这个数值越大就表示着候选词出现的语境越多，越有可能成词<br>因此，分数越高表示成词的可能性越大。</p>
+<p>A、对于单词左右信息熵 ( h_l, h_r ) 为 0 的情况，迭代一轮，确认是否可能与左右的片段组成新词。 比如 “淘宝客” 这个词，先被分成了 “淘”、“宝”、“客”，在检测 “淘宝” 的时候，会发现它的右信息熵为 0，因此 “淘宝” 在当前上下文可能是另一个词的片段，所以通过下一轮迭代，检测 “淘宝” 和 “客” 能否成词。<br><br>B、最后根据词频和score的乘积排序，筛选出 top 5 的词汇作为新词。淘宝客这个例子中筛选出来的 top 5 新词结果如下：<br><img src="https://raw.githubusercontent.com/hecyxy/expand/master/src/main/resources/pic/v2-6fc041e4943846b55cd6183e82239f5d_hd.jpg" alt="avatar" title="Markdown"></p>
+<p>实际应用中，词库实际上是不断被完善的，因此词库越完善，后续满足条件的未登录词会越少。我们对新词的挖掘也是基于内部的词库。试着跑一段时间内被反作弊系统悟空删除的内容，最后出来的前几个基本上都是站内被提及比较多的营销关键词了</p>
+<h4 id="互信息"><a href="#互信息" class="headerlink" title="互信息"></a>互信息</h4><p>I(X,Y) = ∫x∫yP(X,Y)log(P(X,Y)/P(x) * P(y))= H(Y)-H(Y|X)<br>H(Y) = -∫yP(Y)logP(Y)<br>H(Y|X)则表示在已知X的情况下，Y的不确定度,可以看出，I(X,Y)可以解释为由X引入而使Y的不确定度减小的量，这个减小的量为H(Y|X)所以，如果X,Y关系越密切，I(X,Y)就越大.</p>
+<p>在做文本分类时，我们可能会判断一个词和某类的相关程度，但是计算时，未考虑词频的影响<br>（可以让互信息的结果再乘上tf-idf因子，从而将特征频率与特征分布考虑进去）</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://hcyxy.tech/2018/09/08/结巴分词/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="hecy">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="无病呻吟">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/09/08/结巴分词/" itemprop="url">结巴分词</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-08T10:24:29+08:00">
+                2018-09-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/NLP/" itemprop="url" rel="index">
+                    <span itemprop="name">NLP</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>1、导入词库<br>load main dict  -&gt;  （词，词频，词性）<br>load model -&gt; 状态转移矩阵  发射矩阵  初始概率矩阵<br>2、sentenceProcess<br>  ● createDAG 根绝句子创建有向无环图 比如[0:[0,1,2],1:[1],2:[2,3,4]]   0,0-1,0-2都是可以成词的<br>  ● calc(sentence,DAG) 返回route计算概率最大的词语 比如2:[2,3,4] 最大概率是2-4<br>接着针对Map&lt;Integer, Pair<integer>&gt;中的最大概率词语<br>如果词典中包含该词语，直接将词语加入List<string> tokens<br>  ● 如果没有该词，利用维特比算法【基于动态规划寻找最大概率路径】<br>和树结构中寻找最短路径不同的是，这里的观察值是有序列的，每个序列有n个状态，长度为T，时间复杂度TN^2<br>关键代码如下：<br>public static int[] compute(int[] obs, int[] states, double[] start_p, double[][] trans_p, double[][] emit_p)<br>{<br>    double[][] V = new double[obs.length][states.length];<br>    int[][] path = new int[states.length][obs.length];<br>    for (int y : states)<br>    {<br>        V[0][y] = start_p[y] <em> emit_p[y][obs[0]];<br>        path[y][0] = y;<br>    }<br>    for (int t = 1; t &lt; obs.length; ++t)<br>    {<br>        int[][] newpath = new int[states.length][obs.length];<br>        for (int y : states)<br>        {<br>            double prob = -1;<br>            int state;<br>            for (int y0 : states)<br>            {<br>                double nprob = V[t - 1][y0] </em> trans_p[y0][y] * emit_p[y][obs[t]];<br>                if (nprob &gt; prob)<br>                {<br>                    prob = nprob;<br>                    state = y0;<br>                    // 记录最大概率<br>                    V[t][y] = prob;<br>                    // 记录路径<br>                    System.arraycopy(path[state], 0, newpath[y], 0, t);<br>                    newpath[y][t] = y;<br>                }<br>            }<br>        }<br>        path = newpath;<br>    }<br>    double prob = -1;<br>    int state = 0;<br>    for (int y : states)<br>    {<br>        if (V[obs.length - 1][y] &gt; prob)<br>        {<br>            prob = V[obs.length - 1][y];<br>            state = y;<br>        }<br>    }<br>    return path[state];<br>}</string></integer></p>
+<h2 id="基于动态规划，每步寻找概率最大的状态，使观察值最大。"><a href="#基于动态规划，每步寻找概率最大的状态，使观察值最大。" class="headerlink" title="基于动态规划，每步寻找概率最大的状态，使观察值最大。"></a>基于动态规划，每步寻找概率最大的状态，使观察值最大。</h2><p>1、HMM隐马尔科夫模型<br>五元组：<br>  ● StatusSet 状态值集合<br>  ● ObservedSet 观察值集合<br>  ● TransProbMatrix 转移概率矩阵<br>  ● EmitProbMatrix 发射概率矩阵<br>  ● InitStatus 初始状态分布<br>2、主要用于解决三类问题<br>a)参数(StatusSet,TransProbMatrix,EmitRobMatrix,InitStatus)已知的情况下，求解观察值序列。(Forward-backward算法)<br>b)参数(ObservedSet,TransProbMatrix,EmitRobMatrix,InitStatus)已知的情况下，求解状态值序列。(viterbi算法)<br>c)参数(ObservedSet)已知的情况下，求解(TransProbMatrix,EmitRobMatrix,InitStatus)。(Baum-Welch算法)<br>第二种问题最长用：【中文分词】【语音识别】【新词发现】【词性标注】</p>
+<p>StatusSet &amp; ObservedSet<br>状态值集合(B,M,E,S)代表每个词再词语中的位置,S代表单字成词<br>观察值集合就是所有汉字（一个句子）<br>状态值就是我们要求的值，HMM模型进行中文分词，输入一个句子（观察值序列），输出每个字的状态值，如<br>小明硕士毕业于中国科学院计算所<br>输出的状态序列为：<br>BEBEBMEBEBMEBES<br>再根据状态序列进行切词：<br>BE/BE/BME/BE/BME/BE/S<br>切词结果为：<br>小明/硕士/毕业于/中国/科学院/计算/所<br>同时我们可以注意到：<br>B后面只可能接(M or E)，不可能接(B or S)。而M后面也只可能接(M or E)，不可能接(B, S)<br>上面介绍了五元组中的两元【StatusSet、ObservedSet】，还有剩下三元，通过Viterbi算法串接起来，ObservedSet序列值是Viterbi的输入，而StatusSet序列值是Viterbi的输出，输入和输出之间Viterbi还需要借助三个模型参数<br>InitStatus初始概率分布：</p>
+<p>#B<br>-0.26268660809250016</p>
+<p>#E<br>-3.14e+100</p>
+<p>#M<br>-3.14e+100</p>
+<p>#S<br>-1.4652633398537678<br>即句子第一个字属于{B,E,M,S}这四种状态的概率，E、M概率都是0，即开头第一个字只能是B或S<br>TransProbMatrix转移概率矩阵<br>即BEMS x BEMS【数值是概率求对数后的值】<br>-3.14e+100 -0.510825623765990 -0.916290731874155 -3.14e+100<br>-0.5897149736854513 -3.14e+100 -3.14e+100 -0.8085250474669937<br>-3.14e+100 -0.33344856811948514 -1.2603623820268226 -3.14e+100<br>-0.7211965654669841 -3.14e+100 -3.14e+100 -0.6658631448798212<br>比如TransProbMatrix[0][0]表示从状态B转移到状态B的概率为0<br>EmitProbMatrix<br>发射概率也是一个条件概率，根据HMM三个基本假设其中的观察值独立性假设，观察值只取决于当前状态值，即<br>P(Observed[i], Status[j]) = P(Status[j]) * P(Observed[i] | Status[j])<br>其中P(Observed[i]|Status[j])这个值就是从EmitProbMatrix中获取。<br>EmitProbMatrix示例如下</p>
+<p>#B<br>耀:-10.460283,涉:-8.766406,谈:-8.039065,伊:-7.682602,洞:-8.668696,…</p>
+<p>#E<br>耀:-9.266706,涉:-9.096474,谈:-8.435707,伊:-10.223786,洞:-8.366213,…</p>
+<p>#M<br>耀:-8.47651,涉:-10.560093,谈:-8.345223,伊:-8.021847,洞:-9.547990,….</p>
+<p>#S<br>蘄:-10.005820,涉:-10.523076,唎:-15.269250,禑:-17.215160,洞:-8.369527…<br>虽然EmitProbMatrix也称为矩阵，这个矩阵太稀疏了，实际工程中一般是将上面四行发射转移概率存储为4个Map<br>HMM算法过程<br>输入：小明硕士毕业于中国科学院计算所<br>1）定义变量<br>二维数组 weight[4][15]，4是状态数(0:B,1:E,2:M,3:S)，15是输入句子的字数。比如 weight[0][2] 代表 状态B的条件下，出现’硕’这个字的可能性。<br>二维数组 path[4][15]，4是状态数(0:B,1:E,2:M,3:S)，15是输入句子的字数。比如 path[0][2] 代表 weight[0][2]取到最大时，前一个字的状态，比如 path[0][2] = 1, 则代表 weight[0][2]取到最大时，前一个字(也就是明)的状态是E。记录前一个字的状态是为了使用viterbi算法计算完整个 weight[4][15] 之后，能对输入句子从右向左地回溯回来，找出对应的状态序列<br>2）使用InitStatus对weight二维数组进行初始化<br>已知InitStatus如下：</p>
+<p>#B<br>-0.26268660809250016</p>
+<p>#E<br>-3.14e+100</p>
+<p>#M<br>-3.14e+100</p>
+<p>#S<br>-1.4652633398537678<br>且由EmitProbMatrix可得出：<br>Status(B) -&gt; Observed(小)  :  -5.79545<br>Status(E) -&gt; Observed(小)  :  -7.36797<br>Status(M) -&gt; Observed(小)  :  -5.09518<br>Status(S) -&gt; Observed(小)  :  -6.2475<br>3)初始化weight<br>weight[0][0] = -0.26268660809250016 + -5.79545 = -6.05814<br>weight[1][0] = -3.14e+100 + -7.36797 = -3.14e+100<br>weight[2][0] = -3.14e+100 + -5.09518 = -3.14e+100<br>weight[3][0] = -1.4652633398537678 + -6.2475 = -7.71276<br>3）确定边界条件和路径回溯<br>边界条件：对于每个句子，最后一个字的状态只可能是 E 或者 S，不可能是 M 或者 B。<br>所以在本文的例子中我们只需要比较 weight[1(E)][14] 和 weight[3(S)][14] 的大小即可<br>weight[1][14] = -102.492;<br>weight[3][14] = -101.632;<br>所以S&gt;E，对于路径回溯的起点是path[3][14]<br>回溯路径：SEBEMBEBEMBEBEB<br>倒序一下就是：BE/BE/BME/BE/BME/BE/S<br>切词结果：小明/硕士/毕业于/中国/科学院/计算/所<br>给定我们一个模型，我们对模型进行载入完毕之后，只要运行一遍Viterbi算法，就可以找出每个字对应的状态，根据状态也就可以对句子进行分</p>
+<p>模型训练问题<br>以上的前提是基于模型来进行切词，假设手头上HMM模型已经是被训练好的，即InitStatus、TransProbMatrix、EmitProbMatrix三个模型关键参数都是已知的。这三个参数其实也是基于已分词完毕的语料进行统计计算，计算出相应的频率和条件概率就可以算出三个参数</p>
+<p>HMM模型连个个基本假设：<br>  ● 齐次性假设（状态和当前时刻无关）<br>P(Status[i]|Status[i-1],Status[i-2],… Status[1]) = P(Status[i] | Status[i-1])<br>  ● 观察值独立性假设（观察值只取决于当前状态值）<br>P(Observed[i] | Status[i],Status[i-1],…,Status[1]) = P(Observed[i] | Status[i])</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://hcyxy.tech/2018/07/14/无锁编程/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1383,688 +2200,11 @@ jstack（JVM Stack Trace for java）
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://hcyxy.tech/2018/07/08/数学空间/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="hecy">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="无病呻吟">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/07/08/数学空间/" itemprop="url">数学空间</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-08T09:24:28+08:00">
-                2018-07-08
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/机器学习/" itemprop="url" rel="index">
-                    <span itemprop="name">机器学习</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"> </script>
-
-<p>数学中有很多空间，比如欧几里得空间、赋范空间、希尔伯特空间，空间之间有什么关系。<br><br>说空间要从距离说起，距离是一个抽象的概念，定义为：设X为任一非空集，对X任意两点x,y，有一实数d(x,y)与之对应且满足:</p>
-<ul>
-<li>1、$$d(x,y)\geq 0$$当且仅当x=y;</li>
-<li>2、$$d(x,y)=d(y,x)$$</li>
-<li>3、$$d(x,y)\leq d(x,z)+d(z,y)$$</li>
-</ul>
-<p>定义了距离后，再加上线性结构，如向量加法、数乘，使其满足加法交换律、结合律、零元、负元；数乘的交换律、单位一；数乘与加法的结合律共八点要求，形成一个线性空间，这个线性空间就是向量空间。<br></p>
-<p>向量空间中，定义了范数的概念，表示某点到空间零点的距离：<br></p>
-<ul>
-<li>$$||x||\geq 0$$</li>
-<li>$$||ax||=|a|||x||$$</li>
-<li>$$||x+y||\leq ||x||+||y||$$</li>
-</ul>
-<p>范数与距离比较，可知距离多了一个条件2，数乘的运算表明了其是一个强化了的距离概念。<br></p>
-<p>对范数和距离进行扩展，形成：<br></p>
-<ul>
-<li>范数集合$$\rightarrow$$赋范空间+线性结构$$\rightarrow$$线性赋范空间<br></li>
-<li>距离集合$$\rightarrow$$度量空间+线性结构$$\rightarrow$$线性度量空间<br></li>
-</ul>
-<p>在已经构成的线性赋范空间上继续扩展，添加内积运算，使空间中有角的概念，形成如下：<br></p>
-<ul>
-<li>线性赋范空间+内积运算$$\rightarrow$$内积空间<br></li>
-</ul>
-<p>这时内积空间已经有了距离、长度、角，有限维的内积空间就是我们熟悉的欧式空间。<br></p>
-<p>继续在内积空间上扩展，使得内积空间满足完备性，形成希尔伯特空间：<br></p>
-<ul>
-<li>内积空间+完备性$$\rightarrow$$希尔伯特空间<br></li>
-</ul>
-<p>完备性的意思就是空间中的极限运算不能跑出该空间，如有理数空间中的$$\sqrt 2$$的小数表示，其极限随着小数位数增加收敛到$$\sqrt 2$$,但其属于无理数，并不在有理数，不满足完备性。<br></p>
-<p>距离 $$\rightarrow$$范数 $$\rightarrow$$内积 <br></p>
-<p>(向量空间+范数)$$\rightarrow$$(赋范空间+线性结构)$$\rightarrow$$(线性赋范空间+内积运算)$$\rightarrow$$(内积空间+完备性)$$\rightarrow$$(希尔伯特空间)<br></p>
-<p>(内积空间+有限维)$$\rightarrow$$(欧几里得空间)<br></p>
-<p>(赋范空间+完备性)$$\rightarrow$$(巴拿赫空间)<br></p>
-<p>对距离弱化，保留距离的极限和连续概念，就形成了拓扑概念。</p>
-<p>定义一个函数空间中无穷维的矩阵K(x,y)<br><br>其满足：<br><br>1、正定性，即对于任意函数f(x)，都有<br><br>$$\int\int f(x)K(x,y)f(y)dxdy\geq 0$$<br></p>
-<p>2、对称性即K(x,y)=K(y,x)<br><br>$$\int K(x,y)\phi(x)dx=\lambda\phi(y)$$<br><br>则这个二元函数可称为核函数，可证明一个核函数的特征函数之间是正交的。<br><br>$$&lt;\phi_1,\phi_2&gt;=\int\phi_1(x)\phi_2(x)dx=0$$<br><br>所以$${\phi_i}^\infty_{i=1}$$是原来函数空间的一组基底。<br></p>
-<p>同时原来的核函数也可以分解成为核函数之间相乘的结果：<br></p>
-<h2 id="K-x-y-sum-i-0-infty-lambda-i-phi-i-x-phi-i-y"><a href="#K-x-y-sum-i-0-infty-lambda-i-phi-i-x-phi-i-y" class="headerlink" title="$$K(x,y)=\sum_{i=0}^\infty\lambda_i\phi_i(x)\phi_i(y)$$"></a>$$K(x,y)=\sum_{i=0}^\infty\lambda_i\phi_i(x)\phi_i(y)$$<br></h2><p><strong>再生核希尔伯特空间RKHS</strong><br><br>RKHS是由核函数构成的空间。基底为$${\sqrt\lambda_i\phi_i}<em>{i=1}^\infty$$<br><br>任意函数都可以由基底表示:<br><br>$$f=\sum</em>{i=1}^{\infty}f_i\sqrt\lambda_i\phi_i$$<br><br>选取其中两个函数，按照坐标表示如下：<br><br>$$f=(f_1,f_2,..)^T_h$$和$$g=(g_1,g_2,…)^T_h$$<br><br>其内积为:$$&lt;f,g&gt;<em>h=\sum</em>{i=1}^{\infty}f_ig_i$$<br><br>再来看核函数K(x,y)将其中一个元素固定K(x0,y),则其也可以看成一个函数<br><br>$$K(x_0,y)=\sum_{i=0}^{\infty}\lambda_i\phi_i(x)\phi_i$$<br></p>
-<p>化成向量坐标表示形式：<br><br>$$K(x_0,y)=(\sqrt\lambda_1\phi_1(x),\sqrt\lambda_2\phi_2(x),…)_h^T$$<br><br>所以计算内积：<br><br>$$&lt;K(x_0,y),K(y_0,x)&gt;<em>h=\sum</em>{i=0}^{\infty}\lambda_i\phi_i(x_0)\phi_i(y_0)=K(x_0,y_0)$$<br><br>这个性质就叫做再生性reproducing property，所以这个空间才叫再生希尔伯特空间。这个性质很好，原本函数之间计算内积需要算无穷维积分的，但是现在只需要计算核函数就好了。<br><br>所以给定一个点的映射一个点x给其映射到一个无穷维的特征空间【即先将这个点变成一个函数，而这个函数可以看成一个无穷维的特征空间】：<br><br>$$\phi(x)=K(x,\cdot)=(\sqrt\lambda_1\phi_1(x),\sqrt\lambda_2\phi_2(x),…)^T$$<br></p>
-<p>得到两个特征空间上内积为：<br><br>$$&lt;\phi(x),\phi(y)&gt;_h=&lt;K(x,\cdot),K(y,\cdot)&gt;_h=K(x,y)$$<br>这就是kernel trick</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://hcyxy.tech/2018/07/07/假设检验/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="hecy">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="无病呻吟">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/07/07/假设检验/" itemprop="url">假设检验</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-07T23:44:44+08:00">
-                2018-07-07
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/机器学习/" itemprop="url" rel="index">
-                    <span itemprop="name">机器学习</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p><script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"> </script><br><strong>零假设Null hypothesis 备择假设 alternative hypothesis</strong><br><br>参数假设检验中，假设是对总体参数的具体数值所作的陈述。为了使得作为证据的样本统计量必然支持且仅支持一个假设，要建立对于总体参数在逻辑上完备互斥的一对假设，即原假设null pypothesis,记为$$H_0$$,备择假设alternative hypothesis,记为$$H_1$$<br><br>原假设（零假设）假定总体参数未发生变化，备择假设，假定总体参数发生变化。实际建立假设时，原假设与备择假设方向不同，会导致不同的结论。在选择原假设和备择假设时，通常根据研究者是希望收集证据予以支持还是拒绝的判断作为选择依据。<br><br><strong>实际操作中，通常研究者希望收集证据予以拒绝的假设作为原假设，而将研究者希望通过搜集证据予以支持的假设作为备择假设。</strong><br><br><img src="https://note.youdao.com/yws/public/resource/5702a21be94cca30edfd03987e6050c7/xmlnote/64F9BD4B4A324D32A8F2A6709AA2240D/2963" alt="image"></p>
-<hr>
-<p><strong>参数估计的方法</strong><br><br>主要分为点估计和区间估计。点估计的方法有矩估计法、顺序统计量、极大似然法、最小二乘法。<br><br>点估计：1：用样本的估计量直接作为总体参数的估计值。例如用样本均值直接作为总体均值的估计。2:没有给出估计值接近总体参数程度的信息，没有给出可信程度，矩估计、极大似然估计。<br><br><img src="https://note.youdao.com/yws/public/resource/5702a21be94cca30edfd03987e6050c7/xmlnote/9F7BCBC2331342548ED8EE7CA4CA3119/3201" alt="image"><br><strong>评价估计量的标准</strong><br><br>1、无偏性 unbiasedness<br><br>估计量抽样分布的数学期望等于被估计的总体参数。$$E(\hat{\theta})=\theta$$<br><br>2、有效性 efficiency<br><br>对同一总体参数的两个无偏点估计量，有更小标准差的估计量更有效。$$D(\hat{\theta_1})&lt;D(\hat{\theta_2})$$<br><br>3、一致性 consistency<br><br>随着样本容量的增大，估计量的值越来越接近被估计的总体参数$$\lim_{n\rightarrow{\infty}}P(|\hat{\theta}-\theta|&lt;\epsilon)=1$$</p>
-<hr>
-<p><strong>假设检验Hypothesis Test</strong><br><strong>统计推断包括：参数估计和假设检验</strong><br><br><strong>1、假设检验</strong><br><br>亦称显著性检验，是对总体的参数或分布作出某种假设，然后利用适当的方法，根据样本对总体提供的信息，对此假设作出推断。（拒绝或不拒绝）<br><br><strong>基本原理</strong><br><br>1、逻辑学上的反证法，先建立假设，然后提供假设成立与否的证据；<br></p>
-<h2 id="2、小概率事件原理。在一次机会中几乎不发生的原理。"><a href="#2、小概率事件原理。在一次机会中几乎不发生的原理。" class="headerlink" title="2、小概率事件原理。在一次机会中几乎不发生的原理。"></a>2、小概率事件原理。在一次机会中几乎不发生的原理。</h2><p><strong>卡方分布 t分布  F分布 t检验 f检验</strong><br><br><strong>1、卡方</strong><br><br><strong>A、卡方分布</strong><br><br>若N个相互独立的随机变量$$\xi_1,\xi_2,…,\xi_n$$均服从标准正态分布，也称独立同分布与标准正态分布，则这n个服从标准正态分布的随机变量平方和$$Q=\sum_{i=1}^n\xi^2_i$$构成新的随机变量，其分布律称为$$\chi^2$$分布chi-square distribution，其中参数n称为自由度，比如正太分布中均值或fangcha1不同就是另一个正态分布一样，自由度不同就是另一个分布,记为$$Q\sim\chi^2(k)$$。当自由度n很大时，$$\chi^2$$分布近似为正态分布。对于任意正整数k，自由度为k的卡方分布是一个随机变量x的机率分布。<br><img src="https://note.youdao.com/yws/public/resource/5702a21be94cca30edfd03987e6050c7/xmlnote/8CF385741FD04FBBA7D90279C4212076/2821" alt="image"><br>机率函数为：<br><img src="https://note.youdao.com/yws/public/resource/5702a21be94cca30edfd03987e6050c7/xmlnote/C70631BCF15444C897058CECFC0B9418/2824" alt="image"><br><br>$$E(\chi^2)=n,D(\chi^2)=2n$$<br><br><strong>B、卡方检验</strong><br><br>卡方分布用途：检查实际结果与期望结果之间何时存在差异。<br><br>1、检验拟合优度：可以检验一组给定数据与指定分布的吻合程度。如：用它检验抽奖机收益的观察频数与我们所期望的吻合程度。<br><br>2、检验两个变量的独立性：通过这个方法检查变量之间是否存在某种关系。如：独居结果是否取决于坐庄的庄家，庄家是否暗箱操作。<br><br><strong>显著性</strong><br><br>卡方分布指出观察频数与期望频数之间差异显著性，和其他假设一样，取决于显著性水平。1、显著性水平$$\alpha$$进行检验，则写作：（常用的显著水平有1%和5%）$$\chi^2_{\alpha}(v)$$<br><br>检测标准：<strong>卡方分布检验是单尾检验且是右尾，右尾被作为拒绝域。通过查看检验统计量是否位于右尾的拒绝域以内，来判定期望分布得出结果可能性。</strong>卡方临界值表可以查询的。<strong>比如：5%的显著性水平，8的自由度进行检验。查出15.51，只要检验统计量大于15.51，检验统计量就位于拒绝域内。</strong><br><br><img src="https://note.youdao.com/yws/public/resource/5702a21be94cca30edfd03987e6050c7/xmlnote/5713FCB95B2241418C268B71E4C4379A/2862" alt="image"><br><br><strong>检验统一量$$x^2=\sum\frac{(O-E)^2}{E}$$</strong><br><br>解决第一类问题：<br><br>原假设$$H_0$$：老虎机每局收益符合下述概率分布；备择假设$$H_1$$:老虎机每局收益不符合概率分布 <strong>[期望证明的]</strong><br><br><img src="https://note.youdao.com/yws/public/resource/5702a21be94cca30edfd03987e6050c7/xmlnote/6290E44701A4443F8E41771C59426AEA/2901" alt="image"><br><br>所以$$x^2=(965-977)^2/977+…+(7-1)^2/1$$,然后再利用$$x^2$$和显著性水平$$\alpha$$进行比较。<br><br>解决第二类问题：<br><br>原假设$$H_0$$：赌局输赢结果和坐庄的庄家没有关系；备择假设$$H_1$$:赌局输赢和坐庄的庄家有关系。<br><img src="https://note.youdao.com/yws/public/resource/5702a21be94cca30edfd03987e6050c7/xmlnote/FDC530BC6E1D43769D76A5E7BB4832F9/2916" alt="image"><img src="https://note.youdao.com/yws/public/resource/5702a21be94cca30edfd03987e6050c7/xmlnote/5791599DA2324D3F865FE05433523E84/2918" alt="image"><img src="https://note.youdao.com/yws/public/resource/5702a21be94cca30edfd03987e6050c7/xmlnote/5FA8B1BA1F5E41CD98A98B3CCE9078E8/2917" alt="image"></p>
-<p><strong>本质上，自由度是做一个估计时，所拥有的独立信息的数量</strong></p>
-<p><strong>1、拟合优度检验中，v=组数-限制数</strong><br></p>
-<p><strong>2、两个变量独立性检验中,如列联表为h行k列，则：v=(h-1)x(k-1)</strong></p>
-<hr>
-<p><strong>t分布 t假设检验</strong><br><br><strong>A、t分布</strong><br><br>根据中心极限定理，在正态分布总体以固定n，抽取若干样本时，样本均数$$\overline{X}$$的分布仍服从正态分布，即$$N(\mu,\frac{\sigma^2}{n})$$,对样本均数的分布进行u变换，也可变换为标准正态分布N(0,1)。<br>实际中，往往$$\sigma$$(总体方差)是未知的，常用s（样本方差）作为$$\sigma$$的估计值，为了与u变换区别，称为t变换，统计量t值得分布称为t分布。假设X服从标准正态分布N(0,1)，Y服从$$\chi^2(n)$$分布，那么$$Z=\frac{X}{\sqrt{Y/n}}$$的分布称为自由度为n的t分布，记为$$Z\sim t(n)$$，但实际自由度为v=n-1，查表的时候就是按照这个来查。<br><br>特点：t分布以y轴，左右对称。只有一个参数v=n-1,曲线形状与自由度有关。自由度v趋向于$$\infty$$，t分布逼近u分布，标准正态分布是t分布的特例。t分布曲线下的面积是1.<br><img src="https://note.youdao.com/yws/public/resource/5702a21be94cca30edfd03987e6050c7/xmlnote/555684CA43E04E9F8A398F739EC86904/3011" alt="image"><br><br><strong>B、t假设检验</strong><br><br><strong>总体均数估计</strong><br><br><strong>A、点（值）估计point estimation</strong><br><br>用样本统计量直接作为总体参数的估计值。<strong>矩估计法、顺序统计量法、极大似然、最小二乘</strong>举个例子：为了了解某地1岁婴儿体重，随机抽取1岁婴儿25个，平均体重2kg，标准差0.2kg。试估计本地1岁婴儿平均体重<br><br><strong>B、区间估计</strong><br><br>按预先给定的概率，计算一个区间，使它能够包含未知的总体均数。事先给定的概率$$1-\alpha$$称为可信度，通常取$$1-\alpha=0.95$$<br><br>可信度（置信率，置信度）：由样本推断总体特征时，估计正确的概率，用$$1-\alpha$$表示。可信区间confidence interval，按预先给定的概率确定的包含未知总体参数的可能范围。构成可信区间的两个点值称为：下限值、上限值。可信度计算分为两种$$\sigma$$</p>
-<p><br>(1)已知，$$\mu=\frac{\overline{X}-\mu}{\sigma-\sqrt{n}}$$,知道$$P(-1.96&lt;=u&lt;=1.96)=0.95$$,则95%的置信区间$$(\overline{X}-1.96\sigma_{\overline{X}},\overline{X}+1.96\sigma_{\overline{X}})$$,更一般的形式：$$(\overline{X}-u_{\alpha/2}\sigma_{\overline{X}},\overline{X}+u_{\alpha/2}\sigma_{\overline{X}})$$<br></p>
-<p>(2)$$\sigma$$通常未知，这时可以用其估计量S代替，但$$(\overline{X}-\mu)/(S/\sqrt{n})$$已不再服从标准正态分布，而是服从著名的t分布。计算可信区间的原理与前面完全相同，仅仅是两侧概率界值有些差别，即：<br><br>$$P(-t_{\alpha/2(v)}&lt;u&lt;t_{\alpha/2(v)})=1-\alpha$$<br><br>可信区间：$$(\overline{X}-t_{\alpha/2(v)}<em>S_{\overline{X}},\overline{X}+t_{\alpha/2(v)}</em>S_{\overline{X}})$$<br><br>可以得到总体均值的区间估计</p>
-<hr>
-<p><strong>F分布及假设检验</strong><br><br><strong>A、F分布</strong><br><br>Z检验是一般用于大样本(样本容量大于30)平均值差异性检验的方法，用标准正太分布的理论来推断差异发生的概率，从而比较两个平均数的差异是否显著，又被称为u检验。为什么要引入F分布。比如研究A、B、C三种不同学校学生的阅读理解成绩，以为简单多次使用Z检验或t检验，成对比较即可。但是这两种检验也有其局限性，比如研究中出现两个以上的平均数时。<strong>1、比较的组合次数增多。</strong> <strong>2、降低可靠程度，对数据做的Z检验或t检验越多，更容易范I型错误。</strong> 比如一个检验中$$\alpha=0.05$$，即有0.95的概率不犯I型错误，那么两次0.95*0.95=0.9,此时犯I型错误的概率是0.1，翻倍。 <strong>3、缺少综合或整体信息</strong>两个以上的平均数检验中若仍采用Z检验或t检验都只提供了两个组所提供的的信息，而忽略了其余的综合信息。许多情况下这些被忽略的信息可能对检验结果产生更大的影响。同时在十次检验之后所得到的只是零散的信息，并非从总体来分析几种不同条件的效果，也难以获得几种不同条件的直接答案。<br><br><strong>方差分析：</strong> analysis of variance就是对多个平均数进行比较的一种统计方法，又称为变异数分析，即ANOVA。方差分析的三条假设，否则易产生错误的统计结论：A总体分布的正态性；样本必须来自正态分布的总体；B各个实验组方差齐性； C变异具有可加性。影响事物的因素多种多样，方差分析将事物的总变异分解为各个不同变异来源，分解后各部分变异相互独立，相加后构成总变异。<br><br>方差分析有广义与侠义之分。广义方差分析包括方差齐性检验、F检验和多重比计较（逐对平均数的比较）。侠义的方差分析仅指F检验。<br><br><strong>F分布</strong><br><br>若总体$$X\sim N(0,1)$$,(X1,X2,..,Xn),(Y1,Y2,…,Yn)为来自X的两个独立样本，设统计量$$F=\frac{\chi(X)/n1}{\chi{(Y)}/n2}$$，称F服从自由度n1和n2的F分布。记为$$F\sim F(n1,n2)$$<br><br>若总体$$X\sim N(\mu,1)$$,与总体$$Y\sim N(0,1)$$，(X1,X2,..,Xn)为来自X的样本,(Y1,Y2,…,Yn)为来自Y的一个样本，则统计量$$F=\frac{\chi(X)/n1}{\chi{(Y)}/n2}$$称F服从自由度为n1和n2，非中心参数$$\delta=n\mu^2$$的非中心F分布，记为$$F\sim F(n1,n2,\delta)$$<br><br><strong>F分布–方差同质性检验</strong><br><br><img src="https://note.youdao.com/yws/public/resource/5702a21be94cca30edfd03987e6050c7/xmlnote/0CF3B8D93AA849058904AF8FFFDEC43E/3312" alt="image"><br><br>组与组之间的差异称为组间变异variation between classes，反映在各组的平均数不同。同一组内部被试个体之间的差异称为组内变异variation within class，反映在每一个的分数不同。<br>10-1组间变异较大组内变异较小，10-2反之。<br><br><strong>原理：通过组间变异和组内变异比率大小来推论几个相应平均数差异显著性的思想就是方差分析的逻辑依据或基本原理。</strong>方差分析是将实验中总变异分解为组间变异和组内变异，并通过组间变异和组内变异比率的比较来确定影响实验结果因素的数学方法，实质是以方差来表示变异的程度。<br><br><strong>总变异：组间变异、组内变异。</strong> 组间变异：实验条件、随机误差。组内变异：个体差异、实验误差，都属于随机误差。如果组间与组内变异均为随机误差时，二者比率为1，即实验因素的影响较小，由此推论总变异不存在差异。二者比率较大时，实验因素产生影响可能性增大。<br>分析基本过程：<br><br>(一)变异内容与表达<br><br>总变异=组间变异+组内变异<br><br>变异(Variance)即方差$$S^2$$，又称为均方差或均方(Mean Square,MS).$$S^2=\tfrac{\sum(X-\overline{X})^2}{n-1}$$，分母为自由度，总变异及各变异原因记为：$$MS_t=MS_b+MS_w$$<br><br>方差分析是一种参数检验方法，进行均数差异的检验时必须考虑作为参数检验应该具备的条件，应该考虑不同总体的变异水平–个体差异是否一致。<br><br>(二)方差齐性检验test of homogeneity of variance<br><br>方差齐性检验的虚无假设是假设各个总体方差相等，即无显著差异或是各个样本方差来自相同总体，表达式为:$$H_0=\sigma_1^2=\sigma_2^2…==\sigma_k^2$$检验多个总体方差一致性的方法，这是最常用的哈特莱检验法。<br><br>研究假设虽然不能保证所有的方差存在显著差异，但可以假设至少有两总体方差存在显著差异，只要有两种总体方差或样本方差不一致，虚无假设各总体方差相等就不成立了。<br><br>借助于F最大值来检验，F最大值就是把一系列方差中最大方差与最小方差进行比较的方法。即：<br>$$F_{max}=\tfrac{S^2_{n-1}max}{S^2_{(n-1)min}}$$,·在虚无假设下F最大值的分布的临界值已由哈特莱计算出来形成了F最大值理论分布表。查F值时，需根据方差数目及方差的自由度进行。其中自由度为n-1.比如对左图的数据进行方差齐次检验方法如下：<br></p>
-<ol>
-<li>建立假设$$H_0:\sigma_1^2=\sigma_2^2=\sigma_3^2$$, $$H_1$$:至少有两个总体的方差存在显著差异。求各样本的方差：$$S^2=\tfrac{\sum X^2-(\sum X)^2/n}{n-1}$$ <br><br>$$S_A^2=\tfrac{160-30^2/6}{6-1}=2$$ $$S_B^2=0.8$$  $$S_C^2=2.8$$<br><img src="https://note.youdao.com/yws/public/resource/5702a21be94cca30edfd03987e6050c7/xmlnote/WEBRESOURCEba15eb74ea2de6b777e6464298dbf1bb/3419" alt="image"></li>
-<li>求F最大值<br><br>$$F_{max}=2.8/0.8=3.5$$<br><br>3.比较与决策<br><br>当组数k=3，自由度为6-1=5，$$F_{max}=10.8$$因为F=3.5&lt;$$F_{max0.05}$$=10.8,P&gt;0.05，差异不显著，接受虚无假设，拒绝研究假设，说明三个总体方差一致。<br></li>
-</ol>
-<p><strong>F分布–方差分析</strong><br><br>样本容量相等的方差分析，意味着每一种实验处理它们的被重复次数相同，每一种学习方法均重复了6次。方差分析过程与上一节所介绍的方差分析基本方法完全一致。<br><br>样本容量不相同的方差分析，完全随机的方差分析中，常常使各实验处理组的被试数目相等。这本不需要，但能使计算稍微容易些，像独立样本t检验一样，F检验也允许样本容量不等。<br><br><strong>方差分析是比较两个以上平均差异显著性的方法逻辑思想：将总变异分解成组间变异或组内变异，通过比较组间与组内变异率的大小来确定均数差异是来自实验因素或处理，还是源自随机误差。</strong><br><br>引起组间的变异原因主要是实验施加的影响因素和随机误差，组内变异的原因是随机误差（个体变异和实验变异）。根据一次实验因素的个数分为单因素实验和多因素实验，单因素实验方差分析主要有完全随机设计的方差分析和完全随机区组设计的方差分析。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://hcyxy.tech/2018/07/07/overview-of-supervised-learning/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="hecy">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="无病呻吟">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/07/07/overview-of-supervised-learning/" itemprop="url">overview of supervised learning</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-07T22:24:48+08:00">
-                2018-07-07
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/机器学习/" itemprop="url" rel="index">
-                    <span itemprop="name">机器学习</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p><script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"> </script></p>
-<h3 id="名词解释"><a href="#名词解释" class="headerlink" title="名词解释"></a>名词解释</h3><p>bivariate gaussian二元高斯分布<br></p>
-<h3 id="linear-regresion-VS-KNN"><a href="#linear-regresion-VS-KNN" class="headerlink" title="linear regresion VS KNN"></a>linear regresion VS KNN</h3><p>1、linear regression 具有低偏差 高方差的特点<br><br>2、KNN具有高偏差 低方差的特点<br><br>KNN所产生的误差随k的增加而增加,在高维度下面会出现维度爆炸问题，本质上就是数据稀疏化，如果遇到特殊的分布，函数值还可能只集中在边缘部分。</p>
-<h3 id="模型选择准则"><a href="#模型选择准则" class="headerlink" title="模型选择准则"></a>模型选择准则</h3><p><strong>1、EPE(Expected Predictor Error)</strong> 期望预测误差<br><br>$$EPE=E(Y-E(X))^2=\int[y-f(x)]^2Pr(dx,dy)$$</p>
-<p>进一步化简：<br><br>$$EPE(f)=ExE_{Y|X}([Y-f(X)]^2|X)$$<br><br>$$f(x)=argmin_cE_{Y|X}([Y-c]^2|X=x)$$<br></p>
-<h2 id="当采用均方差时，最好的预测是条件均值：f-x-E-Y-X-x"><a href="#当采用均方差时，最好的预测是条件均值：f-x-E-Y-X-x" class="headerlink" title="当采用均方差时，最好的预测是条件均值：f(x)=E(Y|X=x)"></a>当采用均方差时，最好的预测是条件均值：f(x)=E(Y|X=x)</h2><p><strong>2、EPE(x0)</strong> 的计算 <br><br>令$$u=E_{y_0|x_0}(y_0)=x_0^Tβ$$<br><br>$$EPE(x_0)=E_{y_0|x_0}E_D(y_0-y)^2=(y_0^2-u^2)+(E_D(y^2)-(E_D(y))^2)+((E_D(y))^2-2y_0E_Dy+u^2)$$<br></p>
-<h2 id="即：-E-y-0-x-0-E-D-y-0-y-2-Var-y-0-x-0-Var-y-Bias-2-y"><a href="#即：-E-y-0-x-0-E-D-y-0-y-2-Var-y-0-x-0-Var-y-Bias-2-y" class="headerlink" title="即：$$E_{y_0|x_0}E_D((y_0-y)^2)=Var(y_0|x_0)+Var(y)+Bias^2(y)$$"></a>即：$$E_{y_0|x_0}E_D((y_0-y)^2)=Var(y_0|x_0)+Var(y)+Bias^2(y)$$<br></h2><p>3、如果一个算法在等方向的相邻区域产生局部变化函数无法克服高维爆炸问题；克服了等方向问题，又会出现在各个方向不等变化。<br></p>
-<h2 id="EPE得到的是一个随机变量-XX-T-线性模型得到的是一个数据矩阵：-X-TX"><a href="#EPE得到的是一个随机变量-XX-T-线性模型得到的是一个数据矩阵：-X-TX" class="headerlink" title="EPE得到的是一个随机变量$$XX^T$$ 线性模型得到的是一个数据矩阵：$$X^TX$$"></a>EPE得到的是一个随机变量$$XX^T$$ 线性模型得到的是一个数据矩阵：$$X^TX$$<br></h2><p><strong>4、模型的决定</strong><br><br>模型需要确定一个平滑的或者是复杂的参数：</p>
-<ol>
-<li>惩罚项的乘数</li>
-<li>核的宽度</li>
-<li>或基函数的数量</li>
-</ol>
-<hr>
-<p>5、期望预测误差<br></p>
-<h2 id="EPE-k-X-0-E-Y-f-k-x-0-2-X-x-0-θ-2-Bias-2-f-k-x-0-Var-D-f-k-x-0-θ-2-f-x-0-frac-1-k-sum-l-1-kf-x-k-2-θ-2-k"><a href="#EPE-k-X-0-E-Y-f-k-x-0-2-X-x-0-θ-2-Bias-2-f-k-x-0-Var-D-f-k-x-0-θ-2-f-x-0-frac-1-k-sum-l-1-kf-x-k-2-θ-2-k" class="headerlink" title="$$EPE_k(X_0)=E[(Y-f_k(x_0))^2|X=x_0]=θ^2+[Bias^2(f_k(x_0))+Var_D(f_k(x_0))]=θ^2+[f(x_0)-\frac{1}{k}\sum_{l=1}^kf(x_k)]^2+θ^2/k$$"></a>$$EPE_k(X_0)=E[(Y-f_k(x_0))^2|X=x_0]=θ^2+[Bias^2(f_k(x_0))+Var_D(f_k(x_0))]=θ^2+[f(x_0)-\frac{1}{k}\sum_{l=1}^kf(x_k)]^2+θ^2/k$$<br></h2><p>利用加权最小二乘解决异方差问题，异方差问题就是随着变量变化，方差值会不同，比如高收入家庭支出占比变化大；</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://hcyxy.tech/2018/07/07/多属性连通性检测/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="hecy">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="无病呻吟">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/07/07/多属性连通性检测/" itemprop="url">多属性连通性检测</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-07T12:00:04+08:00">
-                2018-07-07
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/算法与数据结构/" itemprop="url" rel="index">
-                    <span itemprop="name">算法与数据结构</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="问题描述："><a href="#问题描述：" class="headerlink" title="问题描述："></a>问题描述：</h4><p></p><p> 线上遇到的一个问题，这里做一个变形。有若干行数据（2000w）左右，每行有若干个属性，比如姓名、邮箱、地址等等；如果两行数据有至少一个属性值相同，就认为这两个行是连通的；并且连通性有转移，比如A与B连通，B与C连通，就可以认为A与C连通。那么这两千万行数据哪些是连通的？</p><p></p>
-<table>
-<thead>
-<tr>
-<th>name</th>
-<th style="text-align:center">address</th>
-<th style="text-align:right">tel</th>
-<th style="text-align:right">…</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>A</td>
-<td style="text-align:center">abc</td>
-<td style="text-align:right">135</td>
-<td style="text-align:right">…</td>
-</tr>
-<tr>
-<td>A</td>
-<td style="text-align:center">bcd</td>
-<td style="text-align:right">136</td>
-<td style="text-align:right">…</td>
-</tr>
-<tr>
-<td>B</td>
-<td style="text-align:center">cde</td>
-<td style="text-align:right">136</td>
-<td style="text-align:right">…</td>
-</tr>
-</tbody>
-</table>
-<p>如上第一行与第二行name相同，可认为行1连通行2；<br>第二行与第三行第三个属性相同，可认为行2连通行3；<br>于是1 2 3可认为是一个组。</p>
-<h6 id="暴力解法：对每个属性遍历，对每行数据遍历，时间复杂度最少为-m-n-2-n为行数"><a href="#暴力解法：对每个属性遍历，对每行数据遍历，时间复杂度最少为-m-n-2-n为行数" class="headerlink" title="暴力解法：对每个属性遍历，对每行数据遍历，时间复杂度最少为 m*n^2(n为行数)"></a>暴力解法：对每个属性遍历，对每行数据遍历，时间复杂度最少为 m*n^2(n为行数)</h6><h6 id="思路1：看到连通性立马可以想到并查集，但是并查集是已经知道哪些行数据是连通的，然后再根据并查集构造的数判断哪些属于一个组，这是整体思路。对并查集不清楚可参考"><a href="#思路1：看到连通性立马可以想到并查集，但是并查集是已经知道哪些行数据是连通的，然后再根据并查集构造的数判断哪些属于一个组，这是整体思路。对并查集不清楚可参考" class="headerlink" title="思路1：看到连通性立马可以想到并查集，但是并查集是已经知道哪些行数据是连通的，然后再根据并查集构造的数判断哪些属于一个组，这是整体思路。对并查集不清楚可参考"></a>思路1：看到连通性立马可以想到并查集，但是并查集是已经知道哪些行数据是连通的，然后再根据并查集构造的数判断哪些属于一个组，这是整体思路。对并查集不清楚可参考</h6><p><a href="https://blog.csdn.net/u011730199/article/details/80909373" target="_blank" rel="noopener">https://blog.csdn.net/u011730199/article/details/80909373</a><br><a href="https://blog.csdn.net/dm_vincent/article/details/7655764" target="_blank" rel="noopener">https://blog.csdn.net/dm_vincent/article/details/7655764</a></p>
-<h6 id="接下来，如何判断行与行之间的连通性呢？"><a href="#接下来，如何判断行与行之间的连通性呢？" class="headerlink" title="接下来，如何判断行与行之间的连通性呢？"></a>接下来，如何判断行与行之间的连通性呢？</h6><p>遍历做法直接舍弃。考虑到一行有若干属性，可以联想到树的层级结构。对每行数据，如果对应的属性值已经存在，则连通。判断属性值是否已经存在最快的是使用HashMap的key来判断。<br>每行数据有m个属性，初始化m个HashMap&lt;String,Integer&gt;  String为属性值，int为行号。对每行数据判断对应层级的map，是否存在，若存在<br>uf.union(m1,m2);若不存在map.put(string,m);<br>时间复杂度为m*n m为属性个数，n为行数<br>如果想要判断哪些连通，需要使用BFS或者DFS。这里略过。<br>代码如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">public class Vert &#123;</span><br><span class="line">	private static ArrayList&lt;HashMap&lt;String,Integer&gt;&gt; list = new ArrayList&lt;HashMap&lt;String,Integer&gt;&gt;();</span><br><span class="line">	public static void main(String[] args) &#123;</span><br><span class="line">		String[][] line = &#123;&#123;&quot;136&quot;,&quot;11@qq.com&quot;,&quot;22@c.com&quot;&#125;,&#123;&quot;137&quot;,&quot;11@qq.com&quot;,&quot;23@c.com&quot;&#125;,</span><br><span class="line">				&#123;&quot;138&quot;,&quot;110@qq.com&quot;,&quot;23@c.com&quot;&#125;,&#123;&quot;139&quot;,&quot;1100@qq.com&quot;,&quot;24@c.com&quot;&#125;&#125;;</span><br><span class="line">		Union_Find u = new Union_Find(line.length);</span><br><span class="line">		for(int i = 0;i&lt;line.length;i++) &#123;</span><br><span class="line">			for(int j = 0;j&lt;line[i].length;j++) &#123;</span><br><span class="line">				if(i == 0) &#123;</span><br><span class="line">					HashMap&lt;String,Integer&gt; t = new HashMap&lt;String,Integer&gt;();</span><br><span class="line">					arr[i] = 1;</span><br><span class="line">					t.put(line[i][j], i);</span><br><span class="line">					list.add(t);</span><br><span class="line">				&#125;else &#123;</span><br><span class="line">				HashMap&lt;String,Integer&gt; temp = list.get(j);</span><br><span class="line">				if(temp.containsKey(line[i][j]))</span><br><span class="line">					u.union(temp.get(line[i][j]), i);</span><br><span class="line">				else</span><br><span class="line">					list.get(j).put(line[i][j], i);</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		System.out.println(u.isConnected(1, 2));</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>Union_Find是一个并查集实现，这里略过。如果有更好的解法或者bug。欢迎留言+交流，vx：LEILE111,邮箱<a href="mailto:hcy_xy@qq.com" target="_blank" rel="noopener">hcy_xy@qq.com</a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -2110,7 +2250,7 @@ jstack（JVM Stack Trace for java）
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-count">24</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2132,7 +2272,7 @@ jstack（JVM Stack Trace for java）
               
               <div class="site-state-item site-state-tags">
                 
-                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-count">13</span>
                   <span class="site-state-item-name">标签</span>
                 
               </div>
