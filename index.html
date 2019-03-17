@@ -232,6 +232,374 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://hcyxy.tech/2019/03/16/系统上运行程序/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="hecy">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="无病呻吟">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/03/16/系统上运行程序/" itemprop="url">计算机系统(2)</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-16T21:14:20+08:00">
+                2019-03-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/计算机系统/" itemprop="url" rel="index">
+                    <span itemprop="name">计算机系统</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="第二部分-系统上运行程序"><a href="#第二部分-系统上运行程序" class="headerlink" title="第二部分 系统上运行程序"></a>第二部分 系统上运行程序</h3><h4 id="7、链接"><a href="#7、链接" class="headerlink" title="7、链接"></a>7、链接</h4><p>将各种代码和数据片段收集并组合成一个单一文件的过程，这个文件可被加载到内存并执行。链接可用于编译时(源代码-&gt;机器代码)，加载时，加载到内存并执行；执行于运行时，由应用执行。</p>
+<h5 id="7-1-静态链接"><a href="#7-1-静态链接" class="headerlink" title="7.1 静态链接"></a>7.1 静态链接</h5><p>静态链接器以一组可重定位目标文件和命令行参数作为输入，生成一个完全链接的、可以加载和运行的可执行目标文件作为输出。链接器必须完成两个任务：</p>
+<ul>
+<li>符号解析。目标文件定义和引用符号，每个符号对应于一个函数、一个全局变量或一个静态变量。</li>
+<li>重定位。编译器和汇编器生成从地址0开始的代码和数据节。链接器通过把每个符号定义与一个内存位置关联起来，重定位这些节，修改对这些符号的引用，使得它们指向这个内存位置。</li>
+</ul>
+<p>目标文件有三种形式：</p>
+<ul>
+<li>可重定位目标文件。包含二进制代码和数据，在编译时与其他可重定位文件合并起来，创建一个可执行目标文件</li>
+<li>可执行目标文件。包含二进制代码和数据，可以直接复制到内存执行；</li>
+<li>共享目标文件。特殊的可重定位目标文件，可以在加载或者运行时被动态的加载进内存并链接。</li>
+</ul>
+<p>编译器和汇编器可重定位目标文件(包括共享目标文件)，链接器生成可执行目标文件。</p>
+<h5 id="7-2-与静态库链接"><a href="#7-2-与静态库链接" class="headerlink" title="7.2 与静态库链接"></a>7.2 与静态库链接</h5><p>之前都是假设链接器读取一组可重定位目标文件，并把它们链接起来，形成一个输出的可执行文件。实际上所有编译系统都提供一种机制将所有相关目标模块打包成一个单独文件，称为<strong>静态库，可以用做链接器的输入</strong>。当链接器构造一个输出的可执行文件，只复制静态库里被应用程序引用的目标模块。</p>
+<p><strong>为什么OS要支持库的概念？</strong><br><br>定义了一组广泛的标准I/O、字符串操作和整数数学函数。如果不适用静态库，如何向用户提供这些函数。一：让编译器辨认出对标准函数的调用，并直接生成响应代码，对c不适合，因为c标准定义了大量标准函数，这种方法给编译器增加了复杂性，每次添加删除或修改标准函数，就需要一个新的编译器版本。</p>
+<p>另一种方法：将所有标准C函数放在一个单独可重定位目标模块中，应用程序可以把这个模块链接到可执行文件中：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc min.c /usr/lib/libc.o</span><br></pre></td></tr></table></figure></p>
+<p>这种方法优点：将编译器的实现与标准函数实现分离开来，很大缺点是系统中每个可执行文件都包含一份标准函数集合副本，对磁盘空间是很大浪费。另一个缺点：对任何标准函数的任何改变，无论多么小的改变，都要求库的开发人员重新编译整个源文件。</p>
+<p>可以通过为每个标准函数创建一个独立的可重定位文件，把它们存放在一个公共目录，要求应用程序显示链接合适的目标模块到可执行文件中，耗时且容易出错：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc main.c /usr/lib/printf.o /usr/lib/scanf.o</span><br></pre></td></tr></table></figure></p>
+<p>静态库用来解决这些缺点，相关函数被编译为独立目标模块，封装成一个单独静态库文件，应用程序可以通过在命令行上治理领单独的文件名来使用这些在库中定义的函数。</p>
+<p>然后进行重定位：</p>
+<ul>
+<li>重定位条目：汇编器生成一个目标模块时，并不知道数据和代码最终放在内存什么位置，不知道这个模块引用任何外部定义的函数或者全局变量的位置。汇编器遇到对最终位置未知的目标引用，会生成一个<strong>重定位条目。</strong> 告诉链接器在将目标文件合并成可执行文件时如何修改这个引用；</li>
+<li>重定位符号引用。1）重定位PC相对引用；2）重定位绝对引用，相对简单；</li>
+</ul>
+<h5 id="7-3-可执行目标文件"><a href="#7-3-可执行目标文件" class="headerlink" title="7.3 可执行目标文件"></a>7.3 可执行目标文件</h5><p>将ASCII文本文件转化为一个二进制文件，且二进制文件包含加载程序到内存并运行所需的所有信息，包括只读内存段(代码段)、读/写内存段(数据段)、不加载到内存的符号表和调试信息。</p>
+<h5 id="7-4-加载可执行目标文件"><a href="#7-4-加载可执行目标文件" class="headerlink" title="7.4 加载可执行目标文件"></a>7.4 加载可执行目标文件</h5><p>比如执行：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">linux&gt; ./start</span><br></pre></td></tr></table></figure></p>
+<p>start不是一个内置的shell命令，shell会认为start是一个可执行目标文件，通过调用某个驻留在存储器中称为加载器loader的OS代码来运行它。任何linux程序都可以通过调用execve函数来调用加载器。加载器将可执行目标文件中的代码和数据从磁盘复制到内存中，然后通过跳转到程序第一条指令或入口点来运行该程序，将程序复制到内存并运行的过程叫加载。</p>
+<p>动态链接共享库：静态库缺点需要定期维护和更新，另一个问题是每个c程序都使用标准IO函数，比如pritnf、scanf。运行时将这些函数代码复制到进程的文本段中，是堆内存资源的浪费。</p>
+<p>共享库是致力于解决静态库缺陷的一个产物，共享库是一个目标模块，运行加载时，可以加载到任意内存地址，并和一个在内存中的程序链接起来，这个过程称为动态链接。linux中常用.so后缀来表示，windows中的共享库，被称为DLL。内存中一个共享库的.text节的一个副本可以被不同的正在运行的进程共享。</p>
+<h5 id="7-5-从应用程序中加载和链接共享库"><a href="#7-5-从应用程序中加载和链接共享库" class="headerlink" title="7.5 从应用程序中加载和链接共享库"></a>7.5 从应用程序中加载和链接共享库</h5><p>应用程序可能在其运行时要求动态链接器加载和链接某个共享库，无需在编译时将那些库链接到应用中。思路是：将每个生成动态内容的函数打包在共享库中，当一个来自web请求到达，服务器动态加载和链接适当函数，直接调用，而不是使用fork和execve在自己进程上下文中运行函数。</p>
+<p><strong>共享库和java本地接口</strong><br><br>java定义了一个标准调用规则，叫做java本地接口，允许java调用本地c和c++函数，基本思想是将本地c函数编译到共享库中，当一个正在运行的java程序试图调用函数时，java解释器利用dlopen接口动态链接和加载xx.so，再调用具体函数。</p>
+<h5 id="7-6-位置无关代码"><a href="#7-6-位置无关代码" class="headerlink" title="7.6 位置无关代码"></a>7.6 位置无关代码</h5><p>多个进程如何共享程序的一个副本。一种方法给每个共享库分配一个事先预备的专用地址空间片，然后要求加载器在这个低智商加载共享库，会使地址空间使用效率不高，因为一个进程即使不使用这个库，部分空间还是被分配出来，难以管理，必须保证没有片会重叠。当一个库修改了之后，必须确认已分配给它的片还适合它的大小。不适合必须找一个新的片。</p>
+<p>要避免这些问题，现代系统以这样一种方式编译共享模块的代码段，使得可以把它们加载到内存的任何位置无需链接器修改，使用这种方法无限多个进程可以共享一个共享模块的代码的单一副本。可以加载无需定位的代码称为位置无关代码PIC。</p>
+<ul>
+<li>PIC数据引用。编译器通过：无论在内存何处加载一个目标模块（包括共享目标模块），数据段与代码段的距离总保持不变。因此代码段中任何指令和数据段中任何变量之间的距离都是一个运行时常量，与代码段和数据段的绝对内存位置无关。需要引入一个全局偏移量表GOT。</li>
+<li>PIC函数调用。假设程序调用一个共享库定义的函数，编译器没办法预测这个函数的运行时地址，因为共享模块可以加载到任意位置。GUN编译系统使用延迟绑定lazy binding，将过程地址绑定推迟到第一次调用该过程时。比如libc.so包含上千个函数，只会使用其中部分，将函数地址解析推迟到它实际被调用的地方，能避免动态链接器在加载时进行成百上千个其实并不需要的重定位。</li>
+</ul>
+<h4 id="8、异常控制流"><a href="#8、异常控制流" class="headerlink" title="8、异常控制流"></a>8、异常控制流</h4><p>系统需要一些机制对由程序变量表示的内部程序状态中的变化做出反应。这些系统状态不是被内部程序变量捕获的，也不一定要和程序的执行相关。比如一个硬件定时器定期产生信号，这个事件必须得到处理；包到达网络适配器后，必须放在内存中；程序向磁盘请求数据，然后休眠，直到被通知说数据已就绪。OS通过异常控制流ECF，对这些突变做出反应。</p>
+<ul>
+<li>ECF是OS实现IO、进程、虚拟内存的基本机制；</li>
+<li>ECF可以理解应用程序如何与OS交互；应用程序通过使用trap、系统调用的ECF形式，向OS请求服务；</li>
+<li>ECF帮助理解并发。</li>
+</ul>
+<p>在任何情况下，当处理器检测到有事件发生，就会通过异常表exception table的跳转表，进行一个间接过程调用(异常)到一个专门设计用来处理这类事件的操作系统子程序。异常处理完成后，会进行：</p>
+<ul>
+<li>处理程序将控制返回给当前指令<code>$I_{curr}$</code></li>
+<li>将控制返回给<code>$I_{next}</code>，没有发生异常执行下一条指令</li>
+<li>处理程序终止被中断的程序</li>
+</ul>
+<h6 id="8-1-1-异常处理"><a href="#8-1-1-异常处理" class="headerlink" title="8.1.1 异常处理"></a>8.1.1 异常处理</h6><p>系统中每种类型的异常都分配了唯一的非负整数的异常号，一些号码由处理器设计者分配(包括被零除、缺页、内存访问违例、断点以及算术运算溢出)，其他号码由OS内核设计者分配(包括系统调用和来自外部I/O设备信号)。</p>
+<p>系统启动时OS分配和初始化一张称为异常表的跳转表。运行时，处理器检测到发生一个事件，并且确定相应异常号k。随后处理器触发异常，方法是执行间接过程调用，通过异常表的表目k，转到相应处理程序。异常表起始地址放在异常表基址寄存器的特殊CPU寄存器中。</p>
+<p>异常类似于过程调用，有一些不同之处：</p>
+<ul>
+<li>过程调用，在跳转到处理程序前，处理器将返回地址压入栈中。根据异常类型，返回地址是当前指令或者是下一挑指令。</li>
+<li>处理器也把一些额外处理器状态压到栈中，处理程序返回时，重新开始执行被中断的程序。</li>
+<li>如果控制从用户程序转移到内核，所有项目都被压到内核栈中，而不是压到用户栈中；</li>
+<li>异常处理程序运行在内核模式下，对所有系统资源都有完全访问权限。</li>
+</ul>
+<p>一旦硬件触发异常，由异常处理程序在软件中完成，处理完成后，通过执行一条特殊“从中断返回”指令，返回到被中断的程序，该指令将适当状态弹回到处理器的控制和数据寄存器中，如果异常中断的是一个用户程序，状态恢复为用户模式。</p>
+<p>异常类别：<br>|类别|原因|异步/同步|返回行为|<br>|—|—|—|—|<br>|中断|来自I/O设备信号|异步|返回到下一条指令|<br>|陷阱|有意的异常|同步|返回到下一条指令|<br>|鼓掌|潜在可恢复的错误|同步|可能返回到当前指令|<br>|终止|不可恢复的错误|同步|不会返回|</p>
+<ul>
+<li>中断：来自处理器外部的I/O设备信号结果，不是由任何一条专门指令造成的。I/O设备，如网络适配器、磁盘控制器、定时器芯片，通过向处理器芯片上一个引脚发信号，并将异常号放到系统总线上，触发中断；当前指令完成执行后，处理器注意到中断引脚电压变高，就从系统总线读取异常号，调用适当的中断处理程序；剩下的叫故障指令。</li>
+<li>陷阱和系统调用。陷阱最重要的用途是在用户程序和内核之间提供一个过程一样的接口，叫做系统调用。用户程序经常向内核请求服务，如读文件read、创建新进程fork、加载新程序execve、终止进程exit。</li>
+<li>故障。由错误情况引起，能够被故障处理程序修正，故障发生时，处理器将控制转移给故障处理程序。如缺页异常，当指令引用一个虚拟地址，而与该地址相对应的物理页面不在内存中，因此必须从磁盘中取出，就会发生故障。</li>
+<li>终止。不可恢复的致命错误，如DRAM或SRAM位被损坏发生的奇偶错误。</li>
+</ul>
+<h6 id="8-2-进程"><a href="#8-2-进程" class="headerlink" title="8.2 进程"></a>8.2 进程</h6><p>异常是允许OS内核提供进程概念的基本构造块，进程也是OS最深刻、最成功概念之一。</p>
+<p>系统中每个程序都运行在某个进程上下文中，上下文是由程序正确运行所需状态组成，包括存放在内存中的程序代码和数据，它的栈、通用目的寄存器的内容、PC、环境变量以及打开文件描述符的集合。</p>
+<p>进程提供给应用程序的抽象：</p>
+<ul>
+<li>一个独立逻辑控制流，好像是独占的使用处理器；</li>
+<li>一个私有地址空间，好像是独占使用内存系统。</li>
+</ul>
+<p>处理器通常是用某个控制寄存器中的一个模式位来提供用户态/内核态功能。设置了模式位，进程就运行在内核模式中。linux提供一种聪明的机制，叫做/proc文件系统，允许用户模式进程访问内核数据结构内容，比如cpu类型/proc/cpuinfo，某个特殊进程使用的内存段/proc/{pid}/maps。</p>
+<h6 id="上下文切换"><a href="#上下文切换" class="headerlink" title="上下文切换"></a>上下文切换</h6><p>OS内核使用一种称为上下文切换的较高层形式的异常控制流实现多任务。内核为每个进程维护一个上下文，包括通用目的寄存器、浮点寄存器、PC、用户栈、状态寄存器、内核栈、各种内核数据结构(地址空间页表、进程表、打开文件的信息文件表)</p>
+<p>执行系统调用（read）、sleep系统调用、中断都有可能引发系统调用</p>
+<h6 id="8-3-进程控制"><a href="#8-3-进程控制" class="headerlink" title="8.3 进程控制"></a>8.3 进程控制</h6><p>父进程通过fork函数创建一个新的运行的子进程，子进程得到父进程用户级虚拟地址空间相同的一份副本，包括代码、数据段、堆、共享库以及用户栈、相同文件描述符副本。意味着子进程可以读写父进程中打开的任何文件。fork调用一次返回两次，在调用进程(父进程)返回子进程pid，在子进程返回o。</p>
+<p>父进程和子进程相同但是独立的地址空间，每个进程都有相同用户栈、本地变量值、堆、全局变量值、相同的代码。但是都有各自私有的地址空间。</p>
+<h6 id="8-3-2-回收子进程"><a href="#8-3-2-回收子进程" class="headerlink" title="8.3.2 回收子进程"></a>8.3.2 回收子进程</h6><p>一个进程由于某种原因终止，内核不是立即把它从系统清楚，而是保持一种已终止的状态，直到被父进程回收。当父进程回收已终止的子进程，内核将子进程的退出状态传递给父进程，抛弃已终止的进程。一个终止但未被回收的进程称为僵死进程。</p>
+<p>如果父进程终止，内核会安排init进程称为孤儿进程的养父，init进程pid为1，系统启动时由内核创建的，不会终止，是所有进程祖先。如果父进程没有回收它的僵死子进程就终止了，内核会安排init进程去回收。</p>
+<h6 id="8-3-3-让进程休眠"><a href="#8-3-3-让进程休眠" class="headerlink" title="8.3.3 让进程休眠"></a>8.3.3 让进程休眠</h6><p>sleep让一个进程挂起一段指定时间，sleep返回0，或者剩下要休眠的时间。</p>
+<p>加载并运行程序：<br>execve函数加载并运行可执行目标文件filename。</p>
+<p><strong>程序与进程</strong><br><br>程序是一堆代码和数据，可作为目标文件存于磁盘上，或者作为段存在地址空间中。进程是执行程序的一个具体实例，程序总是运行在某个进程上下文中。fork函数是在新的子进程中运行相同的程序，新的子进程是父进程一个复制品，execve是在当前进程上下文加载并运行一个新的程序，它会覆盖当前进程的地址空间，但没有创建新的进程。</p>
+<h6 id="8-4-信号"><a href="#8-4-信号" class="headerlink" title="8.4 信号"></a>8.4 信号</h6><p>OS通过异常控制流来支持进程上下文切换，还有一种linux信号，允许进程和内核中断其他进程。</p>
+<p>发送一个信号到目的进程由两个不同步骤组成：</p>
+<ul>
+<li>发送信号。内核通过更新目的进程上下文某个状态，发送一个信号给目的进程。发送信号可以有如下两种原因：1）内核检测到一个系统事件，如除零错误、子进程终止；2）一个进程调用kill函数</li>
+<li>接收信号。目的进程被内核强迫以某种方式对信号的发送做出反应，它就接收了信号，进程可以忽略这个信号、终止或通过执行一个称为信号处理程序的用户层函数捕获这个信号。</li>
+</ul>
+<p>一个发出而没被接收的信号叫做待处理信号，一种类型至多有一个待处理信号，如果一个进程有一个类型为k的待处理信号，接下来发送到这个进程的类型为k的信号都不会排队等待，直接丢弃。</p>
+<p>一个待处理信号最多只能被接收一次，内核为每个进程在pending位向量中维护着待处理信号集合，在blocked位向量维护着被阻塞的信号集合。只要传送一个类型为k的信号，内核就会设置pending中第k位，而只要接收了一个类型为k的信号，内核就会清楚pending中第k位。</p>
+<p>每个进程都属于一个进程组，子进程和父进程属于同一个进程组；kill向另外进程发送信号；shell使用作业这个抽象概念对一条命令行求值而创建的进程，任何时刻至多只有一个前台作业和多个后台作业。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">linux&gt; ls | sort</span><br></pre></td></tr></table></figure></p>
+<p>会创建一个由两个进程组成的前台作业，两个后台进程组；这两个进程通过unix管道连接起来，一个ls程序，一个sort程序，shell为每个作业创建一个独立的进程组，进程组ID取父进程中的一个。</p>
+<p>键盘上输入Ctrl+C会导致内核发送一个SIGINT信号到前台进程组每个进程，默认情况终止前台作业；输入Ctrl+Z会发送SIGTSTP信号到前台进程组每个进程，结果是停止(挂起)前台作业。</p>
+<p>接收信号：当把进程p从内核模式切换到用户模式(如从系统调用返回或是完成了一次上下文切换)，会检查进程p的未被阻塞的待处理信号的结合，</p>
+<h6 id="非本地跳转"><a href="#非本地跳转" class="headerlink" title="非本地跳转"></a>非本地跳转</h6><p>c提供一种用户级别异常控制流形式，称为非本地跳转，将控制直接从一个函数转移到另一个当前正在执行的函数，而不需要经过正常的调用-返回序列，非本地跳转通过setjmp和longjmp函数提供。非本地跳转一个重要应用是允许从一个深层嵌套的函数调用立即返回，通常是由检测到某个错误引起的。</p>
+<p>Linux提供大量的监控和操作进程的有用工具：</p>
+<ul>
+<li>STRACE，打印一个正在运行的程序和它的子进程调用的每个系统调用的轨迹；</li>
+<li>PS列出当前系统中的进程</li>
+<li>TOP：打印关于当前进程资源使用信息</li>
+<li>PMAP：显示进程内存映射</li>
+</ul>
+<h5 id="9、虚拟内存"><a href="#9、虚拟内存" class="headerlink" title="9、虚拟内存"></a>9、虚拟内存</h5><p>虚拟内存VM是硬件异常、硬件地址翻译、主存、磁盘文件和内核文件的完美交互，为每个进程提供了一个大的、一致的、私有的地址空间。</p>
+<ul>
+<li>将主存看成是一个存储在磁盘上的地址空间的高速缓存，在主存中只保存活动区域，根据需要在磁盘和主存之间来回传送数据，通过这种方式，高效使用主存；</li>
+<li>为每个进程提供一致的地址空间，简化内存管理；</li>
+<li>保护每个进程的地址空间不被其他进程破坏</li>
+</ul>
+<p>使用虚拟寻址，CPU通过生成一个虚拟地址Virtual Address来访问主存，这个VA被送到主存前先转换成适当物理地址，将一个VA转换成物理地址的任务叫做地址翻译address translation。地址翻译需要CPU硬件和OS合作，CPU芯片上叫做内存管理单元MMU的专用硬件，利用存放在主存中的查询表来动态翻译虚拟地址。</p>
+<p><strong>虚拟内存空间被组织为一个存放在磁盘上的M个连续的字节大小的单元组成的数组，每个字节都有一个唯一的虚拟地址，作为到数组的索引</strong></p>
+<h5 id="9-1-VM作为缓存工具"><a href="#9-1-VM作为缓存工具" class="headerlink" title="9.1 VM作为缓存工具"></a>9.1 VM作为缓存工具</h5><p>主存每个字节都有一个选自虚拟地址空间的虚拟地址和一个物理地址空间的物理地址；</p>
+<p>磁盘上的内容缓存在主存中，磁盘上的数据被分割成块，作为磁盘和主存之间传输单元。VM将虚拟内存分割为虚拟页virtual page的大小固定块来处理这个问题。每个虚拟页VP大小为<code>$P=2^p$</code>字节。物理内存被分割为物理页PP，大小也为P字节，被称为页帧page frame。</p>
+<p>任意时刻，虚拟页面集合分成三个不相交子集：</p>
+<ul>
+<li>未分配的：VM系统还未分配的页，未分配的块没有任何数据和它们相关联，不占用任何磁盘空间；</li>
+<li>缓存的：当前已缓存在物理内存中的已分配页；</li>
+<li>为缓存的：未缓存在无力内存中的已分配页；</li>
+</ul>
+<h6 id="9-1-1-DRAM缓存组织结构"><a href="#9-1-1-DRAM缓存组织结构" class="headerlink" title="9.1.1 DRAM缓存组织结构"></a>9.1.1 DRAM缓存组织结构</h6><p>SRAM缓存表示CPU和主存之间的L1、L2和L3高速缓存，用DRAM缓存表示虚拟内存系统的缓存，在主存中缓存虚拟页。DRAM比SRAM慢10倍，磁盘比DRAM慢大约慢10 0000倍。DRAM缓存不命中比SRAM缓存不命中更昂贵。</p>
+<p><strong>因为大的不命中处罚和访问第一个字节开销，虚拟页往往很大，通常是4KB~2MB。由于大的不命中处罚，DRAM缓存是全相联的，任何虚拟页都可以放置在任何物理页中。不命中的替换策略也很重要，替换错了虚拟页的处罚也非常高，因此，与硬件对SRAM缓存，OS对DRAM缓存使用了更复杂精密的替换算法。因为对磁盘访问时间很长，DRAM缓存总是使用写回，而不是直写。</strong></p>
+<h6 id="9-1-2-页表"><a href="#9-1-2-页表" class="headerlink" title="9.1.2 页表"></a>9.1.2 页表</h6><p>同任何缓存一样，VM必须有某种方法判定一个虚拟页是否缓存在DRAM某个地方，如果是还需要确定这个虚拟页在哪个物理页中，如果不命中，判断虚拟页存放在磁盘哪个位置，在物理内存中选择牺牲一页，将虚拟页从磁盘复制到DRAM，替换这个牺牲页。</p>
+<p>这些功能是由软硬件联合提供的，包括OS软件、MMU内存管理单元中的地址翻译硬件和一个存放在物理内存的页表，页表将虚拟页映射到物理页。每次地址翻译硬件将一个虚拟地址转换为物理地址时，都会读取页表。OS负责维护页表内容，以及在磁盘与DRAM之间来回传送页。</p>
+<p>页表就是一个页表条目(PTE)Page Table Entry的数组，虚拟地址空间中每个页在页表中一个固定偏移量处都有一个PTE。</p>
+<p>DRAM缓存不命中称为缺页page fault，假如CPU引用了VP3中一个字，但是并未缓存在DRAM中，地址翻译硬件从内存读取PTE3，推断VP3未被缓存，并且触发一个缺页异常。缺页异常会调用缺页异常处理程序，该程序会选择一个牺牲页，(存放存放PP3的VP4)，如果VP4已经被修改，内核就会将其复制回磁盘。无论哪种情况，内核都会修改VP4的页表条目，表明VP4不再缓存在主存中。</p>
+<p>接下来，内核从磁盘复制VP3到内存中的PP3，更新PTE3.随后返回，当异常处理程序返回时，会重新启动导致缺页的指令，该指令会把导致缺页的虚拟地址重发送到地址翻译硬件。但是VP3已经缓存在主存中，页命中也能由地址翻译硬件正常处理了。</p>
+<p>虚拟内存和SRAM缓存有很多相似的概念但是使用了不同术语，虚拟内存中，块被称为页，磁盘和内存之间传送页的活动叫做交换swapping或者页面调度。页从磁盘换入DRAM、从DRAM换出磁盘，当有不命中发生时，才换入页面的这种策略称为按需页面调度。</p>
+<p><strong>虚拟页和磁盘文件映射，然后缓存到物理页。</strong></p>
+<h6 id="9-1-3-分配页面"><a href="#9-1-3-分配页面" class="headerlink" title="9.1.3 分配页面"></a>9.1.3 分配页面</h6><p>当OS分配一个新的虚拟内存页，如调用malloc的结果，VP5的分配过程是在磁盘上创建空间并更新PTE5，使它指向磁盘上这个新创建的页面。</p>
+<h6 id="9-1-4-局部性"><a href="#9-1-4-局部性" class="headerlink" title="9.1.4 局部性"></a>9.1.4 局部性</h6><p>尽管在整个运行过程中程序引用不同页面的总数可能超出物理内存总的大小，但是局部性原则保证了任意时刻，程序将趋于在一个较小的活动页面集合上工作，这个集合叫工作集working set或者常驻集合。在初始开销，将工作集调度到内存后，接下来对这个工作集的引用将导致命中，不会产生额外磁盘流量。</p>
+<p>只要程序有良好局部性，虚拟内存就能工作的很好。如果工作集大小超出了物理内存大小，程序就会产生抖动，这时页面不断地换进换出。</p>
+<h6 id="9-1-5-虚拟内存作为内存管理工具"><a href="#9-1-5-虚拟内存作为内存管理工具" class="headerlink" title="9.1.5 虚拟内存作为内存管理工具"></a>9.1.5 虚拟内存作为内存管理工具</h6><p>OS为每个进程提供一个独立的页表，即一个独立的虚拟地址空间。比如进程i的页表将VP1映射到PP2，VP2映射到PP7。进程j的页表将VP1映射到PP7，VP2映射到PP10，多个虚拟页面可以映射到同一个共享物理页面上。</p>
+<p>VM简化了链接、加载、代码和数据共享，以及应用程序的内存分配：</p>
+<ul>
+<li>简化链接。独立的地址空间允许每个进程的内存映像使用相同的基本格式，不管代码和数据实际存放在物理内存何处。一个linux系统上每个进程都使用类似的内存格式，对于64为地址空间，代码段总是从虚拟地址0x400000开始，数据段跟在代码段后，中间有一段符合要求的对齐空白。栈占据用户进程地址空间最高部分，向下生长。这样的一致性极大简化了链接器的设计和实现，允许链接器生成完全链接的可执行文件，这些可执行文件是独立于物理内存中的代码、数据的最终位置；</li>
+<li>简化加载。VM使得容易向内存中加载可执行文件和共享对象文件。要把目标文件中的.text和.data加载到一个新创建的进程，Linux加载器为代码和数据段分配虚拟页，把它们标记为无效的(未被缓存的),将页表条目指向目标文件适当位置。<strong>但是加载器不从磁盘复制数据到内存。在每个页初次被引用时，要么是CPU取指令时引用的、或是一条正在执行的指令引用一个内存位置时引用的，VM会按照需要自动调入数据页。</strong><br>将一组连续虚拟页映射到任意一个文件中的任意位置表示的方法称作内存映射memory mapping。linux提供一个mmap的系统调用，允许应用程序自己做内存映射。</li>
+<li>简化共享。独立地址空间为OS提供一个管理用户进程和OS自身之间共享的一致机制。一般情况下，每个进程都有自己私有的代码、数据、堆以及栈区，是不和其他进程共享的。这种情况，OS创建页表，将相应虚拟页映射到不连续的物理页面。</li>
+</ul>
+<p><strong>一些情况下需要进程共享代码和数据，如每个进程需调用相同OS内核代码(printf)。OS将不同进程中相应的虚拟页面映射到相同物理页面，从而多个进程共享这部分代码的一个副本。</strong></p>
+<ul>
+<li>简化内存分配。VM向用户进程提供一个简单的分配额外内存的机制，当一个运行在用户进程中的程序要求额外的堆空间，OS分配一个适当数字(k)个连续虚拟内存页面，将它们映射到物理内存中任意位置的k个任意的物理页面。由于页表工作方式，OS没有必要分配k个连续的物理内存页面，页面可以随机分散在物理内存中。</li>
+</ul>
+<h5 id="9-2-虚拟内存作为保护工具"><a href="#9-2-虚拟内存作为保护工具" class="headerlink" title="9.2 虚拟内存作为保护工具"></a>9.2 虚拟内存作为保护工具</h5><p>不允许用户进程修改只读代码段，不允许读或修改任何内核中的代码和数据结构，不允许读其他进程私有内存，不允许修改与其他进程共享的虚拟页面。</p>
+<p>提供独立的地址空间使得区分不同进程的私有内存变的容易。但是地址翻译机制以一种自然的方式扩展到提供更好的访问控制，<strong>每次CPU生成一个地址时，地址翻译硬件都会读一个PTE，通过在PTE添加一些额外的许可位来控制对一个虚拟页内容的访问。</strong> 比如PTE添加三个许可位，SUP位表示是否只能在内核模式访问，READ和WRITE控制对页面的读和写访问。如果一条指令违反这些许可条件，CPU会触发一个一般保护故障，将控制传给内核异常处理程序，段错误segmentation fault。</p>
+<h5 id="9-3-地址翻译"><a href="#9-3-地址翻译" class="headerlink" title="9.3 地址翻译"></a>9.3 地址翻译</h5><p>MMU利用页表实现虚拟内存映射，CPU中一个控制寄存器-页表基址寄存器PageTableBaseRegister指向当前页表，n位的虚拟地址包含两部分，一个p位的虚拟页面偏移VPOffset和一个n-p位的虚拟页号virtual page number。MMU利用VPN选择适当PTE。当页面命中时，CPU执行步骤：</p>
+<ul>
+<li>处理器生成一个虚拟地址，传送给MMU</li>
+<li>MMU生成PTE地址，从高速缓存/缓存请求得到；</li>
+<li>高速缓存/主存向MMU返回PTE</li>
+<li>MMU构造物理地址，并把它传送给告诉缓存/主存</li>
+<li>高速缓存/主存返回所请求的数据字给处理器</li>
+</ul>
+<p>页面命中完全由硬件处理，处理缺页要求硬件和OS内核协作完成：</p>
+<ul>
+<li>1-3步与上述相同</li>
+<li>PET中有效位是0，MMU触发异常，传递CPU中的控制到OS内核中的缺页异常处理程序；</li>
+<li>缺页处理程序确定出物理内存中的牺牲页，如果这个页被修改了，换出到磁盘；</li>
+<li>缺页处理程序页面调入新的页面，并更新内存中的PTE</li>
+<li>缺页处理程序返回到原来进程，再次执行导致缺页的指令，CPU将引起缺页的虚拟地址重新发给MMU。因为虚拟页面现在缓存在物理内存中，所以就会命中。</li>
+</ul>
+<h6 id="9-3-1-结合高速缓存和虚拟内存"><a href="#9-3-1-结合高速缓存和虚拟内存" class="headerlink" title="9.3.1 结合高速缓存和虚拟内存"></a>9.3.1 结合高速缓存和虚拟内存</h6><p>在使用虚拟内存和SRAM的系统中，存在使用虚拟地址还是物理地址访问SRAM的问题，大多数会使用物理寻址。使用物理寻址，多个进程同时在cache中有存储块和共享来自相同虚拟页面的块是很简单的，cache无需处理保护问题，因为访问权限的检查是地址翻译过程的一部分。</p>
+<p><strong>假如CPU执行两道不同进程，进程的指令访问都是基于虚拟地址的，可能出现：进程A在被执行一段时间后，由于进程调度，被切换出去，需要执行进程B，而进程A的PCA(进程A的取地址指针)所指向的一段代码在cache中，而进程B的PCB由于是虚拟地址概念，有可能PCA=PCB(经过虚实地址转换后，物理PCB不会等于PCA)，如果在cache中利用PCB访问PCA，则会导致cache hit。为了解决这个问题，就采用物理地址访问cache，需要将地址进行一次转换</strong></p>
+<p>用虚拟地址访问cache：</p>
+<ul>
+<li>如果两段进程虚拟PC正好相同，会出现虚地址访问cache冲突；</li>
+<li>安全保护方法基于进程描述符ID，体现到了内存页表上，因此OS保护依赖于页表的安全，如果cache直接用虚拟地址访问，就绕过了页表机制，从而使用流水线中指令的执行不再存在保护；</li>
+<li>OS允许多个虚拟页面映射到同一个物理地址页面空间，如果纯粹是虚拟地址访问，可能出现读写不一致情况；</li>
+<li>读写外部设备问题：现在外部IO设备的地址映射一般是物理地址映射，TLB可以把虚拟地址映射为物理地址，但是在读写外部IO设备时，没有机制把物理地址映射为虚拟地址；</li>
+</ul>
+<p>虚拟地址访问cache，物理地址比较tag，利用了页表的虚拟地址和物理地址在低位是相同的，不同的是高位映射，物理地址映射：</p>
+<ul>
+<li>利用虚拟地址访问TLB，进行虚实地址转换，假设TLB命中，需要一个时钟周期；</li>
+<li>利用得到的物理地址访问cache，取出cache行的tag信息和data信息；假设命中需要一个时钟周期；</li>
+<li>基于物理地址，对TAG信息进行比较选择合适cache data。</li>
+</ul>
+<p>虚实结合方式：</p>
+<ul>
+<li>利用虚拟地址访问TLB，虚实地址转换，在这个周期中，利用虚拟地址低位访问cache，取出cache中存储的tag信息和data信息，这个时候tag信息其实对应的是物理地址的tag；</li>
+<li>假设TLB和cache都命中，利用上个节拍得到的物理地址进行tag比较，选择合适cache和data数据。</li>
+</ul>
+<p>主要思路是在地址翻译发生在高速缓存查找之前，页表条目可以缓存：<br><img src="https://note.youdao.com/yws/public/resource/9acf20157b8185176248dd461973ffe0/xmlnote/00ADDEA3642648D7BC31884F4A1D418F/29951" alt="image"></p>
+<h6 id="9-3-2-利用TLB加速地址翻译"><a href="#9-3-2-利用TLB加速地址翻译" class="headerlink" title="9.3.2 利用TLB加速地址翻译"></a>9.3.2 利用TLB加速地址翻译</h6><p>每次CPU产生一个虚拟地址，MMU就必须查阅一个PTE，以便将虚拟地址翻译为物理地址。最坏情况要求从内存多取一次数据，代价是几百个周期。如果PTE碰巧缓存在L1中，开销就会下降到1或2个周期。在MMU中包括一个关于PTE的小的缓存，称为翻译后备缓冲器TLB。每一行都保存着一个由单个PTE组成的块，通常有高度的相联度。用于组选择和行匹配的索引和标记字段是从虚拟地址的虚拟页号提取出来的，如果TLB有<code>$T=2^t$</code>个组，那么TLB索引是由VPN的t个最低位组成的，而TLB标记是由VPN剩余位组成的。<br>当TLB命中：</p>
+<ul>
+<li>CPU产生一个虚拟地址</li>
+<li>MMU从TLB取出相应PTE</li>
+<li>MMU将这个虚拟地址翻译成一个物理地址，发送到cache/memory</li>
+<li>cache/memory将所请求的数据字返回给CPU</li>
+</ul>
+<p>TLB不命中时，MMU必须从L1缓存取出相应PTE，新取出的PTE存放在TLB中，可能会覆盖一个已存在的条目。</p>
+<h6 id="9-3-3-多级页表"><a href="#9-3-3-多级页表" class="headerlink" title="9.3.3 多级页表"></a>9.3.3 多级页表</h6><p>用来压缩页表常用方法是使用层次结构的页表；多级页表从两个方面减少了内存要求：</p>
+<ul>
+<li>如果一级页表中一个PTE是空的，相应的二级页表根本不会存在，存在很大节约，因为大部分虚拟地址空间是未分配的；</li>
+<li>只有一级页表才需要总是在主存中，虚拟内存系统可以在需要时创建、页面调入或调出二级页表，减少了主存压力，只有最经常使用的二级页表才需要缓存在主存中。</li>
+</ul>
+<h5 id="9-4-Intel-Core-Linux内存系统"><a href="#9-4-Intel-Core-Linux内存系统" class="headerlink" title="9.4 Intel Core/Linux内存系统"></a>9.4 Intel Core/Linux内存系统</h5><p>处理器封装包括四个核、一个大的所有核共享的L3高速缓存以及一个DDR3内存控制器。每个核包含一个层次结构的TLB、一个层次结构的数据和指令高速缓存，以及一组快速的点到点链路，这个链路基于QuickPath技术，为了让一个核与其他核与外部I/O桥直接通信。TLB是虚拟寻址、四路组相联，L1、L2、L3是物理寻址的，块大小为64字节。L1和L2是8路组相联的，L3是16路组相联，页大小可以在启动时被配置为4KB或4MB,linux使用4KB的页，使用4级页表，每个进程有自己私有的页表层次结构，当一个linux进程在运行时，允许页表换进换出，但是与已分配的页相关联的页表都是驻留在内存中的。</p>
+<h6 id="优化地址翻译"><a href="#优化地址翻译" class="headerlink" title="优化地址翻译"></a>优化地址翻译</h6><p>地址翻译有两个步骤：1）MMU将虚拟地址翻译成物理地址2）将物理地址传送到L1高速缓存。 硬件实际上允许这些步骤部分重叠，加速了对L1高速缓存的访问。比如页大小为4KB的系统上有12位的VPO，并且这些位和相应物理地址的PPO12位是相同的。因为八路组相联、物理寻址的L1有64个组和大小为64字节的缓存块，每个物理地址有6个缓存偏移位<code>$log_2^{64}$</code>和6个索引位，这12位恰好是虚拟地址VPO部分，这不是偶然。当CPU需要翻译一个虚拟地址，发送VPN到MMU，发送VPO到L1，当MMU向TLB请求一个页表条目时，L1利用VPO查找相应的组，读出这个组里8个标记和相应数据字，MMU从TLB得到PPN时，缓存已经准备好试着把这个PPN与这8个标记进行匹配了。</p>
+<h6 id="9-4-2-Linux虚拟内存系统"><a href="#9-4-2-Linux虚拟内存系统" class="headerlink" title="9.4.2 Linux虚拟内存系统"></a>9.4.2 Linux虚拟内存系统</h6><p>linux为每个进程维护一个单独虚拟地址空间，内核虚拟内存包含内核的代码和数据结构，内核虚拟内存某些区域被映射到所有进程共享的物理页面。Linux也将一组连续的虚拟页面映射到相应的一组连续的物理页面，为内核提供便利的方法来访问物理内存中特定位置，例如当需要访问页表或一些设备上执行内存映射的I/O操作，而这些设备被映射到特定的物理内存位置。</p>
+<p>内核虚拟内存其他区域包含每个进程都不相同的数据，比如页表、内核在进程的上下文中执行代码使用的栈，以及记录虚拟地址空间当前组织的各种数据结构。</p>
+<p>linux将VM组织成一些段的集合，一个段就是已经存在着的虚拟内存的连续片，这些页以某种方式相关联的，例如代码段、数据段、堆、共享库段，以及用户栈都是不同区域。</p>
+<h5 id="9-5-内存映射"><a href="#9-5-内存映射" class="headerlink" title="9.5 内存映射"></a>9.5 内存映射</h5><p>linux将一个虚拟内存区域与一个磁盘上的对象关联起来，初始化这个虚拟内存区域的内容，这个过程就是内存映射memory mapping。虚拟内存可以映射到两种类型对象：</p>
+<ul>
+<li>Linux文件系统中的普通文件：一个区域可以映射到一个普通磁盘文件连续部分，例如一个可执行目标文件。文件区section被分成页大小的片，每一片都包含一个虚拟页面初始内容。因为按需进行页面调度，所以这些虚拟页面没有实际交换进入物理内存，直到CPU第一次引用页面(即发射一个虚拟地址)，如果区域比文件大，用零填充余下部分。</li>
+<li>匿名文件。一个区域也可以映射到一个匿名文件，由内核创建，包含的全是二进制0。CPU第一次引用这样一个区域内的虚拟页面时，内核就在物理内存中找到一个合适的牺牲页面，如果页面被修改过，就将这个页面换出来，用二进制零覆盖牺牲页面并更新页表，将这个页面标记为是驻留在内存中。在磁盘和内存间并没有实际的数据传送，因此映射到匿名文件的区域中的页面有时也叫请求二进制的页demand-zero page</li>
+</ul>
+<p>无论哪种情况，一旦一个虚拟页面被初始化了，就在一个由内核维护的专门的交换文件之间换来换去，交换文件也叫做交换空间swap space。任何时刻，<strong>交换空间都限制着当前运行着的进程能够分配的虚拟页面的总数。</strong></p>
+<h6 id="共享对象"><a href="#共享对象" class="headerlink" title="共享对象"></a>共享对象</h6><p>一个对象可以被映射到虚拟内存一个区域，作为共享对象或者私有对象。共享对象被映射到多个共享区域，物理内存只需要存放共享对象一个副本；私有对象使用一种叫做写时复制copy-on-write的技术映射到虚拟内存中。</p>
+<h6 id="fork函数"><a href="#fork函数" class="headerlink" title="fork函数"></a>fork函数</h6><p>fork函数被当前进程调用时，内核为新进程创建各种数据结构，并分配给它一个唯一的PID，为了给新进程创建虚拟内存创建了当前进程的mm_struct、区域结构和页表原样副本，将两个进程中每个页表标记为只读，并将两个进程中两个区域结构都标记为私有的写时复制。当fork函数在新进程中返回时，新进程现在的VM刚好和调用fork时存在的VM内存相同，当两个进程中任一个后来进行写操作时，写时复制就会创建新页面，因此为每个进程保持了私有地址空间的抽象概念。</p>
+<h6 id="execve函数"><a href="#execve函数" class="headerlink" title="execve函数"></a>execve函数</h6><p>虚拟内存和内存映射将程序加载到内存的过程中扮演很关键的角色。假如调用：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">execve(&quot;a.out&quot;,null,null)</span><br></pre></td></tr></table></figure></p>
+<p>execve函数在当前进程中加载并运行包含可执行文件的目标文件a.out中的程序，包括以下几个步骤：</p>
+<ul>
+<li>删除已存在的用户区域。删除当前进程虚拟地址的用户部分的已存在的区域结构；</li>
+<li>映射私有区域。为新程序的代码、数据、bss和栈区域创建新的区域结构，所有这些新区域都是私有的、写时复制的。代码和数据区域被映射到a.out文件中的.text和.data区。bss区域是请求二进制零的，映射到匿名文件，大小包含在a.out中。栈和堆区域也是请求二进制零的，初始长度为0.</li>
+<li>映射共享区域。如果a.out与共享对象链接，比如标准C库libc.so，那么这些对象都是动态链接到这个程序的，然后再映射到虚拟地址空间中的共享区域内。</li>
+<li>设置程序计数器PC。execve做的最后一件事就是设置当前进程上下文中的PC，使之指向代码区域入口点。</li>
+</ul>
+<p>下一次调度这个进程，将从这个入口点开始执行。</p>
+<h6 id="使用mmap函数的用户级内存映射"><a href="#使用mmap函数的用户级内存映射" class="headerlink" title="使用mmap函数的用户级内存映射"></a>使用mmap函数的用户级内存映射</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">void *mmap(vaoid *start,size_t length,int prot,int flags,int df,off_t offset)</span><br></pre></td></tr></table></figure>
+<p>mmap函数要求内核创建一个新的虚拟内存区域，最好是从start开始的一个区域，并将文件描述符fd指定的对象的一个连续的片chunk映射到这个新的区域。连续的对象片大小文length字节，从距文件开始处偏移量为offset字节的地方开始。start地址仅仅是个暗示，通常被定义为null。</p>
+<p>prot包含描述新映射的虚拟内存区域的访问权限位。flags由描述被映射对象类型的位组成，如果设置了MAP_ANON标记位，被映射的对象就是一个匿名对象，相应虚拟页是请求二进制的。MAP_PRIVATE表示被映射的对象是一个私有的、写时复制对象，MAP_SHARED表示是一个共享对象。munmap删除虚拟内存的区域。</p>
+<h5 id="9-6-动态内存分配"><a href="#9-6-动态内存分配" class="headerlink" title="9.6 动态内存分配"></a>9.6 动态内存分配</h5><p>虽然可以使用mmap和munmap函数创建、删除虚拟内存区域，但是动态内存分配dynamic memory allocator更方便，也具有更好移植性。</p>
+<p>动态内存分配器维护着进程虚拟内存区域的堆heap。它紧接着在未初始化的数据区域开始，向上生长(向更高的地址)，对于每个进程，内核维护着一个变量brk，指向堆的顶部。分配器将堆视为一组不同大小的块的集合来维护，每个块就是一个连续的虚拟内存片chunk，要么是已分配的、要么是空闲的。已分配的块保持已分配状态，直到它被释放，这种释放是程序显示执行、或者是内存分配器隐式执行。</p>
+<ul>
+<li>显示分配器。通过malloc和free管理内存；</li>
+<li>隐式分配器。也叫做垃圾回收。</li>
+</ul>
+<p>malloc通过使用mmap和munmap函数，显示分配和释放堆内存，还可以使用sbrk函数，通过将内核的brk指针增加incr来扩展和收缩堆。</p>
+<h6 id="为什么要使用动态内存分配"><a href="#为什么要使用动态内存分配" class="headerlink" title="为什么要使用动态内存分配"></a>为什么要使用动态内存分配</h6><p>谋者程序直到运行时才知道某些数据结构大小。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://hcyxy.tech/2019/03/09/计算机系统-程序结构和执行/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2711,157 +3079,11 @@ tasks.withType(JavaCompile) {
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://hcyxy.tech/2018/10/26/计数数组/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="hecy">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="无病呻吟">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/10/26/计数数组/" itemprop="url">计数数组</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-26T22:28:35+08:00">
-                2018-10-26
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/算法与数据结构/" itemprop="url" rel="index">
-                    <span itemprop="name">算法与数据结构</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h4><h5 id="Count-of-Smaller-Numbers-After-Self-数组计数"><a href="#Count-of-Smaller-Numbers-After-Self-数组计数" class="headerlink" title="Count of Smaller Numbers After Self(数组计数)"></a>Count of Smaller Numbers After Self(数组计数)</h5><p>给定一个数组nums,返回一个计数数组count，count[i]表示nums中第i个右边有多少个数小于nums[i]</p>
-<p>Example:</p>
-<p>nums = [5, 2, 6, 1]</p>
-<p>输出[2,1,1,0]<br>下面是给出的利用线段树，来处理的，时间复杂度O(NlogN)<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br></pre></td><td class="code"><pre><span class="line">class SegmentTreeNode(s: Int, e: Int) &#123;</span><br><span class="line">    var start: Int = s</span><br><span class="line">    var end: Int = e</span><br><span class="line">    var count: Int = <span class="number">0</span></span><br><span class="line">    var left: SegmentTreeNode? = <span class="keyword">null</span></span><br><span class="line">    var right: SegmentTreeNode? = <span class="keyword">null</span></span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">fun <span class="title">countSmaller</span><span class="params">(nums: IntArray)</span>: List&lt;Int&gt; </span>&#123;</span><br><span class="line">    val result = ArrayList&lt;Int&gt;()</span><br><span class="line"></span><br><span class="line">    var min = Integer.MAX_VALUE</span><br><span class="line">    var max = Integer.MIN_VALUE</span><br><span class="line">    <span class="keyword">for</span> (i in nums) &#123;</span><br><span class="line">        min = Math.min(min, i)</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (min &lt; <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">for</span> (i in nums.indices) &#123;</span><br><span class="line">            nums[i] -= min </span><br><span class="line">            &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> (i in nums) &#123;</span><br><span class="line">        max = Math.max(max, i)</span><br><span class="line">    &#125;</span><br><span class="line">    val root = build(<span class="number">0</span>, max)</span><br><span class="line">    <span class="keyword">for</span> (i in nums.indices) &#123;</span><br><span class="line">        updateAdd(root, nums[i])</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> (i in nums.indices) &#123;</span><br><span class="line">        updateDel(root, nums[i])</span><br><span class="line">        result.add(query(root, <span class="number">0</span>, nums[i] - <span class="number">1</span>))</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> result</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">fun <span class="title">build</span><span class="params">(start: Int, end: Int)</span>: SegmentTreeNode? </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (start &gt; end) <span class="keyword">return</span> <span class="keyword">null</span></span><br><span class="line">    <span class="keyword">if</span> (start == end) <span class="keyword">return</span> SegmentTreeNode(start, end)</span><br><span class="line">    val mid = (start + end) / <span class="number">2</span></span><br><span class="line">    val root = SegmentTreeNode(start, end)</span><br><span class="line">    root.left = build(start, mid)</span><br><span class="line">    root.right = build(mid + <span class="number">1</span>, end)</span><br><span class="line">    root.count = root.left!!.count + root.right!!.count</span><br><span class="line">    <span class="keyword">return</span> root</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">fun <span class="title">query</span><span class="params">(root: SegmentTreeNode?, start: Int, end: Int)</span>: Int </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (root == <span class="keyword">null</span>) <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">    <span class="keyword">if</span> (root.start == start &amp;&amp; root.end == end) <span class="keyword">return</span> root.count</span><br><span class="line">    val mid = (root.start + root.end) / <span class="number">2</span></span><br><span class="line">    <span class="keyword">return</span> when &#123;</span><br><span class="line">        end &lt; mid -&gt; query(root.left, start, end)</span><br><span class="line">        start &gt; end -&gt; query(root.right, start, end)</span><br><span class="line">        <span class="keyword">else</span> -&gt; query(root.left, start, mid) + query(root.right, mid + <span class="number">1</span>, end)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function">fun <span class="title">updateAdd</span><span class="params">(root: SegmentTreeNode?, num: Int)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (root == <span class="keyword">null</span> || root.start &gt; num || root.end &lt; num) <span class="keyword">return</span></span><br><span class="line">    <span class="keyword">if</span> (root.start == num &amp;&amp; root.end == num) &#123;</span><br><span class="line">        root.count++</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    &#125;</span><br><span class="line">    val mid = (root.start + root.end) / <span class="number">2</span></span><br><span class="line">    <span class="keyword">if</span> (num &lt;= mid) &#123;</span><br><span class="line">        updateAdd(root.left, num)</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        updateAdd(root.right, num)</span><br><span class="line">    &#125;</span><br><span class="line">    root.count = root.left!!.count + root.right!!.count</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">fun <span class="title">updateDel</span><span class="params">(root: SegmentTreeNode?, num: Int)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (root == <span class="keyword">null</span> || root.start &gt; num || root.end &lt; num) <span class="keyword">return</span></span><br><span class="line">    <span class="keyword">if</span> (root.start == num &amp;&amp; root.end == num) &#123;</span><br><span class="line">        root.count--</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    &#125;</span><br><span class="line">    val mid = (root.start + root.end) / <span class="number">2</span></span><br><span class="line">    <span class="keyword">if</span> (num &lt;= mid) &#123;</span><br><span class="line">        updateDel(root.left, num)</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        updateDel(root.right, num)</span><br><span class="line">    &#125;</span><br><span class="line">    root.count = root.left!!.count + root.right!!.count</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">fun <span class="title">main</span><span class="params">(vararg args: String)</span> </span>&#123;</span><br><span class="line">    val number = intArrayOf(<span class="number">5</span>, <span class="number">2</span>, <span class="number">6</span>, <span class="number">1</span>,<span class="number">100000</span>)</span><br><span class="line">    println(countSmaller(number))</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>树状数组解法O(nLogN)<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">fun <span class="title">main</span><span class="params">(vararg args: String)</span> </span>&#123;</span><br><span class="line">    val number = intArrayOf(<span class="number">5</span>, <span class="number">2</span>, <span class="number">6</span>, <span class="number">1</span>, <span class="number">100000</span>)</span><br><span class="line">    println(countSmaller(number))</span><br><span class="line">    println(<span class="number">6</span> and -<span class="number">6</span>)</span><br><span class="line">    println(-<span class="number">6</span> and <span class="number">0xFF</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> fun <span class="title">lowbit</span><span class="params">(x: Int)</span>: Int </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> x and -x</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> fun <span class="title">add</span><span class="params">(bit: IntArray, i: Int, num: Int)</span> </span>&#123;</span><br><span class="line">    var j = i</span><br><span class="line">    <span class="keyword">while</span> (j &lt; bit.size) &#123;</span><br><span class="line">        bit[j] += num</span><br><span class="line">        j += lowbit(i)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> fun <span class="title">query</span><span class="params">(bit: IntArray, i: Int)</span>: Int </span>&#123;</span><br><span class="line">    var j = i</span><br><span class="line">    var ans = <span class="number">0</span></span><br><span class="line">    <span class="keyword">while</span> (j &gt; <span class="number">0</span>) &#123;</span><br><span class="line">        ans += bit[j]</span><br><span class="line">        j -= lowbit(i)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> ans</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">fun <span class="title">countSmaller</span><span class="params">(nums: IntArray)</span>: List&lt;Int&gt; </span>&#123;</span><br><span class="line">    val tmp = nums.clone()</span><br><span class="line">    Arrays.sort(tmp) <span class="comment">//asc升序</span></span><br><span class="line">    <span class="keyword">for</span> (i in nums.indices) nums[i] = Arrays.binarySearch(tmp, nums[i]) <span class="comment">//原数组各个元素在有序数组中的位置</span></span><br><span class="line">    val bit = IntArray(nums.size)</span><br><span class="line">    val ans = arrayOfNulls&lt;Int&gt;(nums.size)</span><br><span class="line">    <span class="keyword">for</span> (i in nums.indices.reversed()) &#123;</span><br><span class="line">        ans[i] = query(bit, nums[i])</span><br><span class="line">        add(bit, nums[i] + <span class="number">1</span>, <span class="number">1</span>)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> Arrays.asList&lt;Int&gt;(*ans)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -2907,7 +3129,7 @@ tasks.withType(JavaCompile) {
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">30</span>
+                  <span class="site-state-item-count">31</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

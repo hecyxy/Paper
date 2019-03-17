@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="数组补丁," />
+  <meta name="keywords" content="Hexo, NexT" />
 
 
 
@@ -79,18 +79,16 @@
 
 
 
-<meta name="description" content="题目给出一个从小到大排好序的整数数组nums和一个整数n，在数组中添加若干个补丁（元素）使得[1,n]的区间内的所有数都可以表示成nums中若干给出一个从小到大排好序的整数数组nums和一个整数n，在数组中添加若干个补丁（元素）使得[1,n]的区间内的所有数都可以表示成nums中若干。  nums[1,3],n=6 返回1 nums[1,5,10], n=20,返回2  思路每次使用1，2，4…2">
-<meta name="keywords" content="数组补丁">
-<meta property="og:type" content="article">
-<meta property="og:title" content="数组补丁">
-<meta property="og:url" content="http://hcyxy.tech/2018/10/10/数字最小范围/index.html">
+<meta name="description" content="a dreamer">
+<meta property="og:type" content="website">
+<meta property="og:title" content="无病呻吟">
+<meta property="og:url" content="http://hcyxy.tech/page/4/index.html">
 <meta property="og:site_name" content="无病呻吟">
-<meta property="og:description" content="题目给出一个从小到大排好序的整数数组nums和一个整数n，在数组中添加若干个补丁（元素）使得[1,n]的区间内的所有数都可以表示成nums中若干给出一个从小到大排好序的整数数组nums和一个整数n，在数组中添加若干个补丁（元素）使得[1,n]的区间内的所有数都可以表示成nums中若干。  nums[1,3],n=6 返回1 nums[1,5,10], n=20,返回2  思路每次使用1，2，4…2">
+<meta property="og:description" content="a dreamer">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-10-10T16:31:29.825Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="数组补丁">
-<meta name="twitter:description" content="题目给出一个从小到大排好序的整数数组nums和一个整数n，在数组中添加若干个补丁（元素）使得[1,n]的区间内的所有数都可以表示成nums中若干给出一个从小到大排好序的整数数组nums和一个整数n，在数组中添加若干个补丁（元素）使得[1,n]的区间内的所有数都可以表示成nums中若干。  nums[1,3],n=6 返回1 nums[1,5,10], n=20,返回2  思路每次使用1，2，4…2">
+<meta name="twitter:title" content="无病呻吟">
+<meta name="twitter:description" content="a dreamer">
 
 
 
@@ -120,13 +118,13 @@
 
 
 
-  <link rel="canonical" href="http://hcyxy.tech/2018/10/10/数字最小范围/"/>
+  <link rel="canonical" href="http://hcyxy.tech/page/4/"/>
 
 
 
 
 
-  <title>数组补丁 | 无病呻吟</title>
+  <title>无病呻吟</title>
   
 
 
@@ -145,7 +143,8 @@
     
   
 
-  <div class="container sidebar-position-left page-post-detail">
+  <div class="container sidebar-position-left 
+  page-home">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -218,9 +217,9 @@
         <div class="content-wrap">
           <div id="content" class="content">
             
-
-  <div id="posts" class="posts-expand">
+  <section id="posts" class="posts-expand">
     
+      
 
   
 
@@ -233,7 +232,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://hcyxy.tech/2018/10/10/数字最小范围/">
+    <link itemprop="mainEntityOfPage" href="http://hcyxy.tech/2018/07/07/多属性连通性检测/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="hecy">
@@ -250,7 +249,9 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">数组补丁</h1>
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/07/07/多属性连通性检测/" itemprop="url">多属性连通性检测</a></h1>
         
 
         <div class="post-meta">
@@ -262,8 +263,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-10T21:19:18+08:00">
-                2018-10-10
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-07T12:00:04+08:00">
+                2018-07-07
               </time>
             
 
@@ -322,22 +323,46 @@
       
 
       
-        <h5 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h5><p>给出一个从小到大排好序的整数数组nums和一个整数n，在数组中添加若干个补丁（元素）使得[1,n]的区间内的所有数都可以表示成nums中若干给出一个从小到大排好序的整数数组nums和一个整数n，在数组中添加若干个补丁（元素）使得[1,n]的区间内的所有数都可以表示成nums中若干。</p>
-<ol>
-<li>nums[1,3],n=6 返回1</li>
-<li>nums[1,5,10], n=20,返回2</li>
-</ol>
-<h5 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h5><p>每次使用1，2，4…2k这样k+1个数可以构造出[1,2k+1]之间任何数。但是这样肯定不是最少。<br>优化：</p>
-<ol>
-<li>开始1是表示范围的upper，每次尝试用已有的数字来扩大能表示的连续范围</li>
-<li>假定当前上界U，下一个元素X，如果X&lt;=U，上界可以继续扩大。每个之前能表示出的数加上X，就扩大了能表示的范围。</li>
-<li>如果X&gt;U，这时候意味不能增加在给定数组中的元素</li>
-<li>此时，假定当前上界为U，需要把U加进来，这样U到2U-1之间这段就可以补进来</li>
-<li>从而上界变成2U，从而上界变成2U，以此类推</li>
-</ol>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">solve</span><span class="params">(<span class="keyword">int</span>[] arr, <span class="keyword">int</span> N)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> upper = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">int</span> miss = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> idx = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span> (upper &lt;= N) &#123;</span><br><span class="line">            <span class="keyword">if</span> (idx &lt; arr.length &amp;&amp; arr[idx] &lt;= upper) &#123;</span><br><span class="line">                upper += arr[idx];</span><br><span class="line">                idx += <span class="number">1</span>;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                upper += upper;</span><br><span class="line">                miss += <span class="number">1</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> miss;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-<p>时间复杂度O(N)</p>
+        
+          
+            <h4 id="问题描述："><a href="#问题描述：" class="headerlink" title="问题描述："></a>问题描述：</h4><p></p><p> 线上遇到的一个问题，这里做一个变形。有若干行数据（2000w）左右，每行有若干个属性，比如姓名、邮箱、地址等等；如果两行数据有至少一个属性值相同，就认为这两个行是连通的；并且连通性有转移，比如A与B连通，B与C连通，就可以认为A与C连通。那么这两千万行数据哪些是连通的？</p><p></p>
+<table>
+<thead>
+<tr>
+<th>name</th>
+<th style="text-align:center">address</th>
+<th style="text-align:right">tel</th>
+<th style="text-align:right">…</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A</td>
+<td style="text-align:center">abc</td>
+<td style="text-align:right">135</td>
+<td style="text-align:right">…</td>
+</tr>
+<tr>
+<td>A</td>
+<td style="text-align:center">bcd</td>
+<td style="text-align:right">136</td>
+<td style="text-align:right">…</td>
+</tr>
+<tr>
+<td>B</td>
+<td style="text-align:center">cde</td>
+<td style="text-align:right">136</td>
+<td style="text-align:right">…</td>
+</tr>
+</tbody>
+</table>
+<p>如上第一行与第二行name相同，可认为行1连通行2；<br>第二行与第三行第三个属性相同，可认为行2连通行3；<br>于是1 2 3可认为是一个组。</p>
+<h6 id="暴力解法：对每个属性遍历，对每行数据遍历，时间复杂度最少为-m-n-2-n为行数"><a href="#暴力解法：对每个属性遍历，对每行数据遍历，时间复杂度最少为-m-n-2-n为行数" class="headerlink" title="暴力解法：对每个属性遍历，对每行数据遍历，时间复杂度最少为 m*n^2(n为行数)"></a>暴力解法：对每个属性遍历，对每行数据遍历，时间复杂度最少为 m*n^2(n为行数)</h6><h6 id="思路1：看到连通性立马可以想到并查集，但是并查集是已经知道哪些行数据是连通的，然后再根据并查集构造的数判断哪些属于一个组，这是整体思路。对并查集不清楚可参考"><a href="#思路1：看到连通性立马可以想到并查集，但是并查集是已经知道哪些行数据是连通的，然后再根据并查集构造的数判断哪些属于一个组，这是整体思路。对并查集不清楚可参考" class="headerlink" title="思路1：看到连通性立马可以想到并查集，但是并查集是已经知道哪些行数据是连通的，然后再根据并查集构造的数判断哪些属于一个组，这是整体思路。对并查集不清楚可参考"></a>思路1：看到连通性立马可以想到并查集，但是并查集是已经知道哪些行数据是连通的，然后再根据并查集构造的数判断哪些属于一个组，这是整体思路。对并查集不清楚可参考</h6><p><a href="https://blog.csdn.net/u011730199/article/details/80909373" target="_blank" rel="noopener">https://blog.csdn.net/u011730199/article/details/80909373</a><br><a href="https://blog.csdn.net/dm_vincent/article/details/7655764" target="_blank" rel="noopener">https://blog.csdn.net/dm_vincent/article/details/7655764</a></p>
+<h6 id="接下来，如何判断行与行之间的连通性呢？"><a href="#接下来，如何判断行与行之间的连通性呢？" class="headerlink" title="接下来，如何判断行与行之间的连通性呢？"></a>接下来，如何判断行与行之间的连通性呢？</h6><p>遍历做法直接舍弃。考虑到一行有若干属性，可以联想到树的层级结构。对每行数据，如果对应的属性值已经存在，则连通。判断属性值是否已经存在最快的是使用HashMap的key来判断。<br>每行数据有m个属性，初始化m个HashMap&lt;String,Integer&gt;  String为属性值，int为行号。对每行数据判断对应层级的map，是否存在，若存在<br>uf.union(m1,m2);若不存在map.put(string,m);<br>时间复杂度为m*n m为属性个数，n为行数<br>如果想要判断哪些连通，需要使用BFS或者DFS。这里略过。<br>代码如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">public class Vert &#123;</span><br><span class="line">	private static ArrayList&lt;HashMap&lt;String,Integer&gt;&gt; list = new ArrayList&lt;HashMap&lt;String,Integer&gt;&gt;();</span><br><span class="line">	public static void main(String[] args) &#123;</span><br><span class="line">		String[][] line = &#123;&#123;&quot;136&quot;,&quot;11@qq.com&quot;,&quot;22@c.com&quot;&#125;,&#123;&quot;137&quot;,&quot;11@qq.com&quot;,&quot;23@c.com&quot;&#125;,</span><br><span class="line">				&#123;&quot;138&quot;,&quot;110@qq.com&quot;,&quot;23@c.com&quot;&#125;,&#123;&quot;139&quot;,&quot;1100@qq.com&quot;,&quot;24@c.com&quot;&#125;&#125;;</span><br><span class="line">		Union_Find u = new Union_Find(line.length);</span><br><span class="line">		for(int i = 0;i&lt;line.length;i++) &#123;</span><br><span class="line">			for(int j = 0;j&lt;line[i].length;j++) &#123;</span><br><span class="line">				if(i == 0) &#123;</span><br><span class="line">					HashMap&lt;String,Integer&gt; t = new HashMap&lt;String,Integer&gt;();</span><br><span class="line">					arr[i] = 1;</span><br><span class="line">					t.put(line[i][j], i);</span><br><span class="line">					list.add(t);</span><br><span class="line">				&#125;else &#123;</span><br><span class="line">				HashMap&lt;String,Integer&gt; temp = list.get(j);</span><br><span class="line">				if(temp.containsKey(line[i][j]))</span><br><span class="line">					u.union(temp.get(line[i][j]), i);</span><br><span class="line">				else</span><br><span class="line">					list.get(j).put(line[i][j], i);</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		System.out.println(u.isConnected(1, 2));</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>Union_Find是一个并查集实现，这里略过。如果有更好的解法或者bug。欢迎留言+交流，vx：LEILE111,邮箱<a href="mailto:hcy_xy@qq.com" target="_blank" rel="noopener">hcy_xy@qq.com</a></p>
 
+          
+        
       
     </div>
     
@@ -352,40 +377,14 @@
 
     <footer class="post-footer">
       
-        <div class="post-tags">
-          
-            <a href="/tags/数组补丁/" rel="tag"># 数组补丁</a>
-          
-        </div>
+
+      
+
       
 
       
       
-      
-
-      
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-              <a href="/2018/10/07/动态规划/" rel="next" title="动态规划">
-                <i class="fa fa-chevron-left"></i> 动态规划
-              </a>
-            
-          </div>
-
-          <span class="post-nav-divider"></span>
-
-          <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/10/12/多个数组最小范围/" rel="prev" title="多个有序数组最小数字范围">
-                多个有序数组最小数字范围 <i class="fa fa-chevron-right"></i>
-              </a>
-            
-          </div>
-        </div>
-      
-
-      
+        <div class="post-eof"></div>
       
     </footer>
   </div>
@@ -395,11 +394,14 @@
   </article>
 
 
+    
+  </section>
 
-    <div class="post-spread">
-      
-    </div>
-  </div>
+  
+  <nav class="pagination">
+    <a class="extend prev" rel="prev" href="/page/3/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span>
+  </nav>
+
 
 
           </div>
@@ -407,10 +409,6 @@
 
 
           
-
-  
-
-
 
         </div>
         
@@ -431,17 +429,8 @@
       
 
       
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            站点概览
-          </li>
-        </ul>
-      
 
-      <section class="site-overview-wrap sidebar-panel">
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -501,22 +490,6 @@
         </div>
       </section>
 
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#题目"><span class="nav-number">1.</span> <span class="nav-text">题目</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#思路"><span class="nav-number">2.</span> <span class="nav-text">思路</span></a></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
       
 
       
@@ -650,10 +623,6 @@
   
 
   
-  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
-<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
-
-
 
   
 
