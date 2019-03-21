@@ -232,6 +232,163 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://hcyxy.tech/2018/07/07/overview-of-supervised-learning/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="hecy">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="无病呻吟">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/07/07/overview-of-supervised-learning/" itemprop="url">overview of supervised learning</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-07T22:24:48+08:00">
+                2018-07-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/机器学习/" itemprop="url" rel="index">
+                    <span itemprop="name">机器学习</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"> </script></p>
+<h3 id="名词解释"><a href="#名词解释" class="headerlink" title="名词解释"></a>名词解释</h3><p>bivariate gaussian二元高斯分布<br></p>
+<h3 id="linear-regresion-VS-KNN"><a href="#linear-regresion-VS-KNN" class="headerlink" title="linear regresion VS KNN"></a>linear regresion VS KNN</h3><p>1、linear regression 具有低偏差 高方差的特点<br><br>2、KNN具有高偏差 低方差的特点<br><br>KNN所产生的误差随k的增加而增加,在高维度下面会出现维度爆炸问题，本质上就是数据稀疏化，如果遇到特殊的分布，函数值还可能只集中在边缘部分。</p>
+<h3 id="模型选择准则"><a href="#模型选择准则" class="headerlink" title="模型选择准则"></a>模型选择准则</h3><p><strong>1、EPE(Expected Predictor Error)</strong> 期望预测误差<br><br>$$EPE=E(Y-E(X))^2=\int[y-f(x)]^2Pr(dx,dy)$$</p>
+<p>进一步化简：<br><br>$$EPE(f)=ExE_{Y|X}([Y-f(X)]^2|X)$$<br><br>$$f(x)=argmin_cE_{Y|X}([Y-c]^2|X=x)$$<br></p>
+<h2 id="当采用均方差时，最好的预测是条件均值：f-x-E-Y-X-x"><a href="#当采用均方差时，最好的预测是条件均值：f-x-E-Y-X-x" class="headerlink" title="当采用均方差时，最好的预测是条件均值：f(x)=E(Y|X=x)"></a>当采用均方差时，最好的预测是条件均值：f(x)=E(Y|X=x)</h2><p><strong>2、EPE(x0)</strong> 的计算 <br><br>令$$u=E_{y_0|x_0}(y_0)=x_0^Tβ$$<br><br>$$EPE(x_0)=E_{y_0|x_0}E_D(y_0-y)^2=(y_0^2-u^2)+(E_D(y^2)-(E_D(y))^2)+((E_D(y))^2-2y_0E_Dy+u^2)$$<br></p>
+<h2 id="即：-E-y-0-x-0-E-D-y-0-y-2-Var-y-0-x-0-Var-y-Bias-2-y"><a href="#即：-E-y-0-x-0-E-D-y-0-y-2-Var-y-0-x-0-Var-y-Bias-2-y" class="headerlink" title="即：$$E_{y_0|x_0}E_D((y_0-y)^2)=Var(y_0|x_0)+Var(y)+Bias^2(y)$$"></a>即：$$E_{y_0|x_0}E_D((y_0-y)^2)=Var(y_0|x_0)+Var(y)+Bias^2(y)$$<br></h2><p>3、如果一个算法在等方向的相邻区域产生局部变化函数无法克服高维爆炸问题；克服了等方向问题，又会出现在各个方向不等变化。<br></p>
+<h2 id="EPE得到的是一个随机变量-XX-T-线性模型得到的是一个数据矩阵：-X-TX"><a href="#EPE得到的是一个随机变量-XX-T-线性模型得到的是一个数据矩阵：-X-TX" class="headerlink" title="EPE得到的是一个随机变量$$XX^T$$ 线性模型得到的是一个数据矩阵：$$X^TX$$"></a>EPE得到的是一个随机变量$$XX^T$$ 线性模型得到的是一个数据矩阵：$$X^TX$$<br></h2><p><strong>4、模型的决定</strong><br><br>模型需要确定一个平滑的或者是复杂的参数：</p>
+<ol>
+<li>惩罚项的乘数</li>
+<li>核的宽度</li>
+<li>或基函数的数量</li>
+</ol>
+<hr>
+<p>5、期望预测误差<br></p>
+<h2 id="EPE-k-X-0-E-Y-f-k-x-0-2-X-x-0-θ-2-Bias-2-f-k-x-0-Var-D-f-k-x-0-θ-2-f-x-0-frac-1-k-sum-l-1-kf-x-k-2-θ-2-k"><a href="#EPE-k-X-0-E-Y-f-k-x-0-2-X-x-0-θ-2-Bias-2-f-k-x-0-Var-D-f-k-x-0-θ-2-f-x-0-frac-1-k-sum-l-1-kf-x-k-2-θ-2-k" class="headerlink" title="$$EPE_k(X_0)=E[(Y-f_k(x_0))^2|X=x_0]=θ^2+[Bias^2(f_k(x_0))+Var_D(f_k(x_0))]=θ^2+[f(x_0)-\frac{1}{k}\sum_{l=1}^kf(x_k)]^2+θ^2/k$$"></a>$$EPE_k(X_0)=E[(Y-f_k(x_0))^2|X=x_0]=θ^2+[Bias^2(f_k(x_0))+Var_D(f_k(x_0))]=θ^2+[f(x_0)-\frac{1}{k}\sum_{l=1}^kf(x_k)]^2+θ^2/k$$<br></h2><p>利用加权最小二乘解决异方差问题，异方差问题就是随着变量变化，方差值会不同，比如高收入家庭支出占比变化大；</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://hcyxy.tech/2018/07/07/多属性连通性检测/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -445,7 +602,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">31</span>
+                  <span class="site-state-item-count">32</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

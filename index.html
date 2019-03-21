@@ -232,6 +232,158 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://hcyxy.tech/2019/03/20/数据流中位数/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="hecy">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="无病呻吟">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/03/20/数据流中位数/" itemprop="url">数据流中位数</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-20T22:03:14+08:00">
+                2019-03-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/算法与数据结构/" itemprop="url" rel="index">
+                    <span itemprop="name">算法与数据结构</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h5 id="如何从数据流得到一个中位数？"><a href="#如何从数据流得到一个中位数？" class="headerlink" title="如何从数据流得到一个中位数？"></a>如何从数据流得到一个中位数？</h5><ul>
+<li>数组/链表忽略</li>
+<li>二叉搜索树，可以把插入新数据平均时间降到O(logN)，当极度不平衡时，插入新数据仍是O(N)；可以将其升级为平衡二叉树AVL，可以在O(logN)时间往AVL添加一个新结点，用O(1)得到中位数；</li>
+<li>可以用两个堆实现。如果能保证数据容器左边的数据小于右边数据，即使两边没有排序，也能根据左边最大和右边最小的数得到中位数。往堆中插入数据时间复杂度为O(logN)。</li>
+</ul>
+<p>利用堆实现的步骤：</p>
+<blockquote>
+<p>将新数据插入到最大堆，把最大堆的最大数字拿出来插入到最小堆。由于最终插入到最小堆的数字是原最大堆中最大的数字，就保证最小堆大于最大堆数字。</p>
+</blockquote>
+<p>堆的实现代码：<br><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Heap</span>&lt;<span class="type">T</span>&gt;</span>(<span class="keyword">private</span> <span class="keyword">val</span> cmp: Comparator&lt;T&gt;) &#123;</span><br><span class="line">    <span class="comment">//堆中存放的数据集合</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">val</span> <span class="keyword">data</span> = ArrayList&lt;T&gt;(<span class="number">64</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 向上调整堆</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> index 被上移元素位置</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="function"><span class="keyword">fun</span> <span class="title">shiftUp</span><span class="params">(index: <span class="type">Int</span>)</span></span> &#123;</span><br><span class="line">        <span class="keyword">var</span> idx = index</span><br><span class="line">        <span class="keyword">if</span> (idx &lt; <span class="number">0</span> || idx &gt;= <span class="keyword">data</span>.size) &#123;</span><br><span class="line">            <span class="keyword">throw</span> IllegalArgumentException(<span class="string">"<span class="variable">$idx</span>"</span>)</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">val</span> intent = <span class="keyword">data</span>[idx]</span><br><span class="line">        <span class="comment">//如果不是根元素 需要上移</span></span><br><span class="line">        <span class="keyword">while</span> (idx &gt; <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">val</span> parentIdx = (idx - <span class="number">1</span>) / <span class="number">2</span></span><br><span class="line">            <span class="keyword">val</span> parent = <span class="keyword">data</span>[parentIdx]</span><br><span class="line">            <span class="keyword">if</span> (cmp.compare(intent, parent) &gt; <span class="number">0</span>) &#123;</span><br><span class="line">                <span class="keyword">data</span>[idx] = parent</span><br><span class="line">                idx = parentIdx</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">data</span>[idx] = intent</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@Description</span> 向下调整堆</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="function"><span class="keyword">fun</span> <span class="title">shiftDown</span><span class="params">(index: <span class="type">Int</span>)</span></span> &#123;</span><br><span class="line">        <span class="keyword">var</span> idx = index</span><br><span class="line">        <span class="keyword">if</span> (idx &lt; <span class="number">0</span> || idx &gt; <span class="keyword">data</span>.size) &#123;</span><br><span class="line">            <span class="keyword">throw</span> IllegalArgumentException(<span class="string">"<span class="variable">$idx</span> error"</span>)</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">val</span> intent = <span class="keyword">data</span>[idx]</span><br><span class="line">        <span class="keyword">var</span> leftIdx = idx * <span class="number">2</span> + <span class="number">1</span></span><br><span class="line">        <span class="keyword">while</span> (leftIdx &lt; <span class="keyword">data</span>.size) &#123;</span><br><span class="line">            <span class="keyword">var</span> maxChild = <span class="keyword">data</span>[leftIdx]</span><br><span class="line">            <span class="keyword">var</span> maxIdx = leftIdx</span><br><span class="line">            <span class="keyword">val</span> rightIdx = leftIdx + <span class="number">1</span></span><br><span class="line">            <span class="keyword">if</span> (rightIdx &lt; <span class="keyword">data</span>.size) &#123;</span><br><span class="line">                <span class="keyword">val</span> rightChild = <span class="keyword">data</span>[rightIdx]</span><br><span class="line">                <span class="keyword">if</span> (cmp.compare(rightChild, maxChild) &gt; <span class="number">0</span>) &#123;</span><br><span class="line">                    maxChild = rightChild</span><br><span class="line">                    maxIdx = rightIdx</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (cmp.compare(maxChild, intent) &gt; <span class="number">0</span>) &#123;</span><br><span class="line">                <span class="keyword">data</span>[idx] = maxChild</span><br><span class="line">                idx = maxIdx</span><br><span class="line">                leftIdx = <span class="number">2</span> * idx + <span class="number">1</span></span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">data</span>[idx] = intent</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@Description</span> 添加一个元素</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">add</span><span class="params">(item: <span class="type">T</span>)</span></span> &#123;</span><br><span class="line">        <span class="keyword">data</span>.add(item)</span><br><span class="line">        shiftUp(<span class="keyword">data</span>.size - <span class="number">1</span>)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@Description</span> 删除堆顶点</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">deleteTop</span><span class="params">()</span></span>: T &#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">data</span>.isEmpty()) &#123;</span><br><span class="line">            <span class="keyword">throw</span> RuntimeException(<span class="string">"the heap is empty"</span>)</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">val</span> first = <span class="keyword">data</span>[<span class="number">0</span>]</span><br><span class="line">        <span class="keyword">val</span> last = <span class="keyword">data</span>.removeAt(<span class="keyword">data</span>.size - <span class="number">1</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">if</span> (<span class="keyword">data</span>.size == <span class="number">0</span>) &#123;</span><br><span class="line">            last</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">data</span>[<span class="number">0</span>] = last</span><br><span class="line">            shiftDown(<span class="number">0</span>)</span><br><span class="line">            first</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@Description</span> 获取堆顶元素 不删除</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">getTop</span><span class="params">()</span></span>: T &#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">data</span>.isEmpty()) &#123;</span><br><span class="line">            <span class="keyword">throw</span> RuntimeException(<span class="string">"the heap is empty"</span>)</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">data</span>[<span class="number">0</span>]</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@Description</span> 获取堆大小</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">size</span><span class="params">()</span></span>: <span class="built_in">Int</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">data</span>.size</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@Description</span> 堆是否为空</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">isEmpty</span><span class="params">()</span></span>: <span class="built_in">Boolean</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">data</span>.isEmpty()</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@Description</span> 清空</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">clear</span><span class="params">()</span></span> &#123;</span><br><span class="line">        <span class="keyword">data</span>.clear()</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@Description</span> 获取堆中数据</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">getData</span><span class="params">()</span></span>: List&lt;T&gt; &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">data</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>测试代码:<br><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Median</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">val</span> max = Heap&lt;<span class="built_in">Int</span>&gt;(Comparator &#123; p0, p1 -&gt;</span><br><span class="line">        p0 - p1</span><br><span class="line">    &#125;)</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">val</span> min = Heap&lt;<span class="built_in">Int</span>&gt;(Comparator &#123; p0, p1 -&gt;</span><br><span class="line">        p1 - p0</span><br><span class="line">    &#125;)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">insert</span><span class="params">(<span class="keyword">data</span>: <span class="type">Int</span>)</span></span> &#123;</span><br><span class="line">        <span class="keyword">var</span> num = <span class="keyword">data</span></span><br><span class="line">        <span class="comment">//已经有偶数个数据 or 0</span></span><br><span class="line">        <span class="comment">//数据是偶数个 把数据插到小堆里面</span></span><br><span class="line">        <span class="keyword">if</span> ((min.size() + max.size()) % <span class="number">2</span> == <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="comment">//大堆有数据 并且插入的元素比大堆元素小</span></span><br><span class="line">            <span class="keyword">if</span> (max.size() &gt; <span class="number">0</span> &amp;&amp; num &lt; max.getTop()) &#123;</span><br><span class="line">                <span class="comment">//将num放入大堆</span></span><br><span class="line">                max.add(num)</span><br><span class="line">                num = max.deleteTop()</span><br><span class="line">            &#125;</span><br><span class="line">            min.add(num)</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="comment">//数据总数是奇数 数据插到大堆</span></span><br><span class="line">            <span class="comment">//小堆有数据 并且插入的元素比小堆中元素大</span></span><br><span class="line">            <span class="keyword">if</span> (min.size() &gt; <span class="number">0</span> &amp;&amp; num &gt; min.getTop()) &#123;</span><br><span class="line">                min.add(num)</span><br><span class="line">                num = min.deleteTop()</span><br><span class="line">            &#125;</span><br><span class="line">            max.add(num)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">getMedian</span><span class="params">()</span></span>: <span class="built_in">Double</span> &#123;</span><br><span class="line">        <span class="keyword">val</span> size = max.size() + min.size()</span><br><span class="line">        <span class="keyword">if</span> (size == <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">throw</span> RuntimeException(<span class="string">"no numbers"</span>)</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">if</span> ((size and <span class="number">1</span>) == <span class="number">1</span>) &#123;</span><br><span class="line">            min.getTop().toDouble()</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            (max.getTop() + min.getTop()) / <span class="number">2.0</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">fun</span> <span class="title">main</span><span class="params">(<span class="keyword">vararg</span> args: <span class="type">String</span>)</span></span> &#123;</span><br><span class="line">    <span class="keyword">val</span> array = Median()</span><br><span class="line">    <span class="keyword">val</span> list = listOf(<span class="number">1</span>,<span class="number">3</span>,<span class="number">5</span>,<span class="number">1</span>,<span class="number">6</span>,<span class="number">7</span>,<span class="number">10</span>,<span class="number">13</span>,<span class="number">34</span>,<span class="number">42</span>)</span><br><span class="line">    list.forEach &#123;</span><br><span class="line">        array.insert(it)</span><br><span class="line">        println(array.getMedian())</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://hcyxy.tech/2019/03/16/系统上运行程序/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2928,157 +3080,6 @@ tasks.withType(JavaCompile) {
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://hcyxy.tech/2018/10/27/有趣的条件概率/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="hecy">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="无病呻吟">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/10/27/有趣的条件概率/" itemprop="url">条件概率</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-27T21:19:10+08:00">
-                2018-10-27
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/数学/" itemprop="url" rel="index">
-                    <span itemprop="name">数学</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h5 id="假设你不断扔一个等概率的六面骰子，直到扔出6停止。求在骰子只出现过偶数的条件下扔骰子次数的期望"><a href="#假设你不断扔一个等概率的六面骰子，直到扔出6停止。求在骰子只出现过偶数的条件下扔骰子次数的期望" class="headerlink" title="假设你不断扔一个等概率的六面骰子，直到扔出6停止。求在骰子只出现过偶数的条件下扔骰子次数的期望"></a>假设你不断扔一个等概率的六面骰子，直到扔出6停止。求在骰子只出现过偶数的条件下扔骰子次数的期望</h5><h5 id="分析-既然每一次都只能是偶数，也就是只能出现-2-4-6，且出现-6-就停，那么答案就是-3-？但是答案不是-3。-答案是-1-5，这个-1-5-还并不是「扔一个-3-面的骰子」的答案-3-的一半，而是-1-1-1-3-，其中的-1-3-是「在符合条件的前提下继续扔」的概率"><a href="#分析-既然每一次都只能是偶数，也就是只能出现-2-4-6，且出现-6-就停，那么答案就是-3-？但是答案不是-3。-答案是-1-5，这个-1-5-还并不是「扔一个-3-面的骰子」的答案-3-的一半，而是-1-1-1-3-，其中的-1-3-是「在符合条件的前提下继续扔」的概率" class="headerlink" title="分析 既然每一次都只能是偶数，也就是只能出现 2,4,6，且出现 6 就停，那么答案就是 3 ？但是答案不是 3。==答案是 1.5，这个 1.5 还并不是「扔一个 3 面的骰子」的答案 3 的一半，而是 1 / (1 - 1/3)，其中的 1/3 是「在符合条件的前提下继续扔」的概率=="></a>分析 既然每一次都只能是偶数，也就是只能出现 2,4,6，且出现 6 就停，那么答案就是 3 ？但是答案不是 3。==答案是 1.5，这个 1.5 还并不是「扔一个 3 面的骰子」的答案 3 的一半，而是 1 / (1 - 1/3)，其中的 1/3 是「在符合条件的前提下继续扔」的概率==</h5><h5 id="问题的关键在于要意识到，扔出奇数后相当于实验马上失败了，而不是这次扔出的奇数无效，重新扔。这个问题等价于：假设你不断扔一个等概率的六面骰子，直到扔出1-3-5-6停止。求最后一次扔出-6-的条件下扔骰子次数的期望。"><a href="#问题的关键在于要意识到，扔出奇数后相当于实验马上失败了，而不是这次扔出的奇数无效，重新扔。这个问题等价于：假设你不断扔一个等概率的六面骰子，直到扔出1-3-5-6停止。求最后一次扔出-6-的条件下扔骰子次数的期望。" class="headerlink" title="问题的关键在于要意识到，扔出奇数后相当于实验马上失败了，而不是这次扔出的奇数无效，重新扔。这个问题等价于：假设你不断扔一个等概率的六面骰子，直到扔出1,3,5,6停止。求最后一次扔出 6 的条件下扔骰子次数的期望。"></a>问题的关键在于要意识到，扔出奇数后相当于实验马上失败了，而不是这次扔出的奇数无效，重新扔。这个问题等价于：假设你不断扔一个等概率的六面骰子，直到扔出1,3,5,6停止。求最后一次扔出 6 的条件下扔骰子次数的期望。</h5><p>考虑最原始的做法，即直接按照定义算。令概率空间 U 为 [6]∗ 所有无限长的字母表为 [6]∗ 的字符创。令  表示第一个 6 出现之前都是偶数这个事件，有:<br><code>$ \Pr[\mathcal{E}] = \frac{1}{6} \times \left (1 + \frac{1}{3} + \left(  \frac{1}{3}\right)^2 + \cdots \right) = \frac{1}{4}.$</code></p>
-<p>令 f(x) 为字符串 x 中第一个 6 出现的位置，直接代入定义有：<br><code>$\mathbb{E}_X[f(X) | \mathcal{E}] = \frac{1}{\Pr[\mathcal{E}]} \int_{x \in \mathcal{E}} \Pr[X = x] f(x) \mathrm{d} x = 4 \times \frac{1}{6} \times \sum_{i=1} \left( \frac{1}{3} \right)^{i-1} i = \frac{3}{2}.$</code></p>
-<h5 id="另一种分析方式："><a href="#另一种分析方式：" class="headerlink" title="另一种分析方式："></a>另一种分析方式：</h5><p>这道题有很多人第一反应都是3。因为基于类似的原因，问题看起来和扔一个只有2，4，6三种可能的骰子等价。这么分析错在哪里先按下不表，我们首先求一下：</p>
-<p>假设你不断扔一个等概率的六面骰子，直到扔出6停止。求在骰子只出现过偶数的概率是多大？<br>利用上一道题的结论，每次扔骰子有1/6的概率扔出6停止，1/2的概率扔出奇数，余下1/3的概率取决于后面继续扔的结果。所以骰子只出现偶数的概率为 1/6 / (1/6 + 1/2) = 1/4。</p>
-<p>有没有发现哪里不对？有1/6的概率第一次就扔出6停止，这个事件占了只出现偶数的概率的2/3，也就是说，在只出现偶数的条件下，有2/3的概率第一次就扔出6！</p>
-<p>问题就出在，因为出现6就停止，所以扔出6更有可能让只出现偶数这件事情发生，所以某次扔出6这个事件和只出现偶数这个事件有很强的相关性。</p>
-<p>这道题比较取巧的解法是，换一种描述问题的方式：</p>
-<p>假设你不断扔一个等概率的六面骰子，直到扔出1, 3, 5, 6停止。求最后一次扔出6的条件下扔骰子次数的期望。在偶数序列情况下，最后一次是6的条件概率，<br>首先这个问题和原题目等价。因为条件概率 P(A|B) = P(AB) / P(B)，比较一下新题目的两个事件和原题目的两个事件完全等价。</p>
-<p>然后这是一个系数为2/3的几何分布，期望为3/2。由于1，3，5，6的对称性，条件住6并不会改变期望的值。</p>
-<p>所以本题答案为3/2<br>kotlin代码验证：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">fun <span class="title">game</span><span class="params">(cnt: Int)</span>: Int </span>&#123;</span><br><span class="line">    var num = cnt</span><br><span class="line">    <span class="keyword">if</span> (cnt == <span class="number">0</span>) num = <span class="number">1</span></span><br><span class="line">    val t = (Math.random() * <span class="number">6</span> + <span class="number">1</span>).toInt()</span><br><span class="line">    <span class="keyword">return</span> when &#123;</span><br><span class="line">        t % <span class="number">2</span> == <span class="number">1</span> -&gt; <span class="comment">// 奇</span></span><br><span class="line">            <span class="number">0</span></span><br><span class="line">        t == <span class="number">6</span> -&gt; num</span><br><span class="line">        <span class="keyword">else</span> -&gt; game(++num)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">fun <span class="title">expect</span><span class="params">(n: Int)</span> </span>&#123;</span><br><span class="line">    var fenzi = <span class="number">0.0</span></span><br><span class="line">    var fenmu = <span class="number">0.0</span></span><br><span class="line">    <span class="keyword">for</span> (i in <span class="number">0</span>..n) &#123;</span><br><span class="line">        val t = game(<span class="number">0</span>) <span class="comment">// 扔出奇数时为 0</span></span><br><span class="line">        <span class="keyword">if</span> (t == <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            fenzi += t</span><br><span class="line">            fenmu += <span class="number">1</span>  <span class="comment">// 扔出偶数时加一</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    println(fenmu / n)</span><br><span class="line">    println(fenzi / fenmu)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">fun <span class="title">main</span><span class="params">(vararg args: String)</span> </span>&#123;</span><br><span class="line">    expect(<span class="number">10000</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -3129,7 +3130,7 @@ tasks.withType(JavaCompile) {
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">31</span>
+                  <span class="site-state-item-count">32</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
