@@ -232,6 +232,315 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://hcyxy.tech/2019/03/25/骑士拨号器/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="hecy">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="无病呻吟">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/03/25/骑士拨号器/" itemprop="url">骑士拨号器算法</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-25T22:49:02+08:00">
+                2019-03-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/算法与数据结构/" itemprop="url" rel="index">
+                    <span itemprop="name">算法与数据结构</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h5 id="题目，一个拨打电话的面板，每次只能按照“L”形状移动，水平两步-gt-垂直一步-或水平一步-gt-垂直两步，方向不限制。那么在N跳范围内，能够拨打多少种不同的号码？"><a href="#题目，一个拨打电话的面板，每次只能按照“L”形状移动，水平两步-gt-垂直一步-或水平一步-gt-垂直两步，方向不限制。那么在N跳范围内，能够拨打多少种不同的号码？" class="headerlink" title="题目，一个拨打电话的面板，每次只能按照“L”形状移动，水平两步-&gt;垂直一步,或水平一步-&gt;垂直两步，方向不限制。那么在N跳范围内，能够拨打多少种不同的号码？"></a>题目，一个拨打电话的面板，每次只能按照“L”形状移动，水平两步-&gt;垂直一步,或水平一步-&gt;垂直两步，方向不限制。那么在N跳范围内，能够拨打多少种不同的号码？</h5><p><code>$\begin{matrix} 1 &amp; 2 &amp; 3\\ 4 &amp; 5 &amp; 6 \\ 7 &amp; 8 &amp; 9 &amp;\\  &amp; 0 &amp;  \end{matrix}$</code></p>
+<h5 id="第一种，递归"><a href="#第一种，递归" class="headerlink" title="第一种，递归"></a>第一种，递归</h5><p>用map存储跳数<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">val map = mapOf(1 to listOf(6, 8),</span><br><span class="line">        2 to listOf(7, 9),</span><br><span class="line">        3 to listOf(4, 8),</span><br><span class="line">        4 to listOf(3, 9, 0),</span><br><span class="line">        5 to emptyList(),</span><br><span class="line">        6 to listOf(1,7,0),</span><br><span class="line">        7 to listOf(2,6),</span><br><span class="line">        8 to listOf(1,3),</span><br><span class="line">        9 to listOf(2,4),</span><br><span class="line">        0 to listOf(4,6)</span><br><span class="line">        )</span><br></pre></td></tr></table></figure></p>
+<p>算法如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">private val map = mapOf(1 to listOf(6, 8),</span><br><span class="line">        2 to listOf(7, 9),</span><br><span class="line">        3 to listOf(4, 8),</span><br><span class="line">        4 to listOf(3, 9, 0),</span><br><span class="line">        5 to emptyList(),</span><br><span class="line">        6 to listOf(1, 7, 0),</span><br><span class="line">        7 to listOf(2, 6),</span><br><span class="line">        8 to listOf(1, 3),</span><br><span class="line">        9 to listOf(2, 4),</span><br><span class="line">        0 to listOf(4, 6)</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">fun getSequence(start: Int, count: Int, sequence: String?, list: ArrayList&lt;String&gt;) &#123;</span><br><span class="line">    var temp = count</span><br><span class="line">    var result = sequence</span><br><span class="line">    if (result == null) result = &quot;$start&quot;</span><br><span class="line">    if (count == 0) &#123;</span><br><span class="line">        list.add(result)</span><br><span class="line">        return</span><br><span class="line">    &#125;</span><br><span class="line">    val neighbors = map[start] ?: return</span><br><span class="line">    temp--</span><br><span class="line">    for (neighbor in neighbors) &#123;</span><br><span class="line">        getSequence(neighbor, temp, result + neighbor, list)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">fun main(args: Array&lt;String&gt;) &#123;</span><br><span class="line">    val list = arrayListOf&lt;String&gt;()</span><br><span class="line">    getSequence(6,2,null,list)</span><br><span class="line">    list.forEach &#123;</span><br><span class="line">        println(it)</span><br><span class="line">    &#125;</span><br><span class="line">    println(list.size)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h5 id="第二种-不通过计算得到号码个数"><a href="#第二种-不通过计算得到号码个数" class="headerlink" title="第二种 不通过计算得到号码个数"></a>第二种 不通过计算得到号码个数</h5><p>其实完全不需要统计这些不同的电话号码，可以节省部分空间复杂度：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">fun getSequence(start: Int, count: Int, sequence: String?): Int &#123;</span><br><span class="line">    var total = 0</span><br><span class="line">    var temp = count</span><br><span class="line">    var result = sequence</span><br><span class="line">    if (result == null) result = &quot;$start&quot;</span><br><span class="line">    if (count == 0) &#123;</span><br><span class="line">        return 1</span><br><span class="line">    &#125;</span><br><span class="line">    val neighbors = map[start] ?: return 0</span><br><span class="line">    temp--</span><br><span class="line">    for (neighbor in neighbors) &#123;</span><br><span class="line">        total += getSequence(neighbor, temp, result + neighbor)</span><br><span class="line">    &#125;</span><br><span class="line">    return total</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">fun main(args: Array&lt;String&gt;) &#123;</span><br><span class="line">    println(getSequence(6, 2, null))</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h5 id="第三种-记忆化"><a href="#第三种-记忆化" class="headerlink" title="第三种 记忆化"></a>第三种 记忆化</h5><p>当时间复杂度很高，考虑以空间换时间<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">fun getSequence(start: Int, count: Int, cache: HashMap&lt;Pair&lt;Int,Int&gt;, Long&gt;): Long &#123;</span><br><span class="line">    var total = 0L</span><br><span class="line">    var temp = count</span><br><span class="line">    if (count == 0) &#123;</span><br><span class="line">        return 1</span><br><span class="line">    &#125;</span><br><span class="line">    val neighbors = map[start] ?: return 0</span><br><span class="line">    temp--</span><br><span class="line">    for (neighbor in neighbors) &#123;</span><br><span class="line">        val meta = cache[Pair(neighbor,temp)]</span><br><span class="line">        if (meta == null) &#123;</span><br><span class="line">            val number = getSequence(neighbor, temp, cache)</span><br><span class="line">            cache[Pair(neighbor,temp)] = number</span><br><span class="line">            total += number</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            total += meta</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return total</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">fun main(args: Array&lt;String&gt;) &#123;</span><br><span class="line">    val cache = HashMap&lt;Pair&lt;Int,Int&gt;, Long&gt;()</span><br><span class="line">    println(getSequence(6, 25, cache))</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h5 id="第四种-动态规划"><a href="#第四种-动态规划" class="headerlink" title="第四种 动态规划"></a>第四种 动态规划</h5><p>记忆化搜索，内存空间会线性增长，仍然不是最高效的，可以换一种新方法，先计算N-1，再计算N挑，从后往前算：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">fun getSequence(start: Int, count: Int): Long &#123;</span><br><span class="line">    var current = 1</span><br><span class="line">    var currentCase = Array(10) &#123;</span><br><span class="line">        0L</span><br><span class="line">    &#125;</span><br><span class="line">    var priorCase = Array(10) &#123; 1L &#125;</span><br><span class="line">    while (current &lt;= count) &#123;</span><br><span class="line">        currentCase = Array(10) &#123; 0L &#125;</span><br><span class="line">        current++</span><br><span class="line">        for (position in 0..9) &#123;</span><br><span class="line">            val meta = map[position]</span><br><span class="line">            if (meta != null) &#123;</span><br><span class="line">                for (neighbor in meta)</span><br><span class="line">                    currentCase[position] += priorCase[neighbor]</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        priorCase = currentCase</span><br><span class="line">    &#125;</span><br><span class="line">    return currentCase[start]</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">fun main(args: Array&lt;String&gt;) &#123;</span><br><span class="line">    val begin = System.nanoTime()</span><br><span class="line">    println(getSequence(6, 55))</span><br><span class="line">    val end = System.nanoTime()</span><br><span class="line">    println((end - begin) / (1000 * 1000))</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>相比上一种方案时间复杂度是差不多的，但是也有优点：非递归，可以运行非常大跳数，不会崩溃；使用固定内存，缓存不会增长。</p>
+<p>在面试中设计和实现线性时间、恒定空间的解决方案是一个非常好的结果。总是会给那些能够提供动态规划解决方案的候选人一个很好的评价。</p>
+<h5 id="第五种-矩阵快速幂"><a href="#第五种-矩阵快速幂" class="headerlink" title="第五种 矩阵快速幂"></a>第五种 矩阵快速幂</h5><p>这种计算幂指数的，可以利用快速幂来计算，矩阵的幂表示无向图中的步数。</p>
+<blockquote>
+<p><code>$B^m$</code>(2≤m≤n)中位于 i 行 j 列(0≤i，j≤n-1)的非零元素的含义是:图中从顶点 i 到顶点 j 长度为 m 的路径条数</p>
+</blockquote>
+<p>python写的函数如下（来自<a href="https://leetcode.com/problems/knight-dialer/discuss/189252/O" target="_blank" rel="noopener">https://leetcode.com/problems/knight-dialer/discuss/189252/O</a>(logN）：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">def knightDialer(self, N):</span><br><span class="line">        mod = 10**9 + 7</span><br><span class="line">        if N == 1: return 10</span><br><span class="line">        M = np.matrix([[0, 0, 0, 0, 1, 0, 1, 0, 0, 0],</span><br><span class="line">                       [0, 0, 0, 0, 0, 0, 1, 0, 1, 0],</span><br><span class="line">                       [0, 0, 0, 0, 0, 0, 0, 1, 0, 1],</span><br><span class="line">                       [0, 0, 0, 0, 1, 0, 0, 0, 1, 0],</span><br><span class="line">                       [1, 0, 0, 1, 0, 0, 0, 0, 0, 1],</span><br><span class="line">                       [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],</span><br><span class="line">                       [1, 1, 0, 0, 0, 0, 0, 1, 0, 0],</span><br><span class="line">                       [0, 0, 1, 0, 0, 0, 1, 0, 0, 0],</span><br><span class="line">                       [0, 1, 0, 1, 0, 0, 0, 0, 0, 0],</span><br><span class="line">                       [0, 0, 1, 0, 1, 0, 0, 0, 0, 0]])</span><br><span class="line">        res, N = 1, N - 1</span><br><span class="line">        while N:</span><br><span class="line">            if N % 2: res = res * M % mod</span><br><span class="line">            M = M * M % mod</span><br><span class="line">            N /= 2</span><br><span class="line">        return int(np.sum(res)) % mod</span><br></pre></td></tr></table></figure></p>
+<p>节选自：知乎用户tom pareto<br>这道题，挺有意思的，正好说明计算机算法和设计计算机算法是怎么一回事：</p>
+<p>（1）讨论：解决小规模问题，找到模式和边界情况。这是什么意思，要怎么做？数字序列又是什么？——数量化。如果不进行数量化，就没有办法使计算机工作，计算机只能进行数量的计算。</p>
+<p>（2）下一跳：占位符、空函数、函数桩、map等等，为什么要这样做？计算机擅长于有明显规律的重复性的工作。在我们还没找到重复性规律之前，不妨先假设存在这么一种重复性规律好了。然后，我们再进行观察、猜测、归纳这种重复性规律。显然：</p>
+<p>（3）编程实现与优化。这就很“常规”了。</p>
+<p>算法设计与实现，没有什么神秘的。一切在于数字电子计算机的最基本的物理器件——基于布尔代数的加法器。只要计算机的物理基础还是线性运算的加法器，那么计算机的基本计算方式方法就只能是反复地进行重复性工作。而我们人类，就是先从问题中抽取数量，或者量化问题，然后观察、猜测、归纳这些数量之间的递推关系（就是高中学过的数学归纳法）。然后再编程实现。在编程实现中，进一步优化。而要优化，那么就会利用计算机的器件特性。只要经过大量的科学训练，一个高中数学学得还可以的人，就能够进入算法的殿堂。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://hcyxy.tech/2019/03/24/矩阵快速幂/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="hecy">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="无病呻吟">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/03/24/矩阵快速幂/" itemprop="url">矩阵快速幂</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-24T21:33:13+08:00">
+                2019-03-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/算法与数据结构/" itemprop="url" rel="index">
+                    <span itemprop="name">算法与数据结构</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h5 id="1、如何有效提高指数幂的时间复杂度？比如计算-2-100-，有人肯定会说时间复杂度是O-N-，但是最好的快速幂算法是O-logN-，运用到矩阵中就是矩阵快速幂算法。"><a href="#1、如何有效提高指数幂的时间复杂度？比如计算-2-100-，有人肯定会说时间复杂度是O-N-，但是最好的快速幂算法是O-logN-，运用到矩阵中就是矩阵快速幂算法。" class="headerlink" title="1、如何有效提高指数幂的时间复杂度？比如计算$2^{100}$，有人肯定会说时间复杂度是O(N)，但是最好的快速幂算法是O(logN)，运用到矩阵中就是矩阵快速幂算法。"></a>1、如何有效提高指数幂的时间复杂度？比如计算<code>$2^{100}$</code>，有人肯定会说时间复杂度是O(N)，但是最好的快速幂算法是O(logN)，运用到矩阵中就是矩阵快速幂算法。</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">fun quickPow(a: Int, b: Int): Long &#123;</span><br><span class="line">    var ans = 1L</span><br><span class="line">    var temp = a</span><br><span class="line">    var base = b</span><br><span class="line">    while (base != 0) &#123;</span><br><span class="line">        if (base and 1 != 0) &#123;</span><br><span class="line">            ans *= temp</span><br><span class="line">        &#125;</span><br><span class="line">        temp *= temp</span><br><span class="line">        base = base shr 1</span><br><span class="line">    &#125;</span><br><span class="line">    return ans</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">fun main(args: Array&lt;String&gt;) &#123;</span><br><span class="line">    println(quickPow(2, 10))</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>比如之前计算<code>$2^{10}$</code>，要计算10次，现在首先计算<code>$2*2=2^2$</code>,第二次<code>$2^2*2^2=2^4$</code>，第三次<code>$2^4*2^4=2^8$</code>，这样就大大减少了时间复杂度。</p>
+</blockquote>
+<h5 id="2、从快速幂到矩阵快速幂"><a href="#2、从快速幂到矩阵快速幂" class="headerlink" title="2、从快速幂到矩阵快速幂"></a>2、从快速幂到矩阵快速幂</h5><p>本质上就是讲算式转化为矩阵形式，比如下题：</p>
+<p><code>$F(i)=F(i-1)+F(i-2)+i^3+i^2+i+1,i&gt;1,F(0)=0,F(1)=1$</code></p>
+<p>我们就需要找到一个矩阵A，使<code>$A^{n-1}F(1)=F(n)$</code>,其实矩阵A为：</p>
+<p><code>$\left[ \begin{matrix} 1 &amp; 1 &amp; 1 &amp; 1 &amp; 1 &amp; 1\\ 1 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 \\ 0 &amp; 0 &amp; 1 &amp; 3 &amp; 3 &amp; 1 \\ 0 &amp; 0 &amp; 0 &amp; 1 &amp; 2 &amp; 1 \\ 0 &amp; 0 &amp; 0 &amp; 0 &amp; 1 &amp; 1 \\ 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 1 \end{matrix} \right]$</code></p>
+<p>当指数为0时，初始化一个单位矩阵，任何矩阵乘以单位矩阵都是其本身。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://hcyxy.tech/2019/03/20/数据流中位数/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2777,309 +3086,6 @@ tasks.withType(JavaCompile) {
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://hcyxy.tech/2018/10/29/矩阵最长上升路径/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="hecy">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="无病呻吟">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/10/29/矩阵最长上升路径/" itemprop="url">矩阵最长上升路径</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-29T22:12:25+08:00">
-                2018-10-29
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/算法与数据结构/" itemprop="url" rel="index">
-                    <span itemprop="name">算法与数据结构</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h5 id="矩阵中的最长上升路径"><a href="#矩阵中的最长上升路径" class="headerlink" title="矩阵中的最长上升路径"></a>矩阵中的最长上升路径</h5><p>给出一个数字矩阵，寻找一条最长上升路径，每个位置只能向上下左右四个位置移动。<br>Example：</p>
-<p>nums = [</p>
-<pre><code>[9, 9, 4],
-
-[6, 6, 8],
-
-[2, 2, 1]
-</code></pre><p>]</p>
-<p>返回 4，最长上升路径是[1, 2, 6, 9]</p>
-<p>可以采用bfs，时间复杂度可能达到O(n^4)，或者dp、记忆化搜索<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">val dx = arrayListOf(<span class="number">1</span>, -<span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>)</span><br><span class="line">val dy = arrayListOf(<span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>, -<span class="number">1</span>)</span><br><span class="line">var n: Int = <span class="number">0</span></span><br><span class="line">var m: Int = <span class="number">0</span></span><br><span class="line">var dp: Array&lt;IntArray&gt; = Array(<span class="number">3</span>) &#123; IntArray(<span class="number">3</span>) &#125;</span><br><span class="line">var flag: Array&lt;IntArray&gt; = Array(<span class="number">3</span>) &#123; IntArray(<span class="number">3</span>) &#125;</span><br><span class="line"><span class="function">fun <span class="title">search</span><span class="params">(x: Int, y: Int, A: Array&lt;IntArray&gt;)</span>: Int </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (flag[x][y] != <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> dp[x][y]</span><br><span class="line">    &#125;</span><br><span class="line">    var ans = <span class="number">1</span></span><br><span class="line">    var nx: Int</span><br><span class="line">    var ny: Int</span><br><span class="line">    <span class="keyword">for</span> (i in <span class="number">0</span> until <span class="number">4</span>) &#123;</span><br><span class="line">        nx = x + dx[i]</span><br><span class="line">        ny = y + dy[i]</span><br><span class="line">        <span class="keyword">if</span> (nx in <span class="number">0</span>..(n - <span class="number">1</span>) &amp;&amp; ny in <span class="number">0</span>..(m - <span class="number">1</span>)) &#123;</span><br><span class="line">            <span class="keyword">if</span> (A[x][y] &gt; A[nx][ny]) &#123;</span><br><span class="line">                ans = Math.max(ans, search(nx, ny, A) + <span class="number">1</span>)</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    flag[x][y] = <span class="number">1</span></span><br><span class="line">    dp[x][y] = ans</span><br><span class="line">    <span class="keyword">return</span> ans</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">fun <span class="title">longest</span><span class="params">(A: Array&lt;IntArray&gt;)</span>: Int </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (A.isEmpty()) <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">    n = A.size</span><br><span class="line">    m = A[<span class="number">0</span>].size</span><br><span class="line">    var ans = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> (i in <span class="number">0</span> until n) &#123;</span><br><span class="line">        <span class="keyword">for</span> (j in <span class="number">0</span> until m) &#123;</span><br><span class="line">            dp[i][j] = search(i, j, A)</span><br><span class="line">            ans = Math.max(ans, dp[i][j])</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> ans</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">fun <span class="title">main</span><span class="params">(vararg args: String)</span> </span>&#123;</span><br><span class="line">    val arr: Array&lt;IntArray&gt; = arrayOf(intArrayOf(<span class="number">9</span>, <span class="number">9</span>, <span class="number">4</span>), intArrayOf(<span class="number">6</span>, <span class="number">6</span>, <span class="number">8</span>), intArrayOf(<span class="number">2</span>, <span class="number">2</span>, <span class="number">1</span>))</span><br><span class="line">    println(longest(arr))</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://hcyxy.tech/2018/10/28/复数的意义/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="hecy">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="无病呻吟">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/10/28/复数的意义/" itemprop="url">复数的意义</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-28T23:00:19+08:00">
-                2018-10-28
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/数学/" itemprop="url" rel="index">
-                    <span itemprop="name">数学</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>转来自知乎ID：Heinrich</p>
-<p>链接：<a href="https://www.zhihu.com/question/23234701/answer/26017000" target="_blank" rel="noopener">https://www.zhihu.com/question/23234701/answer/26017000</a></p>
-<h5 id="复数（虚数）赋予了旋转的意义。"><a href="#复数（虚数）赋予了旋转的意义。" class="headerlink" title="复数（虚数）赋予了旋转的意义。"></a>复数（虚数）赋予了旋转的意义。</h5><h5 id="比如-4-i-i-4-代表在数轴上旋转了180度"><a href="#比如-4-i-i-4-代表在数轴上旋转了180度" class="headerlink" title="比如 4*i*i=-4 代表在数轴上旋转了180度"></a>比如 <code>4*i*i=-4</code> 代表在数轴上旋转了180度</h5><p><img src="https://note.youdao.com/yws/public/resource/083b6154a87fc9b36abce052e7369c8d/xmlnote/WEBRESOURCEd388d4d126fe37eddf38f5e45bc0147c/23237" alt="image"></p>
-<p>来看一个函数<code>$e^t$</code><br><img src="https://note.youdao.com/yws/public/resource/083b6154a87fc9b36abce052e7369c8d/xmlnote/WEBRESOURCE9ad10deb44c13b2cc6a2dbad96df5354/23233" alt="image"></p>
-<p>再加上一个参数i:<br><img src="https://note.youdao.com/yws/public/resource/083b6154a87fc9b36abce052e7369c8d/xmlnote/WEBRESOURCE0a6d646b45aa3e096a20b3f0c1b77510/23231" alt="image"></p>
-<p>变成了一个螺旋线，和电磁场非常像</p>
-<h4 id="更重要的意义在于保留了二维信息"><a href="#更重要的意义在于保留了二维信息" class="headerlink" title="更重要的意义在于保留了二维信息"></a>更重要的意义在于保留了二维信息</h4><p>如果分解一个实数8，可以有无数种分解方法，但是计算3+5i的话，可以分解出实部和虚部。可以让电场强度和复数磁场强度相加不损失各自的信息，而且满足电场与磁场垂直要求。<br><img src="https://note.youdao.com/yws/public/resource/083b6154a87fc9b36abce052e7369c8d/xmlnote/WEBRESOURCE4ba1f885390bb0b2025491366e1b6b74/23235" alt="image"></p>
-<p>正弦波可以看做自然数中的1，可以构成其他数字的基础元素。</p>
-<h5 id="复数的引入大大方便了涉及到的旋转计算"><a href="#复数的引入大大方便了涉及到的旋转计算" class="headerlink" title="复数的引入大大方便了涉及到的旋转计算"></a>复数的引入大大方便了涉及到的旋转计算</h5><p>比如计算合力，比如一个力是(3+i)，另一个力(1+3i)，求合力是多少？只需简单相加即可(4+4i)</p>
-<h5 id="复数涉及乘法的计算"><a href="#复数涉及乘法的计算" class="headerlink" title="复数涉及乘法的计算"></a>复数涉及乘法的计算</h5><p>比如一条船航向（ 3 + 4i）<br>如果该船的航向，逆时针增加45度，新的航向是多少<br><img src="https://note.youdao.com/yws/public/resource/083b6154a87fc9b36abce052e7369c8d/xmlnote/WEBRESOURCE74c87b124fe4f6a37e7db3ac6a086c94/23278" alt="image"></p>
-<p>( 3 + 4i ) * ( 1 + i ) = ( -1 + 7i )</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -3130,7 +3136,7 @@ tasks.withType(JavaCompile) {
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">32</span>
+                  <span class="site-state-item-count">34</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

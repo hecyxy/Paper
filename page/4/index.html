@@ -232,6 +232,350 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://hcyxy.tech/2018/07/08/数学空间/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="hecy">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="无病呻吟">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/07/08/数学空间/" itemprop="url">数学空间</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-08T09:24:28+08:00">
+                2018-07-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/机器学习/" itemprop="url" rel="index">
+                    <span itemprop="name">机器学习</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"> </script>
+
+<p>数学中有很多空间，比如欧几里得空间、赋范空间、希尔伯特空间，空间之间有什么关系。<br><br>说空间要从距离说起，距离是一个抽象的概念，定义为：设X为任一非空集，对X任意两点x,y，有一实数d(x,y)与之对应且满足:</p>
+<ul>
+<li>1、$$d(x,y)\geq 0$$当且仅当x=y;</li>
+<li>2、$$d(x,y)=d(y,x)$$</li>
+<li>3、$$d(x,y)\leq d(x,z)+d(z,y)$$</li>
+</ul>
+<p>定义了距离后，再加上线性结构，如向量加法、数乘，使其满足加法交换律、结合律、零元、负元；数乘的交换律、单位一；数乘与加法的结合律共八点要求，形成一个线性空间，这个线性空间就是向量空间。<br></p>
+<p>向量空间中，定义了范数的概念，表示某点到空间零点的距离：<br></p>
+<ul>
+<li>$$||x||\geq 0$$</li>
+<li>$$||ax||=|a|||x||$$</li>
+<li>$$||x+y||\leq ||x||+||y||$$</li>
+</ul>
+<p>范数与距离比较，可知距离多了一个条件2，数乘的运算表明了其是一个强化了的距离概念。<br></p>
+<p>对范数和距离进行扩展，形成：<br></p>
+<ul>
+<li>范数集合$$\rightarrow$$赋范空间+线性结构$$\rightarrow$$线性赋范空间<br></li>
+<li>距离集合$$\rightarrow$$度量空间+线性结构$$\rightarrow$$线性度量空间<br></li>
+</ul>
+<p>在已经构成的线性赋范空间上继续扩展，添加内积运算，使空间中有角的概念，形成如下：<br></p>
+<ul>
+<li>线性赋范空间+内积运算$$\rightarrow$$内积空间<br></li>
+</ul>
+<p>这时内积空间已经有了距离、长度、角，有限维的内积空间就是我们熟悉的欧式空间。<br></p>
+<p>继续在内积空间上扩展，使得内积空间满足完备性，形成希尔伯特空间：<br></p>
+<ul>
+<li>内积空间+完备性$$\rightarrow$$希尔伯特空间<br></li>
+</ul>
+<p>完备性的意思就是空间中的极限运算不能跑出该空间，如有理数空间中的$$\sqrt 2$$的小数表示，其极限随着小数位数增加收敛到$$\sqrt 2$$,但其属于无理数，并不在有理数，不满足完备性。<br></p>
+<p>距离 $$\rightarrow$$范数 $$\rightarrow$$内积 <br></p>
+<p>(向量空间+范数)$$\rightarrow$$(赋范空间+线性结构)$$\rightarrow$$(线性赋范空间+内积运算)$$\rightarrow$$(内积空间+完备性)$$\rightarrow$$(希尔伯特空间)<br></p>
+<p>(内积空间+有限维)$$\rightarrow$$(欧几里得空间)<br></p>
+<p>(赋范空间+完备性)$$\rightarrow$$(巴拿赫空间)<br></p>
+<p>对距离弱化，保留距离的极限和连续概念，就形成了拓扑概念。</p>
+<p>定义一个函数空间中无穷维的矩阵K(x,y)<br><br>其满足：<br><br>1、正定性，即对于任意函数f(x)，都有<br><br>$$\int\int f(x)K(x,y)f(y)dxdy\geq 0$$<br></p>
+<p>2、对称性即K(x,y)=K(y,x)<br><br>$$\int K(x,y)\phi(x)dx=\lambda\phi(y)$$<br><br>则这个二元函数可称为核函数，可证明一个核函数的特征函数之间是正交的。<br><br>$$&lt;\phi_1,\phi_2&gt;=\int\phi_1(x)\phi_2(x)dx=0$$<br><br>所以$${\phi_i}^\infty_{i=1}$$是原来函数空间的一组基底。<br></p>
+<p>同时原来的核函数也可以分解成为核函数之间相乘的结果：<br></p>
+<h2 id="K-x-y-sum-i-0-infty-lambda-i-phi-i-x-phi-i-y"><a href="#K-x-y-sum-i-0-infty-lambda-i-phi-i-x-phi-i-y" class="headerlink" title="$$K(x,y)=\sum_{i=0}^\infty\lambda_i\phi_i(x)\phi_i(y)$$"></a>$$K(x,y)=\sum_{i=0}^\infty\lambda_i\phi_i(x)\phi_i(y)$$<br></h2><p><strong>再生核希尔伯特空间RKHS</strong><br><br>RKHS是由核函数构成的空间。基底为$${\sqrt\lambda_i\phi_i}<em>{i=1}^\infty$$<br><br>任意函数都可以由基底表示:<br><br>$$f=\sum</em>{i=1}^{\infty}f_i\sqrt\lambda_i\phi_i$$<br><br>选取其中两个函数，按照坐标表示如下：<br><br>$$f=(f_1,f_2,..)^T_h$$和$$g=(g_1,g_2,…)^T_h$$<br><br>其内积为:$$&lt;f,g&gt;<em>h=\sum</em>{i=1}^{\infty}f_ig_i$$<br><br>再来看核函数K(x,y)将其中一个元素固定K(x0,y),则其也可以看成一个函数<br><br>$$K(x_0,y)=\sum_{i=0}^{\infty}\lambda_i\phi_i(x)\phi_i$$<br></p>
+<p>化成向量坐标表示形式：<br><br>$$K(x_0,y)=(\sqrt\lambda_1\phi_1(x),\sqrt\lambda_2\phi_2(x),…)_h^T$$<br><br>所以计算内积：<br><br>$$&lt;K(x_0,y),K(y_0,x)&gt;<em>h=\sum</em>{i=0}^{\infty}\lambda_i\phi_i(x_0)\phi_i(y_0)=K(x_0,y_0)$$<br><br>这个性质就叫做再生性reproducing property，所以这个空间才叫再生希尔伯特空间。这个性质很好，原本函数之间计算内积需要算无穷维积分的，但是现在只需要计算核函数就好了。<br><br>所以给定一个点的映射一个点x给其映射到一个无穷维的特征空间【即先将这个点变成一个函数，而这个函数可以看成一个无穷维的特征空间】：<br><br>$$\phi(x)=K(x,\cdot)=(\sqrt\lambda_1\phi_1(x),\sqrt\lambda_2\phi_2(x),…)^T$$<br></p>
+<p>得到两个特征空间上内积为：<br><br>$$&lt;\phi(x),\phi(y)&gt;_h=&lt;K(x,\cdot),K(y,\cdot)&gt;_h=K(x,y)$$<br>这就是kernel trick</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://hcyxy.tech/2018/07/07/假设检验/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="hecy">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="无病呻吟">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/07/07/假设检验/" itemprop="url">假设检验</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-07T23:44:44+08:00">
+                2018-07-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/机器学习/" itemprop="url" rel="index">
+                    <span itemprop="name">机器学习</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"> </script><br><strong>零假设Null hypothesis 备择假设 alternative hypothesis</strong><br><br>参数假设检验中，假设是对总体参数的具体数值所作的陈述。为了使得作为证据的样本统计量必然支持且仅支持一个假设，要建立对于总体参数在逻辑上完备互斥的一对假设，即原假设null pypothesis,记为$$H_0$$,备择假设alternative hypothesis,记为$$H_1$$<br><br>原假设（零假设）假定总体参数未发生变化，备择假设，假定总体参数发生变化。实际建立假设时，原假设与备择假设方向不同，会导致不同的结论。在选择原假设和备择假设时，通常根据研究者是希望收集证据予以支持还是拒绝的判断作为选择依据。<br><br><strong>实际操作中，通常研究者希望收集证据予以拒绝的假设作为原假设，而将研究者希望通过搜集证据予以支持的假设作为备择假设。</strong><br><br><img src="https://note.youdao.com/yws/public/resource/5702a21be94cca30edfd03987e6050c7/xmlnote/64F9BD4B4A324D32A8F2A6709AA2240D/2963" alt="image"></p>
+<hr>
+<p><strong>参数估计的方法</strong><br><br>主要分为点估计和区间估计。点估计的方法有矩估计法、顺序统计量、极大似然法、最小二乘法。<br><br>点估计：1：用样本的估计量直接作为总体参数的估计值。例如用样本均值直接作为总体均值的估计。2:没有给出估计值接近总体参数程度的信息，没有给出可信程度，矩估计、极大似然估计。<br><br><img src="https://note.youdao.com/yws/public/resource/5702a21be94cca30edfd03987e6050c7/xmlnote/9F7BCBC2331342548ED8EE7CA4CA3119/3201" alt="image"><br><strong>评价估计量的标准</strong><br><br>1、无偏性 unbiasedness<br><br>估计量抽样分布的数学期望等于被估计的总体参数。$$E(\hat{\theta})=\theta$$<br><br>2、有效性 efficiency<br><br>对同一总体参数的两个无偏点估计量，有更小标准差的估计量更有效。$$D(\hat{\theta_1})&lt;D(\hat{\theta_2})$$<br><br>3、一致性 consistency<br><br>随着样本容量的增大，估计量的值越来越接近被估计的总体参数$$\lim_{n\rightarrow{\infty}}P(|\hat{\theta}-\theta|&lt;\epsilon)=1$$</p>
+<hr>
+<p><strong>假设检验Hypothesis Test</strong><br><strong>统计推断包括：参数估计和假设检验</strong><br><br><strong>1、假设检验</strong><br><br>亦称显著性检验，是对总体的参数或分布作出某种假设，然后利用适当的方法，根据样本对总体提供的信息，对此假设作出推断。（拒绝或不拒绝）<br><br><strong>基本原理</strong><br><br>1、逻辑学上的反证法，先建立假设，然后提供假设成立与否的证据；<br></p>
+<h2 id="2、小概率事件原理。在一次机会中几乎不发生的原理。"><a href="#2、小概率事件原理。在一次机会中几乎不发生的原理。" class="headerlink" title="2、小概率事件原理。在一次机会中几乎不发生的原理。"></a>2、小概率事件原理。在一次机会中几乎不发生的原理。</h2><p><strong>卡方分布 t分布  F分布 t检验 f检验</strong><br><br><strong>1、卡方</strong><br><br><strong>A、卡方分布</strong><br><br>若N个相互独立的随机变量$$\xi_1,\xi_2,…,\xi_n$$均服从标准正态分布，也称独立同分布与标准正态分布，则这n个服从标准正态分布的随机变量平方和$$Q=\sum_{i=1}^n\xi^2_i$$构成新的随机变量，其分布律称为$$\chi^2$$分布chi-square distribution，其中参数n称为自由度，比如正太分布中均值或fangcha1不同就是另一个正态分布一样，自由度不同就是另一个分布,记为$$Q\sim\chi^2(k)$$。当自由度n很大时，$$\chi^2$$分布近似为正态分布。对于任意正整数k，自由度为k的卡方分布是一个随机变量x的机率分布。<br><img src="https://note.youdao.com/yws/public/resource/5702a21be94cca30edfd03987e6050c7/xmlnote/8CF385741FD04FBBA7D90279C4212076/2821" alt="image"><br>机率函数为：<br><img src="https://note.youdao.com/yws/public/resource/5702a21be94cca30edfd03987e6050c7/xmlnote/C70631BCF15444C897058CECFC0B9418/2824" alt="image"><br><br>$$E(\chi^2)=n,D(\chi^2)=2n$$<br><br><strong>B、卡方检验</strong><br><br>卡方分布用途：检查实际结果与期望结果之间何时存在差异。<br><br>1、检验拟合优度：可以检验一组给定数据与指定分布的吻合程度。如：用它检验抽奖机收益的观察频数与我们所期望的吻合程度。<br><br>2、检验两个变量的独立性：通过这个方法检查变量之间是否存在某种关系。如：独居结果是否取决于坐庄的庄家，庄家是否暗箱操作。<br><br><strong>显著性</strong><br><br>卡方分布指出观察频数与期望频数之间差异显著性，和其他假设一样，取决于显著性水平。1、显著性水平$$\alpha$$进行检验，则写作：（常用的显著水平有1%和5%）$$\chi^2_{\alpha}(v)$$<br><br>检测标准：<strong>卡方分布检验是单尾检验且是右尾，右尾被作为拒绝域。通过查看检验统计量是否位于右尾的拒绝域以内，来判定期望分布得出结果可能性。</strong>卡方临界值表可以查询的。<strong>比如：5%的显著性水平，8的自由度进行检验。查出15.51，只要检验统计量大于15.51，检验统计量就位于拒绝域内。</strong><br><br><img src="https://note.youdao.com/yws/public/resource/5702a21be94cca30edfd03987e6050c7/xmlnote/5713FCB95B2241418C268B71E4C4379A/2862" alt="image"><br><br><strong>检验统一量$$x^2=\sum\frac{(O-E)^2}{E}$$</strong><br><br>解决第一类问题：<br><br>原假设$$H_0$$：老虎机每局收益符合下述概率分布；备择假设$$H_1$$:老虎机每局收益不符合概率分布 <strong>[期望证明的]</strong><br><br><img src="https://note.youdao.com/yws/public/resource/5702a21be94cca30edfd03987e6050c7/xmlnote/6290E44701A4443F8E41771C59426AEA/2901" alt="image"><br><br>所以$$x^2=(965-977)^2/977+…+(7-1)^2/1$$,然后再利用$$x^2$$和显著性水平$$\alpha$$进行比较。<br><br>解决第二类问题：<br><br>原假设$$H_0$$：赌局输赢结果和坐庄的庄家没有关系；备择假设$$H_1$$:赌局输赢和坐庄的庄家有关系。<br><img src="https://note.youdao.com/yws/public/resource/5702a21be94cca30edfd03987e6050c7/xmlnote/FDC530BC6E1D43769D76A5E7BB4832F9/2916" alt="image"><img src="https://note.youdao.com/yws/public/resource/5702a21be94cca30edfd03987e6050c7/xmlnote/5791599DA2324D3F865FE05433523E84/2918" alt="image"><img src="https://note.youdao.com/yws/public/resource/5702a21be94cca30edfd03987e6050c7/xmlnote/5FA8B1BA1F5E41CD98A98B3CCE9078E8/2917" alt="image"></p>
+<p><strong>本质上，自由度是做一个估计时，所拥有的独立信息的数量</strong></p>
+<p><strong>1、拟合优度检验中，v=组数-限制数</strong><br></p>
+<p><strong>2、两个变量独立性检验中,如列联表为h行k列，则：v=(h-1)x(k-1)</strong></p>
+<hr>
+<p><strong>t分布 t假设检验</strong><br><br><strong>A、t分布</strong><br><br>根据中心极限定理，在正态分布总体以固定n，抽取若干样本时，样本均数$$\overline{X}$$的分布仍服从正态分布，即$$N(\mu,\frac{\sigma^2}{n})$$,对样本均数的分布进行u变换，也可变换为标准正态分布N(0,1)。<br>实际中，往往$$\sigma$$(总体方差)是未知的，常用s（样本方差）作为$$\sigma$$的估计值，为了与u变换区别，称为t变换，统计量t值得分布称为t分布。假设X服从标准正态分布N(0,1)，Y服从$$\chi^2(n)$$分布，那么$$Z=\frac{X}{\sqrt{Y/n}}$$的分布称为自由度为n的t分布，记为$$Z\sim t(n)$$，但实际自由度为v=n-1，查表的时候就是按照这个来查。<br><br>特点：t分布以y轴，左右对称。只有一个参数v=n-1,曲线形状与自由度有关。自由度v趋向于$$\infty$$，t分布逼近u分布，标准正态分布是t分布的特例。t分布曲线下的面积是1.<br><img src="https://note.youdao.com/yws/public/resource/5702a21be94cca30edfd03987e6050c7/xmlnote/555684CA43E04E9F8A398F739EC86904/3011" alt="image"><br><br><strong>B、t假设检验</strong><br><br><strong>总体均数估计</strong><br><br><strong>A、点（值）估计point estimation</strong><br><br>用样本统计量直接作为总体参数的估计值。<strong>矩估计法、顺序统计量法、极大似然、最小二乘</strong>举个例子：为了了解某地1岁婴儿体重，随机抽取1岁婴儿25个，平均体重2kg，标准差0.2kg。试估计本地1岁婴儿平均体重<br><br><strong>B、区间估计</strong><br><br>按预先给定的概率，计算一个区间，使它能够包含未知的总体均数。事先给定的概率$$1-\alpha$$称为可信度，通常取$$1-\alpha=0.95$$<br><br>可信度（置信率，置信度）：由样本推断总体特征时，估计正确的概率，用$$1-\alpha$$表示。可信区间confidence interval，按预先给定的概率确定的包含未知总体参数的可能范围。构成可信区间的两个点值称为：下限值、上限值。可信度计算分为两种$$\sigma$$</p>
+<p><br>(1)已知，$$\mu=\frac{\overline{X}-\mu}{\sigma-\sqrt{n}}$$,知道$$P(-1.96&lt;=u&lt;=1.96)=0.95$$,则95%的置信区间$$(\overline{X}-1.96\sigma_{\overline{X}},\overline{X}+1.96\sigma_{\overline{X}})$$,更一般的形式：$$(\overline{X}-u_{\alpha/2}\sigma_{\overline{X}},\overline{X}+u_{\alpha/2}\sigma_{\overline{X}})$$<br></p>
+<p>(2)$$\sigma$$通常未知，这时可以用其估计量S代替，但$$(\overline{X}-\mu)/(S/\sqrt{n})$$已不再服从标准正态分布，而是服从著名的t分布。计算可信区间的原理与前面完全相同，仅仅是两侧概率界值有些差别，即：<br><br>$$P(-t_{\alpha/2(v)}&lt;u&lt;t_{\alpha/2(v)})=1-\alpha$$<br><br>可信区间：$$(\overline{X}-t_{\alpha/2(v)}<em>S_{\overline{X}},\overline{X}+t_{\alpha/2(v)}</em>S_{\overline{X}})$$<br><br>可以得到总体均值的区间估计</p>
+<hr>
+<p><strong>F分布及假设检验</strong><br><br><strong>A、F分布</strong><br><br>Z检验是一般用于大样本(样本容量大于30)平均值差异性检验的方法，用标准正太分布的理论来推断差异发生的概率，从而比较两个平均数的差异是否显著，又被称为u检验。为什么要引入F分布。比如研究A、B、C三种不同学校学生的阅读理解成绩，以为简单多次使用Z检验或t检验，成对比较即可。但是这两种检验也有其局限性，比如研究中出现两个以上的平均数时。<strong>1、比较的组合次数增多。</strong> <strong>2、降低可靠程度，对数据做的Z检验或t检验越多，更容易范I型错误。</strong> 比如一个检验中$$\alpha=0.05$$，即有0.95的概率不犯I型错误，那么两次0.95*0.95=0.9,此时犯I型错误的概率是0.1，翻倍。 <strong>3、缺少综合或整体信息</strong>两个以上的平均数检验中若仍采用Z检验或t检验都只提供了两个组所提供的的信息，而忽略了其余的综合信息。许多情况下这些被忽略的信息可能对检验结果产生更大的影响。同时在十次检验之后所得到的只是零散的信息，并非从总体来分析几种不同条件的效果，也难以获得几种不同条件的直接答案。<br><br><strong>方差分析：</strong> analysis of variance就是对多个平均数进行比较的一种统计方法，又称为变异数分析，即ANOVA。方差分析的三条假设，否则易产生错误的统计结论：A总体分布的正态性；样本必须来自正态分布的总体；B各个实验组方差齐性； C变异具有可加性。影响事物的因素多种多样，方差分析将事物的总变异分解为各个不同变异来源，分解后各部分变异相互独立，相加后构成总变异。<br><br>方差分析有广义与侠义之分。广义方差分析包括方差齐性检验、F检验和多重比计较（逐对平均数的比较）。侠义的方差分析仅指F检验。<br><br><strong>F分布</strong><br><br>若总体$$X\sim N(0,1)$$,(X1,X2,..,Xn),(Y1,Y2,…,Yn)为来自X的两个独立样本，设统计量$$F=\frac{\chi(X)/n1}{\chi{(Y)}/n2}$$，称F服从自由度n1和n2的F分布。记为$$F\sim F(n1,n2)$$<br><br>若总体$$X\sim N(\mu,1)$$,与总体$$Y\sim N(0,1)$$，(X1,X2,..,Xn)为来自X的样本,(Y1,Y2,…,Yn)为来自Y的一个样本，则统计量$$F=\frac{\chi(X)/n1}{\chi{(Y)}/n2}$$称F服从自由度为n1和n2，非中心参数$$\delta=n\mu^2$$的非中心F分布，记为$$F\sim F(n1,n2,\delta)$$<br><br><strong>F分布–方差同质性检验</strong><br><br><img src="https://note.youdao.com/yws/public/resource/5702a21be94cca30edfd03987e6050c7/xmlnote/0CF3B8D93AA849058904AF8FFFDEC43E/3312" alt="image"><br><br>组与组之间的差异称为组间变异variation between classes，反映在各组的平均数不同。同一组内部被试个体之间的差异称为组内变异variation within class，反映在每一个的分数不同。<br>10-1组间变异较大组内变异较小，10-2反之。<br><br><strong>原理：通过组间变异和组内变异比率大小来推论几个相应平均数差异显著性的思想就是方差分析的逻辑依据或基本原理。</strong>方差分析是将实验中总变异分解为组间变异和组内变异，并通过组间变异和组内变异比率的比较来确定影响实验结果因素的数学方法，实质是以方差来表示变异的程度。<br><br><strong>总变异：组间变异、组内变异。</strong> 组间变异：实验条件、随机误差。组内变异：个体差异、实验误差，都属于随机误差。如果组间与组内变异均为随机误差时，二者比率为1，即实验因素的影响较小，由此推论总变异不存在差异。二者比率较大时，实验因素产生影响可能性增大。<br>分析基本过程：<br><br>(一)变异内容与表达<br><br>总变异=组间变异+组内变异<br><br>变异(Variance)即方差$$S^2$$，又称为均方差或均方(Mean Square,MS).$$S^2=\tfrac{\sum(X-\overline{X})^2}{n-1}$$，分母为自由度，总变异及各变异原因记为：$$MS_t=MS_b+MS_w$$<br><br>方差分析是一种参数检验方法，进行均数差异的检验时必须考虑作为参数检验应该具备的条件，应该考虑不同总体的变异水平–个体差异是否一致。<br><br>(二)方差齐性检验test of homogeneity of variance<br><br>方差齐性检验的虚无假设是假设各个总体方差相等，即无显著差异或是各个样本方差来自相同总体，表达式为:$$H_0=\sigma_1^2=\sigma_2^2…==\sigma_k^2$$检验多个总体方差一致性的方法，这是最常用的哈特莱检验法。<br><br>研究假设虽然不能保证所有的方差存在显著差异，但可以假设至少有两总体方差存在显著差异，只要有两种总体方差或样本方差不一致，虚无假设各总体方差相等就不成立了。<br><br>借助于F最大值来检验，F最大值就是把一系列方差中最大方差与最小方差进行比较的方法。即：<br>$$F_{max}=\tfrac{S^2_{n-1}max}{S^2_{(n-1)min}}$$,·在虚无假设下F最大值的分布的临界值已由哈特莱计算出来形成了F最大值理论分布表。查F值时，需根据方差数目及方差的自由度进行。其中自由度为n-1.比如对左图的数据进行方差齐次检验方法如下：<br></p>
+<ol>
+<li>建立假设$$H_0:\sigma_1^2=\sigma_2^2=\sigma_3^2$$, $$H_1$$:至少有两个总体的方差存在显著差异。求各样本的方差：$$S^2=\tfrac{\sum X^2-(\sum X)^2/n}{n-1}$$ <br><br>$$S_A^2=\tfrac{160-30^2/6}{6-1}=2$$ $$S_B^2=0.8$$  $$S_C^2=2.8$$<br><img src="https://note.youdao.com/yws/public/resource/5702a21be94cca30edfd03987e6050c7/xmlnote/WEBRESOURCEba15eb74ea2de6b777e6464298dbf1bb/3419" alt="image"></li>
+<li>求F最大值<br><br>$$F_{max}=2.8/0.8=3.5$$<br><br>3.比较与决策<br><br>当组数k=3，自由度为6-1=5，$$F_{max}=10.8$$因为F=3.5&lt;$$F_{max0.05}$$=10.8,P&gt;0.05，差异不显著，接受虚无假设，拒绝研究假设，说明三个总体方差一致。<br></li>
+</ol>
+<p><strong>F分布–方差分析</strong><br><br>样本容量相等的方差分析，意味着每一种实验处理它们的被重复次数相同，每一种学习方法均重复了6次。方差分析过程与上一节所介绍的方差分析基本方法完全一致。<br><br>样本容量不相同的方差分析，完全随机的方差分析中，常常使各实验处理组的被试数目相等。这本不需要，但能使计算稍微容易些，像独立样本t检验一样，F检验也允许样本容量不等。<br><br><strong>方差分析是比较两个以上平均差异显著性的方法逻辑思想：将总变异分解成组间变异或组内变异，通过比较组间与组内变异率的大小来确定均数差异是来自实验因素或处理，还是源自随机误差。</strong><br><br>引起组间的变异原因主要是实验施加的影响因素和随机误差，组内变异的原因是随机误差（个体变异和实验变异）。根据一次实验因素的个数分为单因素实验和多因素实验，单因素实验方差分析主要有完全随机设计的方差分析和完全随机区组设计的方差分析。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://hcyxy.tech/2018/07/07/overview-of-supervised-learning/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -602,7 +946,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">32</span>
+                  <span class="site-state-item-count">34</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
