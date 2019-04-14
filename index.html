@@ -232,6 +232,315 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://hcyxy.tech/2019/04/14/寻找出现频率超过一半的数/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="hecy">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="无病呻吟">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/04/14/寻找出现频率超过一半的数/" itemprop="url">寻找出现频率超过一半的数</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-14T16:08:25+08:00">
+                2019-04-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/算法与数据结构/" itemprop="url" rel="index">
+                    <span itemprop="name">算法与数据结构</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h5 id="现在有一数组存放int型整数，数字有重复，且有一数字出现的频率超过了50-，请找出这个数字，假如数据量很大。"><a href="#现在有一数组存放int型整数，数字有重复，且有一数字出现的频率超过了50-，请找出这个数字，假如数据量很大。" class="headerlink" title="现在有一数组存放int型整数，数字有重复，且有一数字出现的频率超过了50%，请找出这个数字，假如数据量很大。"></a>现在有一数组存放int型整数，数字有重复，且有一数字出现的频率超过了50%，请找出这个数字，假如数据量很大。</h5><p>这是一道很简单的题，但是怎样在O（N）时间复杂度内解决？<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">fun findMost(num: IntArray): Int &#123;</span><br><span class="line">    var choose = 0</span><br><span class="line">    var count = 0</span><br><span class="line">    for (i in 0 until num.size) &#123;</span><br><span class="line">        if (count == 0) &#123;</span><br><span class="line">            choose = num[i]</span><br><span class="line">            count = 1</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            if (choose == num[i])</span><br><span class="line">                count++</span><br><span class="line">            else</span><br><span class="line">                count--</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return choose</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>体现了计算机科学中一种很普遍的思想，就是把一个问题转化为规模较小的若干个问题。分治、递归、贪心等都是基于这样的思想。转化的效率越高，转化之后问题的规模缩小的越快，则正题的时间复杂度越低。</p>
+<blockquote>
+<p>现在数组中没有出现频率一半的数字了，但有三个都超过了四分之一,找到它们。仿照上题，每次去掉四个不同的数字即可。</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line">var chooseA = 0</span><br><span class="line">var chooseB = 0</span><br><span class="line">var chooseC = 0</span><br><span class="line">fun findMost(num: IntArray) &#123;</span><br><span class="line">    var countA = 0</span><br><span class="line">    var countB = 0</span><br><span class="line">    var countC = 0</span><br><span class="line">    for (i in 0 until num.size) &#123;</span><br><span class="line">        if (countA == 0 || countB == 0 || countC == 0) &#123;</span><br><span class="line">            if (countA == 0) &#123;</span><br><span class="line">                if (countB != 0 &amp;&amp; num[i] == chooseB) &#123;</span><br><span class="line">                    countB++</span><br><span class="line">                &#125; else if (countC != 0 &amp;&amp; num[i] == chooseC) &#123;</span><br><span class="line">                    countC++</span><br><span class="line">                &#125; else &#123;</span><br><span class="line">                    chooseA = num[i]</span><br><span class="line">                    countA++</span><br><span class="line">                &#125;</span><br><span class="line">            &#125; else if (countB == 0) &#123;</span><br><span class="line">                if (countA != 0 &amp;&amp; num[i] == chooseA)</span><br><span class="line">                    countA++</span><br><span class="line">                else if (countC != 0 &amp;&amp; num[i] == chooseC)</span><br><span class="line">                    countC++</span><br><span class="line">                else &#123;</span><br><span class="line">                    chooseB = num[i]</span><br><span class="line">                    countB++</span><br><span class="line">                &#125;</span><br><span class="line">            &#125; else if (countC == 0) &#123;</span><br><span class="line">                if (countA != 0 &amp;&amp; num[i] == chooseA)</span><br><span class="line">                    countA++</span><br><span class="line">                else if (countB != 0 &amp;&amp; num[i] == chooseB)</span><br><span class="line">                    countB++</span><br><span class="line">                else &#123;</span><br><span class="line">                    chooseC = num[i]</span><br><span class="line">                    countC++</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            if (num[i] == chooseA)</span><br><span class="line">                countA++</span><br><span class="line">            else if (num[i] == chooseB) &#123;</span><br><span class="line">                countB++</span><br><span class="line">            &#125; else if (num[i] == chooseC) &#123;</span><br><span class="line">                countC++</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                countA--</span><br><span class="line">                countB--</span><br><span class="line">                countC--</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>来自：<a href="https://www.cnblogs.com/jy02414216/archive/2011/03/04/1970497.html" target="_blank" rel="noopener">https://www.cnblogs.com/jy02414216/archive/2011/03/04/1970497.html</a></p>
+</blockquote>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://hcyxy.tech/2019/04/13/选方格算法/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="hecy">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="无病呻吟">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/04/13/选方格算法/" itemprop="url">选算法</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-13T14:15:13+08:00">
+                2019-04-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/算法与数据结构/" itemprop="url" rel="index">
+                    <span itemprop="name">算法与数据结构</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h5 id="在方阵中选取若干个格子使得任意两个不相邻。"><a href="#在方阵中选取若干个格子使得任意两个不相邻。" class="headerlink" title="在方阵中选取若干个格子使得任意两个不相邻。"></a>在方阵中选取若干个格子使得任意两个不相邻。</h5><p>比如有一行数据，3个格子，有多少种方案<br>|编号|状态|二进制|<br>|—|—|—|<br>|1|0 0 0|0|<br>|2|0 0 1|1|<br>|3|0 1 0|2|<br>|4|1 0 0|4|<br>|5|1 0 1|5|</p>
+<p><strong>用一个数表示一组数，降低表示状态所需要的维数，就叫状态压缩</strong></p>
+<p>考虑了第一行以后，考虑第二行。当第二行和第一行数据一样时：</p>
+<ul>
+<li>假如第二行三个格子都不放，则就是第一行的方案；</li>
+<li>当第二行放格子时，可得到4中可行方案；</li>
+</ul>
+<p>可以得到状态关系：<br><strong>dp[i][state[j)]来表示对于前i行，第i行第j种状态时可以得到的可行方案总数。</strong></p>
+<p>比如：dp[2][1]代表第二行使用(0 1 0)可得的方案数。</p>
+<p>可以得到状态转移方程：<br><strong>dp[i][state(j)]=dp[i-1][state(k1)]+dp[i-1][state(k2)]+……+dp[i-1][state(kn)](kn即为上一行可行状态的编号，上一行共有n种可行状态）</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line">//行数</span><br><span class="line">val m = 2</span><br><span class="line">//列数</span><br><span class="line">val n = 2</span><br><span class="line">//共有多少种可行的状态</span><br><span class="line">var top = 0</span><br><span class="line">//state存放每行所有的可行状态（即没有相邻的状态</span><br><span class="line">val state = IntArray(600)</span><br><span class="line">//dp[i][j]:对于前i行数据，每行有前j种可能状态时的解</span><br><span class="line">val dp = Array(20) &#123;</span><br><span class="line">    IntArray(600)</span><br><span class="line">&#125;</span><br><span class="line">//cur[i]表示的是第i行整行的情况</span><br><span class="line">val cur = IntArray(20)</span><br><span class="line"></span><br><span class="line">fun ok(x: Int): Boolean &#123;</span><br><span class="line">    val temp = x and (x shl 1)</span><br><span class="line">    //如果有相邻说明这个状态不行</span><br><span class="line">    if (temp &gt; 0) return false</span><br><span class="line">    return true</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">fun init() &#123;</span><br><span class="line">    top = 0</span><br><span class="line">    val total = 1 shl n //遍历状态上界</span><br><span class="line">    for (i in 0 until total) &#123;</span><br><span class="line">        if (ok(i)) &#123;</span><br><span class="line">            state[++top] = i</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">fun main() &#123;</span><br><span class="line">    init()</span><br><span class="line">    for (i in 1..top) &#123;</span><br><span class="line">        dp[1][i] = 1</span><br><span class="line">    &#125;</span><br><span class="line">    for (i in 2..m) &#123;</span><br><span class="line">        for (k in 1..top) &#123;</span><br><span class="line">            for (j in 1..top) &#123;</span><br><span class="line">                if ((state[k] and state[j]) &gt; 0) continue</span><br><span class="line">                dp[i][k] = (dp[i][k] + dp[i - 1][j])</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    var ans = 0</span><br><span class="line">    for (i in 1..top) &#123;</span><br><span class="line">        ans += dp[m][i]</span><br><span class="line">    &#125;</span><br><span class="line">    println(&quot;sum $ans&quot;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>如果方格中有部分位置不能选呢，只需要做少量改动即可。</p>
+</blockquote>
+<p>增加一个curr数组，和fit函数，判断当前状态是否符合。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line">package test.base</span><br><span class="line">//行数</span><br><span class="line">val m = 2</span><br><span class="line">//列数</span><br><span class="line">val n = 2</span><br><span class="line">//共有多少种可行的状态</span><br><span class="line">var top = 0</span><br><span class="line">//state存放每行所有的可行状态（即没有相邻的状态</span><br><span class="line">val state = IntArray(600)</span><br><span class="line">//dp[i][j]:对于前i行数据，每行有前j种可能状态时的解</span><br><span class="line">val dp = Array(20) &#123;</span><br><span class="line">    IntArray(600)</span><br><span class="line">&#125;</span><br><span class="line">//cur[i]表示的是第i行整行的情况</span><br><span class="line">val cur = IntArray(20)</span><br><span class="line"></span><br><span class="line">fun ok(x: Int): Boolean &#123;</span><br><span class="line">    val temp = x and (x shl 1)</span><br><span class="line">    //如果有相邻说明这个状态不行</span><br><span class="line">    if (temp &gt; 0) return false</span><br><span class="line">    return true</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">fun init() &#123;</span><br><span class="line">    top = 0</span><br><span class="line">    val total = 1 shl n //遍历状态上界</span><br><span class="line">    for (i in 0 until total) &#123;</span><br><span class="line">        if (ok(i)) &#123;</span><br><span class="line">            state[++top] = i</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">fun fit(x: Int, k: Int): Boolean &#123;  //判断状态x 与第k行的实际状态的逆是否有‘重合’</span><br><span class="line">    if ((x and (cur[k]) &gt; 0)) return false //若有重合 x不符合要求</span><br><span class="line">    return true</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">fun main() &#123;</span><br><span class="line">    init()</span><br><span class="line">    for (i in 1..top) &#123;</span><br><span class="line">        if (fit(state[i],1)) &#123;</span><br><span class="line">            dp[1][i] = 1</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    for(i in 2..m)&#123;</span><br><span class="line">        for(k in 1..top)&#123;</span><br><span class="line">            if(!fit(state[k],i)) continue</span><br><span class="line">            for(j in 1..top)&#123;</span><br><span class="line">                if(!fit(state[j],i-1)) continue</span><br><span class="line">                if((state[k] and state[j])&gt;0) continue</span><br><span class="line">                dp[i][k] = (dp[i][k]+dp[i-1][j])</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    var ans = 0</span><br><span class="line">    for(i in 1..top)&#123;</span><br><span class="line">        ans += dp[m][i]</span><br><span class="line">    &#125;</span><br><span class="line">    println(&quot;sum $ans&quot;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<blockquote>
+<p>来自 <a href="https://blog.csdn.net/harrypoirot/article/details/23163485" target="_blank" rel="noopener">https://blog.csdn.net/harrypoirot/article/details/23163485</a></p>
+</blockquote>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://hcyxy.tech/2019/03/25/骑士拨号器/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2635,457 +2944,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://hcyxy.tech/2018/11/29/gradle使用/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="hecy">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="无病呻吟">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/11/29/gradle使用/" itemprop="url">gradle使用</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-11-29T21:08:26+08:00">
-                2018-11-29
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/JAVA/" itemprop="url" rel="index">
-                    <span itemprop="name">JAVA</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="常见规则语法"><a href="#常见规则语法" class="headerlink" title="常见规则语法"></a>常见规则语法</h4><h5 id="1-1-buildscript"><a href="#1-1-buildscript" class="headerlink" title="1.1 buildscript"></a>1.1 buildscript</h5><p>这个语法常常会在项目根目录的build.gradle中出现。</p>
-<blockquote>
-<p>这个声明是gradle自身所需要的资源，如maven仓库地址、依赖项、第三方插件。执行脚本时，会优先执行buildscript代码块中的内容，然后执行剩下的内容。</p>
-</blockquote>
-<p>如下使用方法：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">buildscript &#123;</span><br><span class="line">    ext.kotlin_version = &apos;1.2.51&apos;</span><br><span class="line">    ext.slf4j_version = &apos;1.7.25&apos;</span><br><span class="line">    ext.testng_version = &apos;6.9.6&apos;</span><br><span class="line">    repositories &#123;</span><br><span class="line">        mavenLocal()</span><br><span class="line">        maven &#123; url &apos;http://maven.aliyun.com/nexus/content/repositories/central/&apos; &#125;</span><br><span class="line">        mavenCentral()</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    dependencies &#123;</span><br><span class="line">        classpath &quot;org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version&quot;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h5 id="1-2-ext"><a href="#1-2-ext" class="headerlink" title="1.2 ext"></a>1.2 ext</h5><p>定义全局变量<br><br>使用方法1：<br><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ext&#123;</span><br><span class="line">    kotlin_version = 1.2.61</span><br><span class="line">    targetVersion = 1.8</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>使用方法二：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ext.kotlin_version = &apos;1.2.51&apos;</span><br><span class="line">ext.slf4j_version = &apos;1.7.25&apos;</span><br></pre></td></tr></table></figure></p>
-<h5 id="1-3-classpath"><a href="#1-3-classpath" class="headerlink" title="1.3 classpath"></a>1.3 classpath</h5><p>build.gradle中buildscript下面有classpath 码块中你可以对dependencies使用classpath声明。</p>
-<h5 id="1-4-调整gradle编译参数"><a href="#1-4-调整gradle编译参数" class="headerlink" title="1.4 调整gradle编译参数"></a>1.4 调整gradle编译参数</h5><p>配置gradle.properties<br><br>配置最大内存</p>
-<blockquote>
-<p>org.gradle.jvmargs=-Xmx2048m -XX:MaxPermSize=1024m</p>
-</blockquote>
-<p>守护进程：</p>
-<blockquote>
-<p>org.gradle.daemon=true</p>
-</blockquote>
-<p>并行编译：</p>
-<blockquote>
-<p>org.gradle.parallel=true</p>
-</blockquote>
-<p>开启缓存：</p>
-<blockquote>
-<p>android.enableBuildCache=true</p>
-</blockquote>
-<h5 id="1-5-死库写法不推荐"><a href="#1-5-死库写法不推荐" class="headerlink" title="1.5 死库写法不推荐"></a>1.5 死库写法不推荐</h5><blockquote>
-<p>dependencies{<br>    compile ‘com.google.grpc:1.2+’<br>}</p>
-</blockquote>
-<p>虽然可以保证每次库都是最新的，也会带来如下问题：</p>
-<ul>
-<li>build网络检查 速度慢</li>
-<li>库更新带来bug</li>
-<li>开发者得到不同版本的包<br>推荐写为固定版本</li>
-</ul>
-<h5 id="1-6-全局设定编码"><a href="#1-6-全局设定编码" class="headerlink" title="1.6 全局设定编码"></a>1.6 全局设定编码</h5><blockquote>
-<p>allprojects{<br>    repositories{<br>        MavenCenter()<br>    }<br>}</p>
-</blockquote>
-<h5 id="1-7-依赖其他module和jar"><a href="#1-7-依赖其他module和jar" class="headerlink" title="1.7 依赖其他module和jar"></a>1.7 依赖其他module和jar</h5><blockquote>
-<p>dependencies{<br>    compile project(‘module1’)<br>    compile files(‘libs/commons.jar’)<br>}</p>
-</blockquote>
-<h5 id="1-8-exclude关键字"><a href="#1-8-exclude关键字" class="headerlink" title="1.8 exclude关键字"></a>1.8 exclude关键字</h5><p>剔除一些组织库<br></p>
-<blockquote>
-<p>compile(‘com.google.avg’){<br>    exclude group: ‘com.google.avg.util’ //组织名称<br>}</p>
-</blockquote>
-<p>剔除某个库：</p>
-<blockquote>
-<p>compile(‘com.android.support:appcompat-v7:23.2.0’) {<br>    exclude group: ‘com.android.support’, module: ‘support-annotations’ // 写全称<br>    exclude group: ‘com.android.support’, module: ‘support-compat’<br>}</p>
-</blockquote>
-<h5 id="1-9-subprojects"><a href="#1-9-subprojects" class="headerlink" title="1.9 subprojects"></a>1.9 subprojects</h5><p>多模块项目之间有重复的配置，可以使用这个配置</p>
-<blockquote>
-</blockquote>
-<p>subprojects {</p>
-<pre><code>version &apos;1.0.0-SNAPSHOT&apos;
-group &apos;hcyxy.tech&apos;
-
-apply plugin: &apos;idea&apos;
-apply plugin: &apos;java&apos;
-apply plugin: &apos;kotlin&apos;
-
-sourceCompatibility = 1.8
-
-compileKotlin {
-    kotlinOptions.jvmTarget = &quot;1.8&quot;
-}
-compileTestKotlin {
-    kotlinOptions.jvmTarget = &quot;1.8&quot;
-}
-
-
-repositories {
-    mavenLocal()
-    mavenCenter()
-}
-
-dependencies {
-
-    testCompile &quot;org.testng:testng:${testng_version}&quot;
-
-    //kotlin
-    compile &quot;org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version&quot;
-
-    //log4j
-    compile group: &apos;org.apache.logging.log4j&apos;, name: &apos;log4j-api&apos;, version: &apos;2.8&apos;
-    compile group: &apos;org.apache.logging.log4j&apos;, name: &apos;log4j-core&apos;, version: &apos;2.8&apos;
-
-    //log
-    compile &apos;ch.qos.logback:logback-classic:1.1.7&apos;
-    compile &quot;org.slf4j:slf4j-api:${slf4j_version}&quot;
-    compile &quot;org.slf4j:jul-to-slf4j:${slf4j_version}&quot;
-}
-//noinspection GroovyAssignabilityCheck
-tasks.withType(JavaCompile) {
-    options.encoding = &quot;UTF-8&quot;
-}}
-</code></pre><h5 id="1-20-sourceSets"><a href="#1-20-sourceSets" class="headerlink" title="1.20 sourceSets"></a>1.20 sourceSets</h5><p>通过修改SourceSets中的属性，可以指定哪些源文件（或文件夹下的源文件）要被编译，哪些源文件要被排除<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">sourceSets &#123;</span><br><span class="line">    main &#123;</span><br><span class="line">        java &#123;</span><br><span class="line">            srcDir &apos;src/java&apos; // 指定源码目录</span><br><span class="line">        &#125;</span><br><span class="line">        resources &#123;</span><br><span class="line">            srcDir &apos;src/resources&apos; //资源目录</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h4 id="2、实践"><a href="#2、实践" class="headerlink" title="2、实践"></a>2、实践</h4><p>多模块项目中，根目录一半就配置好subprojects buildscript就基本OK了。还会有一些常用插件，比如querydsl grpc的插件配置。<br><br>google的protobuf配置<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br></pre></td><td class="code"><pre><span class="line">sourceSets &#123;</span><br><span class="line">    main &#123;</span><br><span class="line">        proto &#123;</span><br><span class="line">            srcDir &apos;src/main/proto&apos;</span><br><span class="line">        &#125;</span><br><span class="line">        java &#123;</span><br><span class="line">            srcDirs &apos;src/main/java&apos;, &quot;$&#123;protobuf.generatedFilesBaseDir&#125;/main/java&quot;, &quot;$&#123;protobuf.generatedFilesBaseDir&#125;/main/grpc&quot;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">protobuf &#123;</span><br><span class="line">    generatedFilesBaseDir = &quot;$&#123;projectDir&#125;/src/generated&quot;</span><br><span class="line">    protoc &#123;</span><br><span class="line">        artifact = &quot;com.google.protobuf:protoc:3.0.0&quot;</span><br><span class="line">    &#125;</span><br><span class="line">    plugins &#123;</span><br><span class="line">        grpc &#123;</span><br><span class="line">            artifact = &quot;io.grpc:protoc-gen-grpc-java:$grpc_version&quot;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    generateProtoTasks &#123;</span><br><span class="line">        all()*.plugins &#123;</span><br><span class="line">            grpc &#123;</span><br><span class="line">                option &apos;enable_deprecated=false&apos;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">idea &#123;</span><br><span class="line">    module &#123;</span><br><span class="line">        sourceDirs += file(&quot;$&#123;protobuf.generatedFilesBaseDir&#125;/main/java&quot;)</span><br><span class="line">        sourceDirs += file(&quot;$&#123;protobuf.generatedFilesBaseDir&#125;/main/grpc&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">publishing &#123;</span><br><span class="line">    repositories &#123;</span><br><span class="line">        maven &#123;</span><br><span class="line">            name &quot;snapshots&quot;</span><br><span class="line">            url &quot;&quot;</span><br><span class="line">            credentials &#123;</span><br><span class="line">                username = &quot;&quot;</span><br><span class="line">                password = &quot;&quot;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    publications &#123;</span><br><span class="line">        mavenJava(MavenPublication) &#123;</span><br><span class="line">            pom.withXml &#123;</span><br><span class="line">                asNode().dependencies.&apos;*&apos;.findAll() &#123;</span><br><span class="line">                    it.scope.text() == &apos;runtime&apos; &amp;&amp; project.configurations.compile.allDependencies.find &#123; dep -&gt;</span><br><span class="line">                        dep.name == it.artifactId.text()</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;.each() &#123;</span><br><span class="line">                    it.scope*.value = &apos;compile&apos;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            if (project != rootProject) &#123;</span><br><span class="line">                artifactId &quot;$&#123;rootProject.name&#125;-$&#123;project.name&#125;&quot;</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                artifactId &quot;$&#123;project.name&#125;&quot;</span><br><span class="line">            &#125;</span><br><span class="line">            from components.java</span><br><span class="line">            if (!project.getTasksByName(&quot;sourceJar&quot;, false).isEmpty()) &#123;</span><br><span class="line">                artifact sourceJar &#123;</span><br><span class="line">                    classifier &quot;sources&quot;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://hcyxy.tech/2018/11/28/paxos学习小结/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="hecy">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="无病呻吟">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/11/28/paxos学习小结/" itemprop="url">Paxos小结</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-11-28T22:50:36+08:00">
-                2018-11-28
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/分布式系统/" itemprop="url" rel="index">
-                    <span itemprop="name">分布式系统</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="1、paxos解决什么问题？"><a href="#1、paxos解决什么问题？" class="headerlink" title="1、paxos解决什么问题？"></a>1、paxos解决什么问题？</h4><p><strong>三个人在不同的城市现在要达成一个协议：去哪个城市聚会？</strong><br><br>使用的工具：<strong>微信 QQ 电话 飞鸽传书</strong> <br><br>但是：可能会断网 飞鸽迷路<br><br>如何保证三个人能决定出一个一致的城市，这就是paxos算法，pasox是一个算法族，包括basic-paxos，multi-paxos，fast-paxos等。<br><br>paxos算法在工程应用里主要解决日志复制问题，如主备库的日志同步。</p>
-<h4 id="2、一致性需要满足三个条件"><a href="#2、一致性需要满足三个条件" class="headerlink" title="2、一致性需要满足三个条件"></a>2、一致性需要满足三个条件</h4><ol>
-<li>v达成一致时的值由某个进程提出。防止作弊方式：无论如何，最终都令每个进程的v为同一个预先设置的值</li>
-<li>一旦v就某个值达成一致，v不会对另一个值再次达成一致，这是<strong>安全性</strong></li>
-<li>一致总能达成，v总会被决定为某个值，不会无休止的等待，这称为<strong>活性</strong></li>
-</ol>
-<h4 id="3、paxos约束"><a href="#3、paxos约束" class="headerlink" title="3、paxos约束"></a>3、paxos约束</h4><ol>
-<li>P1 acceptor必须接受收到的第一个提案</li>
-<li>P2 如果一个value=v的提案被选择了，那么被批准的拥有更高proposalId的提案proposal的value=v<br>（P2a 一旦一个具有value v的提案被批准(chosen)，那么之后任何Acceptor 再次接受(accept)的提案必须具有value v）<br>（一旦一个具有value v的提案被批准(chosen)，那么以后任何 Proposer 提出的提案必须具有value v）<br>（P2c <strong>如果一个编号为n的提案具有value=v，那么存在一个多数派，要么他们中所有人都没有accept编号小于n的任何提案，要么他们已经accpet的所有编号小于n的提案中编号最大的那个提案具有value v</strong>）<br><br>P2c -&gt; P2b -&gt; P2c -&gt; P2a</li>
-</ol>
-<h4 id="4、basic-paxos算法"><a href="#4、basic-paxos算法" class="headerlink" title="4、basic-paxos算法"></a>4、basic-paxos算法</h4><p>先摆上算法流程：<br></p>
-<h5 id="1、第一阶段Prepare"><a href="#1、第一阶段Prepare" class="headerlink" title="1、第一阶段Prepare"></a>1、第一阶段Prepare</h5><h5 id="P1a：Proposer发送Prepare"><a href="#P1a：Proposer发送Prepare" class="headerlink" title="P1a：Proposer发送Prepare"></a>P1a：Proposer发送Prepare</h5><p>proposer生成全局唯一且递增的提案ID，无需携带提案内容</p>
-<h5 id="P1b：Acceptor应答Prepare"><a href="#P1b：Acceptor应答Prepare" class="headerlink" title="P1b：Acceptor应答Prepare"></a>P1b：Acceptor应答Prepare</h5><p>Acceptor收到PrepareRequest。<br>做出一个Response，两个Promise<br><br>一个Reponse：<br></p>
-<ul>
-<li>返回Accept的提案中PropalId最大的提案的内容，没有则返回空值</li>
-</ul>
-<p>两个Promise：<br></p>
-<ul>
-<li>不再应答PropalId&lt;=当前请求的PrepareRequest</li>
-<li>不再应答PropoalId&lt;当前请求的AcceptRequest</li>
-</ul>
-<p>注意<br></p>
-<ul>
-<li>应答当前请求前，先检查是否违背承诺</li>
-<li>应答前先在本地持久化当前ProposalId</li>
-</ul>
-<h5 id="2、第二阶段"><a href="#2、第二阶段" class="headerlink" title="2、第二阶段"></a>2、第二阶段</h5><h5 id="P2a：Proposer发送Accept"><a href="#P2a：Proposer发送Accept" class="headerlink" title="P2a：Proposer发送Accept"></a>P2a：Proposer发送Accept</h5><p>“提案生成规则”：Proposer收集到多数派应答的PrepareResponse，选择proposalId最大的提案内容，作为要发起Accept的提案，如果提案为空值，则可以随意决定提案内容，带上当前ProposalID，向集群发送AcceptRequest</p>
-<ul>
-<li>回复数量&gt;一半acceptor数量，且所有value为空，Proposer发出accept请求，带上指定value</li>
-<li>回复数量&gt;一半acceptor，且有的回复value不为空，则Proposer发出accept请求，带上回复中ProposalId最大的value作为提案内容</li>
-<li>回复数量&lt;=一半accept数量，尝试生成更大的ProposalId，转P1a执行</li>
-</ul>
-<h5 id="P2b-Accept应答Accept"><a href="#P2b-Accept应答Accept" class="headerlink" title="P2b:Accept应答Accept"></a>P2b:Accept应答Accept</h5><p>Acceptor收到AcceptRequest检查两个承诺，持久化当前ProposalId和提案内容，最后Proposer收集到多数派应答的AcceptResponse后，形成决议。<br><br>Acceptor收到Accept请求后：<br></p>
-<ul>
-<li>收到ProposalId&gt;=Max_ProposalId【一般情况是等于】，则回复提交成功，持久化ProposalId和value</li>
-<li>收到ProposalId&lt;Max_proposalId，则不回复或者回复提交失败</li>
-</ul>
-<p>Proposer统计投票，propose收集到一些Accept：<br></p>
-<ul>
-<li>回复数量&gt;一半acceptor数量，则表示提交value成功。可以发一个广播给所有Proposer、Learner，通知已commit的value</li>
-<li>回复数量 &lt;= 一半的Acceptor数量，尝试生成更大的 ProposalID，转P1a</li>
-<li>收到提交失败的回复，生成更大ProposalId，转P1a</li>
-</ul>
-<h4 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h4><p>A、proposalId不要求全局唯一，本可以随机生成ProposalId，但是无法通过P1b约束概率很高<br><br>B、paxos流程为了每条日志生成全局唯一递增logId。如果有办法生成全局唯一递增logId，就不需要paxos了，每条日志accept一遍就OK了。<br></p>
-<h4 id="5、multi-paxos算法"><a href="#5、multi-paxos算法" class="headerlink" title="5、multi-paxos算法"></a>5、multi-paxos算法</h4><p>basic-paxos针对每条redolog至少存在三次网络交互（1. 产生logId 2.prepare阶段 3.accept阶段）</p>
-<ul>
-<li>产生logId，集群内有很多proposer，任意server发起redolog同步，进行分布式协商产生全局唯一有序logId</li>
-<li>prepare阶段，paxos instance进行redolog投票</li>
-<li>accept阶段 对prepare的议案进行投票</li>
-</ul>
-<p>server应答prepare和accept前都要持久化本地redolog，最终basic-paxos进行redolog同步的延迟包括了3次网络交互和2次本地写盘。<br></p>
-<h5 id="leader的产生"><a href="#leader的产生" class="headerlink" title="leader的产生"></a>leader的产生</h5><p>multi-paxos协议并不假设全局必须只能有唯一的leader来生成日志，允许有多个自认为是leader的server来并发生成日志，这样的场景退化为basic-paxos。<br><br>可以简单理解为经过一轮basic-paxos,成功得到多数派accept的proposer成为leader【leader elect】，只有通过lease机制，在leader任期内，不必每次向多数派询问logId，也不必执行prepare阶段，直接accept。<br><br>另一个问题：多个server并发执行leader elect，可能出现两个server在相近的时间内，先后leader elect都成功，因此当选leader在开始以leader身份提供服务之前，要使用leaer proposalId写一条日志（StartWorking日志） 得到多数派确认后，再开始提供服务。因为根绝basic-paxos约束，可以推断：先执行leader elect成功的leaer（L1)，它的proposalId(p1)一定会小于后执行leader elect成功的leader（L2）的proposalId（p2),而经过两轮leader Elect，集群多数派持久化的proposalId一定是P2，而此时L1使用P1执行accept，由于P1&lt; p2，将无法得到集群内多数派的accept。<br></p>
-<p>顺势引出日志同步逻辑的简化，我们将 Leader 选主看作 Paxos 的 Prepare 阶段，这个 Prepare 操作在逻辑上一次性的将后续所有即将产生的日志都执行 Prepare，因此在 Leader任期内的日志同步，都使用同一个 Proposalid，只执行 Accept 阶段即可<br></p>
-<p>各个备机在执行 Accept 的时候，需要注意什么？<br></p>
-<p>把选主的那轮paos看做prepare，对于后续要accept的日志，遵守两个承诺，对于先后胜出选主的多个当选leader，同步日志时携带的proposalId大小是不同的，只有最大的proposalId能同步成功，称为正式leaderf。<br></p>
-<p>再进一步简化：当选leader必写一条日志确认leader身份，允许多个当选，本质就是拿到集群两个承诺，选主过程对决议内容没有实际意义，进一步简化为只执行prepare阶段，无需accept<br></p>
-<p>再进一步优化，与raft协议不同，multi-paxos不要求新leader拥有全部日志，需要知道补全哪些日志，向多数派查询各个机器maxLogId，确定补全日志结束的Logid。可以将这个操作与prepare一起发出。并非multi-paxos一部分。<br></p>
-<p>回放逻辑：对每条形成多数派的日志，异步写出确认日志，回放时如果一条日志有对应的确认日志，不需重新执行paxos，直接回放。对于没有确认日志的，需要执行paxos。工程上为了避免“确认日志”与对应的 Redolog 距离过大而带来回放的复杂度，往往使用滑动窗口机制来控制他们的距离。同时“确认日志”也用来提示备机可以回放收到的日志了。与Raft协议不同，由于 Multi-Paxos 允许日志不连续的确认，以及允许任何成员都可以当选 Leader，因此新任leader需要补全自己本地缺失的日志，以及对未“确认”的日志重新执行 Paxos。我把这个过程叫做日志的“重确认”，本质上就是按照“最大commit原则”，使用当前最新的Proposalid，逐条的对这些日志重新执行Paxos，成功后再补上对应的“确认日志”。<br></p>
-<p>功能：自动选主  简化同步逻辑  简化回放逻辑</p>
-<h4 id="6、multi-paxos的问题"><a href="#6、multi-paxos的问题" class="headerlink" title="6、multi-paxos的问题"></a>6、multi-paxos的问题</h4><p>6.1 paxos存在永远无法达成一致的可能，就是所谓的活锁问题：</p>
-<ul>
-<li>被打回的第一阶段再次发起PrepareRequest请求前加入随机等待时间</li>
-<li>设置一个超时时间，到达超时时间后，不再接受PrepareRequest请求</li>
-<li>proposer选出一个leader，通过leader统一发出PrepareRequest和AcceptRequest</li>
-</ul>
-<p>6.2 影子日志<br><br>幽灵复现问题的根本原因是leader的乱序提交log<br><br>解决方法：<br>需要leader在完成日志冲确认，开始写入新的redolog之前，写一条StartWorking的日志，这条日志记录了当前leader的EpochId（可以使用ProposalId），leader每写一条日志都在日志内容中携带现任leader的EpochId，回放时，经过了一条StartWorking日志后，再遇到epochId比它小的日志，直接忽略。</p>
-<h4 id="7、依赖时钟误差的变种-Paxos-选主协议"><a href="#7、依赖时钟误差的变种-Paxos-选主协议" class="headerlink" title="7、依赖时钟误差的变种 Paxos 选主协议"></a>7、依赖时钟误差的变种 Paxos 选主协议</h4><p>相对MultiPaxos和Raft协议的优势在于，它不需要持久化任何数据，引入选主窗口的概念，使得大部分场景下集群内的所有机器能够几乎同时发起选主请求，便于投票时比对预定的优先级。<br>选主协议规定选主窗口开启是当前时间对一个T取余为0的时间，即只能在第 0，T，2T，3T…N*T 的时间点上开启选主窗口，协议将一次选主划分为三个阶段<br></p>
-<ol>
-<li>T1 预投票开始即由各个选举组成员向集群里的其他机器发送拉票请求；</li>
-<li>一段时间后进入 T2 预投票开始，选举组各个成员根据接受到的拉票请，从中选出优先级最高的，给它投票应答；</li>
-<li>一段时间后进入 T3 计票阶段，收到多数派投票的成员成为 leader，并向投票组其他成员发送自己上任的消息。</li>
-</ol>
-<p>这个选主算法相对Paxos和Raft更加简单，但是对时钟误差有比较强的依赖，时钟误差过大的情况下，会造成投票分裂无法选出主，甚至可能出现双主,但是任何保持Leader身份的Lease机制都得依赖时钟，因此可能仅仅适合 BAT 这种配备了原子钟和 GPS校准时钟，能够控制时钟误差在 100ms 以内的土豪机房</p>
-<h4 id="8、raft算法和paxos算法差异"><a href="#8、raft算法和paxos算法差异" class="headerlink" title="8、raft算法和paxos算法差异"></a>8、raft算法和paxos算法差异</h4><p>Raft可以认为是一种简化的Multi-Paxos实现，最大简化之处在于备机接受Leader日志的前提是收到LogID连续的日志，在这个假设前提下，没有“幽灵复现”和“重确认”问题。简化带来的代价是对网络抖动的容忍度稍低一些。raft不允许日志的空洞，这也是为了比较方便和拉平两个节点的日志方便。Raft连续确认更大的一个优势是新主上任过程简单了。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -3136,7 +2994,7 @@ tasks.withType(JavaCompile) {
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">34</span>
+                  <span class="site-state-item-count">36</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
