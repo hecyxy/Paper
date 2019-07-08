@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="1、上台阶 一个小孩上台阶，每次可以上1步、2步或3步，共有n级台阶，一共有多少种方式1234567891011121314151617181920212223242526272829303132333435363738fun runStairCase(n: Int): Int &amp;#123;    if (n == 1) return 1    if (n == 2) return 2    va">
+<meta property="og:type" content="article">
+<meta property="og:title" content="递归-动态规划案例">
+<meta property="og:url" content="http://hcyxy.tech/2019/07/08/递归动态规划案例/index.html">
+<meta property="og:site_name" content="无病呻吟">
+<meta property="og:description" content="1、上台阶 一个小孩上台阶，每次可以上1步、2步或3步，共有n级台阶，一共有多少种方式1234567891011121314151617181920212223242526272829303132333435363738fun runStairCase(n: Int): Int &amp;#123;    if (n == 1) return 1    if (n == 2) return 2    va">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-07-08T15:05:58.542Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="递归-动态规划案例">
+<meta name="twitter:description" content="1、上台阶 一个小孩上台阶，每次可以上1步、2步或3步，共有n级台阶，一共有多少种方式1234567891011121314151617181920212223242526272829303132333435363738fun runStairCase(n: Int): Int &amp;#123;    if (n == 1) return 1    if (n == 2) return 2    va">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://hcyxy.tech/2019/07/08/递归动态规划案例/"/>
+
+
+
+
+
+  <title>递归-动态规划案例 | 无病呻吟</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">无病呻吟</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">hcy && xy</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://hcyxy.tech/2019/07/08/递归动态规划案例/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="hecy">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="无病呻吟">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">递归-动态规划案例</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-07-08T21:19:22+08:00">
+                2019-07-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/算法与数据结构/" itemprop="url" rel="index">
+                    <span itemprop="name">算法与数据结构</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h5 id="1、上台阶"><a href="#1、上台阶" class="headerlink" title="1、上台阶"></a>1、上台阶</h5><blockquote>
+<p>一个小孩上台阶，每次可以上1步、2步或3步，共有n级台阶，一共有多少种方式<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">fun runStairCase(n: Int): Int &#123;</span><br><span class="line">    if (n == 1) return 1</span><br><span class="line">    if (n == 2) return 2</span><br><span class="line">    val array = IntArray(n + 1)</span><br><span class="line">    array[1] = 1</span><br><span class="line">    for (i in 2 until (n + 1)) &#123;</span><br><span class="line">        if (i - 1 &gt; 0)</span><br><span class="line">            array[i] += array[i - 1]</span><br><span class="line">        else if (i - 1 == 0)</span><br><span class="line">            array[i] += 1</span><br><span class="line">        if (i - 2 &gt; 0)</span><br><span class="line">            array[i] += array[i - 2]</span><br><span class="line">        else if (i - 2 == 0)</span><br><span class="line">            array[i] += 1</span><br><span class="line">        if (i - 3 &gt; 0)</span><br><span class="line">            array[i] += array[i - 3]</span><br><span class="line">        else if (i - 3 == 0)</span><br><span class="line">            array[i] += 1</span><br><span class="line">    &#125;</span><br><span class="line">    return array[n]</span><br><span class="line">&#125;</span><br><span class="line">fun countWays(n: Int): Int &#123;</span><br><span class="line">    val memo = IntArray(n + 1)</span><br><span class="line">    Arrays.fill(memo, -1)</span><br><span class="line">    return countWays(n, memo)</span><br><span class="line">&#125;</span><br><span class="line">fun countWays(n: Int, memo: IntArray): Int &#123;</span><br><span class="line">    return when &#123;</span><br><span class="line">        n &lt; 0 -&gt; 0</span><br><span class="line">        n == 0 -&gt; 1</span><br><span class="line">        memo[n] &gt; -1 -&gt; memo[n]</span><br><span class="line">        else -&gt; &#123;</span><br><span class="line">            memo[n] = countWays(n - 1, memo) + countWays(n - 2, memo) +</span><br><span class="line">                    countWays(n - 3, memo)</span><br><span class="line">            memo[n]</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<h5 id="2、机器人跳方格"><a href="#2、机器人跳方格" class="headerlink" title="2、机器人跳方格"></a>2、机器人跳方格</h5><blockquote>
+<p>一个机器在一个方格左上角，每次可以向右或向下，但不能超过方格，从左上角到右下角有多种路</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">fun grid(row: Int, col: Int): Int &#123;</span><br><span class="line">    val meta = Array(row + 1) &#123;</span><br><span class="line">        IntArray(col + 1)</span><br><span class="line">    &#125;</span><br><span class="line">    for (i in row downTo 1) &#123;</span><br><span class="line">        for (j in col downTo 1) &#123;</span><br><span class="line">            if (i == row &amp;&amp; j == col) &#123;</span><br><span class="line">                meta[i][j] = 1</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                if (i + 1 &lt;= row)</span><br><span class="line">                    meta[i][j] += meta[i + 1][j]</span><br><span class="line">                if (j + 1 &lt;= col) &#123;</span><br><span class="line">                    meta[i][j] += meta[i][j + 1]</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return meta[1][1]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="3、求所有集合子集"><a href="#3、求所有集合子集" class="headerlink" title="3、求所有集合子集"></a>3、求所有集合子集</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">fun getSubsets(data: List&lt;Int&gt;, index: Int): ArrayList&lt;ArrayList&lt;Int&gt;&gt; &#123;</span><br><span class="line">    val allSubSets: ArrayList&lt;ArrayList&lt;Int&gt;&gt;?</span><br><span class="line">    if (data.size == index) &#123;</span><br><span class="line">        allSubSets = arrayListOf()</span><br><span class="line">        allSubSets.add(ArrayList())</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        allSubSets = getSubsets(data, index + 1)</span><br><span class="line">        val item = data[index]</span><br><span class="line">        val moreSubsets = ArrayList&lt;ArrayList&lt;Int&gt;&gt;()</span><br><span class="line">        allSubSets.forEach &#123;</span><br><span class="line">            val newSubset = ArrayList&lt;Int&gt;()</span><br><span class="line">            newSubset.addAll(it)</span><br><span class="line">            newSubset.add(item)</span><br><span class="line">            moreSubsets.add(newSubset)</span><br><span class="line">        &#125;</span><br><span class="line">        allSubSets.addAll(moreSubsets)</span><br><span class="line">    &#125;</span><br><span class="line">    return allSubSets</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">fun getSubsets(data: List&lt;Int&gt;): ArrayList&lt;ArrayList&lt;Int&gt;&gt; &#123;</span><br><span class="line">    val allSubsets = ArrayList&lt;ArrayList&lt;Int&gt;&gt;()</span><br><span class="line">    val max = 1 shl data.size</span><br><span class="line">    for (i in 0 until max) &#123;</span><br><span class="line">        val subset = convert(i, data)</span><br><span class="line">        allSubsets.add(subset)</span><br><span class="line">    &#125;</span><br><span class="line">    return allSubsets</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">fun convert(i: Int, data: List&lt;Int&gt;): ArrayList&lt;Int&gt; &#123;</span><br><span class="line">    val subset = ArrayList&lt;Int&gt;()</span><br><span class="line">    var index = 0</span><br><span class="line">    var k = i</span><br><span class="line">    while (k &gt; 0) &#123;</span><br><span class="line">        if (k and 1 == 1) &#123;</span><br><span class="line">            subset.add(data[index])</span><br><span class="line">        &#125;</span><br><span class="line">        index++</span><br><span class="line">        k = k shr 1</span><br><span class="line">    &#125;</span><br><span class="line">    return subset</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="4、计算乘积"><a href="#4、计算乘积" class="headerlink" title="4、计算乘积"></a>4、计算乘积</h5><blockquote>
+<p>不使用*操作，只能使用+ - 移位操作计算两数乘积<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">fun minProduct(a: Int, b: Int): Int &#123;</span><br><span class="line">    val bigger = if (a &lt; b) b else a</span><br><span class="line">    val smaller = if (a &lt; b) a else b</span><br><span class="line">    val mem = IntArray(smaller + 1)</span><br><span class="line">    return minProductHelper(smaller, bigger, mem)</span><br><span class="line">&#125;</span><br><span class="line">fun minProductHelper(smaller: Int, bigger: Int, mem: IntArray): Int &#123;</span><br><span class="line">    when &#123;</span><br><span class="line">        smaller == 0 -&gt; return 0</span><br><span class="line">        smaller == 1 -&gt; return bigger</span><br><span class="line">        mem[smaller] &gt; 0 -&gt; return mem[smaller]</span><br><span class="line">    &#125;</span><br><span class="line">    val s = smaller shr 1</span><br><span class="line">    val side1 = minProductHelper(s, bigger, mem)</span><br><span class="line">    var side2 = side1</span><br><span class="line">    if (smaller % 2 == 1) &#123;</span><br><span class="line">        side2 = minProductHelper(smaller - s, bigger, mem)</span><br><span class="line">    &#125;</span><br><span class="line">    mem[smaller] = side1 + side2</span><br><span class="line">    return mem[smaller]</span><br><span class="line">&#125;</span><br><span class="line">fun upgradeMinProduct(smaller: Int, bigger: Int): Int &#123;</span><br><span class="line">    if (smaller == 0) return 0</span><br><span class="line">    else if (smaller == 1) return bigger</span><br><span class="line">    val s = smaller shr 1</span><br><span class="line">    val halfProd = minProduct(s, bigger)</span><br><span class="line">    return if (smaller % 2 == 0) &#123;</span><br><span class="line">        halfProd + halfProd</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        halfProd + halfProd + bigger</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<h5 id="5、boolean-evaluation"><a href="#5、boolean-evaluation" class="headerlink" title="5、boolean evaluation"></a>5、boolean evaluation</h5><blockquote>
+<p>0-false，1-true；给出一个表达式，给以目标值true/false,通过加括号，使目标表达式的布尔值=目标布尔值，输出加括号的方式，这种(((0))^(1))是不合理的。</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line">fun countEval(s: String, result: Boolean): Int &#123;</span><br><span class="line">    if (s.isEmpty()) return 0</span><br><span class="line">    if (s.length == 1) return if ((s.toInt() == 1) == result) 1 else 0</span><br><span class="line">    var ways = 0</span><br><span class="line">    var i = 1</span><br><span class="line">    while (i &lt; s.length) &#123;</span><br><span class="line">        val c = s[i]</span><br><span class="line">        val left = s.substring(0, i)</span><br><span class="line">        val right = s.substring(i + 1, s.length)</span><br><span class="line">        val leftTrue = countEval(left, true)</span><br><span class="line">        val leftFalse = countEval(left, false)</span><br><span class="line">        val rightTrue = countEval(right, true)</span><br><span class="line">        val rightFalse = countEval(right, false)</span><br><span class="line">        val total = (leftTrue + leftFalse) * (rightFalse + rightTrue)</span><br><span class="line">        var totalTrue = 0</span><br><span class="line">        when (c) &#123;</span><br><span class="line">            &apos;^&apos; -&gt; totalTrue = leftTrue * rightFalse + leftFalse * rightTrue</span><br><span class="line">            &apos;&amp;&apos; -&gt; totalTrue = leftTrue * rightTrue</span><br><span class="line">            &apos;|&apos; -&gt; totalTrue = leftTrue * rightTrue + leftTrue * rightFalse + leftFalse * rightTrue</span><br><span class="line">        &#125;</span><br><span class="line">        val subWays = if (result) totalTrue else total - totalTrue</span><br><span class="line">        ways += subWays</span><br><span class="line">        i += 2</span><br><span class="line">    &#125;</span><br><span class="line">    return ways</span><br><span class="line">&#125;</span><br><span class="line">fun countEval(s: String, result: Boolean, mem: HashMap&lt;String, Int&gt;): Int &#123;</span><br><span class="line">    if (s.isEmpty()) return 0</span><br><span class="line">    if (s.length == 1) &#123;</span><br><span class="line">        return if ((s.toInt() == 1) == result) 1 else 0</span><br><span class="line">    &#125;</span><br><span class="line">    if (mem.containsKey(result.toString() + s)) return mem[result.toString() + s] ?: 0</span><br><span class="line">    var ways = 0</span><br><span class="line">    var i = 1</span><br><span class="line">    while (i &lt; s.length) &#123;</span><br><span class="line">        val c = s[i]</span><br><span class="line">        val left = s.substring(0, i)</span><br><span class="line">        val right = s.substring(i + 1, s.length)</span><br><span class="line">        val leftTrue = countEval(left, true, mem)</span><br><span class="line">        val leftFalse = countEval(left, false, mem)</span><br><span class="line">        val rightTrue = countEval(right, true, mem)</span><br><span class="line">        val rightFalse = countEval(right, false, mem)</span><br><span class="line">        val total = (leftTrue + leftFalse) * (rightFalse + rightTrue)</span><br><span class="line">        var totalTrue = 0</span><br><span class="line">        when (c) &#123;</span><br><span class="line">            &apos;^&apos; -&gt; totalTrue = leftTrue * rightFalse + leftFalse * rightTrue</span><br><span class="line">            &apos;&amp;&apos; -&gt; totalTrue = leftTrue * rightTrue</span><br><span class="line">            &apos;|&apos; -&gt; totalTrue = leftTrue * rightTrue + leftTrue * rightFalse + leftFalse * rightTrue</span><br><span class="line">        &#125;</span><br><span class="line">        val subWays = if (result) totalTrue else total - totalTrue</span><br><span class="line">        ways += subWays</span><br><span class="line">        i += 2</span><br><span class="line">    &#125;</span><br><span class="line">    mem[result.toString() + s] = ways</span><br><span class="line">    return ways</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="6、八皇后问题"><a href="#6、八皇后问题" class="headerlink" title="6、八皇后问题"></a>6、八皇后问题</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">const val gridSize = 8</span><br><span class="line">fun placeQueens(row: Int, columns: Array&lt;Int&gt;, results: ArrayList&lt;Array&lt;Int&gt;&gt;) &#123;</span><br><span class="line">    if (row == gridSize) &#123;</span><br><span class="line">        results.add(columns.clone())</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        for (col in 0 until gridSize) &#123;</span><br><span class="line">            if (checkValid(columns, row, col)) &#123;</span><br><span class="line">                columns[row] = col</span><br><span class="line">                placeQueens(row + 1, columns, results)</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">fun checkValid(columns: Array&lt;Int&gt;, row1: Int, column1: Int): Boolean &#123;</span><br><span class="line">    for (row2 in 0 until row1) &#123;</span><br><span class="line">        val column2 = columns[row2]</span><br><span class="line">        if (column1 == column2) &#123;</span><br><span class="line">            return false</span><br><span class="line">        &#125;</span><br><span class="line">        val columnsDistance = Math.abs(column2 - column1)</span><br><span class="line">        val rowDistance = row1 - row2</span><br><span class="line">        if (columnsDistance == rowDistance) &#123;</span><br><span class="line">            return false</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return true</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="7、硬币组合"><a href="#7、硬币组合" class="headerlink" title="7、硬币组合"></a>7、硬币组合</h5><blockquote>
+<p>你有若干硬币1、5、10、25，给你一个目标值，用这些硬币组合成这个目标值，有多少种方案</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">fun makeChange(n: Int): Int &#123;</span><br><span class="line">    val denoms = listOf(1, 5, 10, 25)</span><br><span class="line">    val map = Array(n + 1) &#123;</span><br><span class="line">        IntArray(denoms.size + 1)</span><br><span class="line">    &#125;</span><br><span class="line">    return makeChange(n, denoms, 0, map)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">fun makeChange(amount: Int, denoms: List&lt;Int&gt;, index: Int, map: Array&lt;IntArray&gt;): Int &#123;</span><br><span class="line">    if (map[amount][index] &gt; 0) &#123;</span><br><span class="line">        return map[amount][index]</span><br><span class="line">    &#125;</span><br><span class="line">    if (index &gt; denoms.size - 1) return 1</span><br><span class="line">    val denomAmount = denoms[index]</span><br><span class="line">    var ways = 0</span><br><span class="line">    var i = 0</span><br><span class="line">    while (i * denomAmount &lt;= amount) &#123;</span><br><span class="line">        val amountRemaing = amount - i * denomAmount</span><br><span class="line">        ways += makeChange(amountRemaing, denoms, index + 1, map)</span><br><span class="line">        i += 1</span><br><span class="line">    &#125;</span><br><span class="line">    map[amount][index] = ways</span><br><span class="line">    return ways</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="8、求括号组合"><a href="#8、求括号组合" class="headerlink" title="8、求括号组合"></a>8、求括号组合</h5><blockquote>
+<p>实现所有括号组合，比如输入1，输出();输入2，输出()()、(())</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">fun paren(n: Int): Set&lt;String&gt; &#123;</span><br><span class="line">    val set = HashSet&lt;String&gt;()</span><br><span class="line">    if (n == 0) &#123;</span><br><span class="line">        set.add(&quot;&quot;)</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        val prev = paren(n - 1)</span><br><span class="line">        prev.forEach &#123;</span><br><span class="line">            for (i in 0 until it.length) &#123;</span><br><span class="line">                if (it[i] == &apos;(&apos;) &#123;</span><br><span class="line">                    val temp = insert(it, i)</span><br><span class="line">                    set.add(temp)</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            set.add(&quot;()$it&quot;)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return set</span><br><span class="line">&#125;</span><br><span class="line">fun insert(str: String, leftIndex: Int): String &#123;</span><br><span class="line">    val left = str.substring(0, leftIndex + 1)</span><br><span class="line">    val right = str.substring(leftIndex + 1, str.length)</span><br><span class="line">    return &quot;$left()$right&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="9、汉诺塔游戏"><a href="#9、汉诺塔游戏" class="headerlink" title="9、汉诺塔游戏"></a>9、汉诺塔游戏</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">class Tower(private val i: Int) &#123;</span><br><span class="line">    private val disks = Stack&lt;Int&gt;()</span><br><span class="line">    val stack: Stack&lt;Int&gt;</span><br><span class="line">        get() &#123;</span><br><span class="line">            return disks</span><br><span class="line">        &#125;</span><br><span class="line">    val index: Int</span><br><span class="line">        get() &#123;</span><br><span class="line">            return i</span><br><span class="line">        &#125;</span><br><span class="line">    fun add(d: Int) &#123;</span><br><span class="line">        if (disks.isNotEmpty() &amp;&amp; disks.peek() &lt;= d) &#123;</span><br><span class="line">            println(&quot;error placing disk $d&quot;)</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            disks.push(d)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    private fun moveTopTo(t: Tower) &#123;</span><br><span class="line">        val top = disks.pop()</span><br><span class="line">        t.add(top)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    fun moveDisks(n: Int, destination: Tower, buffer: Tower) &#123;</span><br><span class="line">        if (n &gt; 0) &#123;</span><br><span class="line">            moveDisks(n - 1, buffer, destination)</span><br><span class="line">            moveTopTo(destination)</span><br><span class="line">            buffer.moveDisks(n - 1, destination, this)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line">fun main(vararg args: String) &#123;</span><br><span class="line">    val n = 3</span><br><span class="line">    val towers = arrayOfNulls&lt;Tower&gt;(n)</span><br><span class="line">    for (i in 0 until n) &#123;</span><br><span class="line">        towers[i] = Tower(i)</span><br><span class="line">    &#125;</span><br><span class="line">    for (i in n - 1 downTo 0) &#123;</span><br><span class="line">        towers[0]!!.add(i)</span><br><span class="line">    &#125;</span><br><span class="line">    towers[0]!!.moveDisks(n, towers[2]!!, towers[1]!!)</span><br><span class="line">    towers.forEach &#123;</span><br><span class="line">        println(&quot;$&#123;it?.index&#125; $&#123;it?.stack&#125;&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="10、排列组合问题"><a href="#10、排列组合问题" class="headerlink" title="10、排列组合问题"></a>10、排列组合问题</h5><blockquote>
+<p>给一个字符串包含不同的字符，给出所有排列组合方式</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">fun getPerms(str: String): List&lt;String&gt; &#123;</span><br><span class="line">    val permu = arrayListOf&lt;String&gt;()</span><br><span class="line">    if (str.isEmpty()) &#123;</span><br><span class="line">        permu.add(&quot;&quot;)</span><br><span class="line">        return permu</span><br><span class="line">    &#125;</span><br><span class="line">    val first = str[0]</span><br><span class="line">    val remainder = str.substring(1)</span><br><span class="line">    val words = getPerms(remainder)</span><br><span class="line">    words.forEach &#123; word -&gt;</span><br><span class="line">        var j = 0</span><br><span class="line">        while (j &lt;= word.length) &#123;</span><br><span class="line">            val s = insertCharAt(word, first, j)</span><br><span class="line">            println(&quot;s $s&quot;)</span><br><span class="line">            permu.add(s)</span><br><span class="line">            j++</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return permu</span><br><span class="line">&#125;</span><br><span class="line">fun insertCharAt(word: String, c: Char, i: Int): String &#123;</span><br><span class="line">    val start = word.substring(0, i)</span><br><span class="line">    val end = word.substring(i)</span><br><span class="line">    return start + c + end</span><br><span class="line">&#125;</span><br><span class="line">fun getPerms2(str: String): List&lt;String&gt; &#123;</span><br><span class="line">    val result = arrayListOf&lt;String&gt;()</span><br><span class="line">    getPerms2(&quot;&quot;, str, result)</span><br><span class="line">    return result</span><br><span class="line">&#125;</span><br><span class="line">fun getPerms2(prefix: String, remainder: String, result: ArrayList&lt;String&gt;) &#123;</span><br><span class="line">    if (remainder.isEmpty()) &#123;</span><br><span class="line">        result.add(prefix)</span><br><span class="line">    &#125;</span><br><span class="line">    val len = remainder.length</span><br><span class="line">    var i = 0</span><br><span class="line">    while (i &lt; len) &#123;</span><br><span class="line">        val before = remainder.substring(0, i)</span><br><span class="line">        val after = remainder.substring(i + 1, len)</span><br><span class="line">        val c = remainder[i]</span><br><span class="line">        getPerms2(prefix + c, before + after, result)</span><br><span class="line">        i++</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>假如这个字符串包含有重复字符呢，该如何处理</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">fun printPerms(s: String): List&lt;String&gt; &#123;</span><br><span class="line">    val result = arrayListOf&lt;String&gt;()</span><br><span class="line">    val map = buildFreqTable(s)</span><br><span class="line">    printPerms(map, &quot;&quot;, s.length, result)</span><br><span class="line">    return result</span><br><span class="line">&#125;</span><br><span class="line">fun printPerms(map: HashMap&lt;Char, Int&gt;, prefiex: String, remaining: Int, result: ArrayList&lt;String&gt;) &#123;</span><br><span class="line">    if (remaining == 0) &#123;</span><br><span class="line">        result.add(prefiex)</span><br><span class="line">        return</span><br><span class="line">    &#125;</span><br><span class="line">    map.keys.forEach &#123;</span><br><span class="line">        val count = map[it] ?: 0</span><br><span class="line">        if (count &gt; 0) &#123;</span><br><span class="line">            map[it] = count - 1</span><br><span class="line">            printPerms(map, prefiex + it, remaining - 1, result)</span><br><span class="line">            map[it] = count</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">fun buildFreqTable(s: String): HashMap&lt;Char, Int&gt; &#123;</span><br><span class="line">    val map = HashMap&lt;Char, Int&gt;()</span><br><span class="line">    s.forEach &#123;</span><br><span class="line">        map[it] = map.getOrDefault(it, 0) + 1</span><br><span class="line">    &#125;</span><br><span class="line">    return map</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/07/01/计算学习理论PAC/" rel="next" title="计算学习理论PAC VC">
+                <i class="fa fa-chevron-left"></i> 计算学习理论PAC VC
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">hecy</p>
+              <p class="site-description motion-element" itemprop="description">a dreamer</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">40</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">18</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#1、上台阶"><span class="nav-number">1.</span> <span class="nav-text">1、上台阶</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2、机器人跳方格"><span class="nav-number">2.</span> <span class="nav-text">2、机器人跳方格</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3、求所有集合子集"><span class="nav-number">3.</span> <span class="nav-text">3、求所有集合子集</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4、计算乘积"><span class="nav-number">4.</span> <span class="nav-text">4、计算乘积</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#5、boolean-evaluation"><span class="nav-number">5.</span> <span class="nav-text">5、boolean evaluation</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#6、八皇后问题"><span class="nav-number">6.</span> <span class="nav-text">6、八皇后问题</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#7、硬币组合"><span class="nav-number">7.</span> <span class="nav-text">7、硬币组合</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#8、求括号组合"><span class="nav-number">8.</span> <span class="nav-text">8、求括号组合</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#9、汉诺塔游戏"><span class="nav-number">9.</span> <span class="nav-text">9、汉诺塔游戏</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#10、排列组合问题"><span class="nav-number">10.</span> <span class="nav-text">10、排列组合问题</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">hecy</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
