@@ -232,6 +232,524 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://hcyxy.tech/2018/11/28/paxos学习小结/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="hecy">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="无病呻吟">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/11/28/paxos学习小结/" itemprop="url">Paxos小结</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-11-28T22:50:36+08:00">
+                2018-11-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/分布式系统/" itemprop="url" rel="index">
+                    <span itemprop="name">分布式系统</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="1、paxos解决什么问题？"><a href="#1、paxos解决什么问题？" class="headerlink" title="1、paxos解决什么问题？"></a>1、paxos解决什么问题？</h4><p><strong>三个人在不同的城市现在要达成一个协议：去哪个城市聚会？</strong><br><br>使用的工具：<strong>微信 QQ 电话 飞鸽传书</strong> <br><br>但是：可能会断网 飞鸽迷路<br><br>如何保证三个人能决定出一个一致的城市，这就是paxos算法，pasox是一个算法族，包括basic-paxos，multi-paxos，fast-paxos等。<br><br>paxos算法在工程应用里主要解决日志复制问题，如主备库的日志同步。</p>
+<h4 id="2、一致性需要满足三个条件"><a href="#2、一致性需要满足三个条件" class="headerlink" title="2、一致性需要满足三个条件"></a>2、一致性需要满足三个条件</h4><ol>
+<li>v达成一致时的值由某个进程提出。防止作弊方式：无论如何，最终都令每个进程的v为同一个预先设置的值</li>
+<li>一旦v就某个值达成一致，v不会对另一个值再次达成一致，这是<strong>安全性</strong></li>
+<li>一致总能达成，v总会被决定为某个值，不会无休止的等待，这称为<strong>活性</strong></li>
+</ol>
+<h4 id="3、paxos约束"><a href="#3、paxos约束" class="headerlink" title="3、paxos约束"></a>3、paxos约束</h4><ol>
+<li>P1 acceptor必须接受收到的第一个提案</li>
+<li>P2 如果一个value=v的提案被选择了，那么被批准的拥有更高proposalId的提案proposal的value=v<br>（P2a 一旦一个具有value v的提案被批准(chosen)，那么之后任何Acceptor 再次接受(accept)的提案必须具有value v）<br>（一旦一个具有value v的提案被批准(chosen)，那么以后任何 Proposer 提出的提案必须具有value v）<br>（P2c <strong>如果一个编号为n的提案具有value=v，那么存在一个多数派，要么他们中所有人都没有accept编号小于n的任何提案，要么他们已经accpet的所有编号小于n的提案中编号最大的那个提案具有value v</strong>）<br><br>P2c -&gt; P2b -&gt; P2c -&gt; P2a</li>
+</ol>
+<h4 id="4、basic-paxos算法"><a href="#4、basic-paxos算法" class="headerlink" title="4、basic-paxos算法"></a>4、basic-paxos算法</h4><p>先摆上算法流程：<br></p>
+<h5 id="1、第一阶段Prepare"><a href="#1、第一阶段Prepare" class="headerlink" title="1、第一阶段Prepare"></a>1、第一阶段Prepare</h5><h5 id="P1a：Proposer发送Prepare"><a href="#P1a：Proposer发送Prepare" class="headerlink" title="P1a：Proposer发送Prepare"></a>P1a：Proposer发送Prepare</h5><p>proposer生成全局唯一且递增的提案ID，无需携带提案内容</p>
+<h5 id="P1b：Acceptor应答Prepare"><a href="#P1b：Acceptor应答Prepare" class="headerlink" title="P1b：Acceptor应答Prepare"></a>P1b：Acceptor应答Prepare</h5><p>Acceptor收到PrepareRequest。<br>做出一个Response，两个Promise<br><br>一个Reponse：<br></p>
+<ul>
+<li>返回Accept的提案中PropalId最大的提案的内容，没有则返回空值</li>
+</ul>
+<p>两个Promise：<br></p>
+<ul>
+<li>不再应答PropalId&lt;=当前请求的PrepareRequest</li>
+<li>不再应答PropoalId&lt;当前请求的AcceptRequest</li>
+</ul>
+<p>注意<br></p>
+<ul>
+<li>应答当前请求前，先检查是否违背承诺</li>
+<li>应答前先在本地持久化当前ProposalId</li>
+</ul>
+<h5 id="2、第二阶段"><a href="#2、第二阶段" class="headerlink" title="2、第二阶段"></a>2、第二阶段</h5><h5 id="P2a：Proposer发送Accept"><a href="#P2a：Proposer发送Accept" class="headerlink" title="P2a：Proposer发送Accept"></a>P2a：Proposer发送Accept</h5><p>“提案生成规则”：Proposer收集到多数派应答的PrepareResponse，选择proposalId最大的提案内容，作为要发起Accept的提案，如果提案为空值，则可以随意决定提案内容，带上当前ProposalID，向集群发送AcceptRequest</p>
+<ul>
+<li>回复数量&gt;一半acceptor数量，且所有value为空，Proposer发出accept请求，带上指定value</li>
+<li>回复数量&gt;一半acceptor，且有的回复value不为空，则Proposer发出accept请求，带上回复中ProposalId最大的value作为提案内容</li>
+<li>回复数量&lt;=一半accept数量，尝试生成更大的ProposalId，转P1a执行</li>
+</ul>
+<h5 id="P2b-Accept应答Accept"><a href="#P2b-Accept应答Accept" class="headerlink" title="P2b:Accept应答Accept"></a>P2b:Accept应答Accept</h5><p>Acceptor收到AcceptRequest检查两个承诺，持久化当前ProposalId和提案内容，最后Proposer收集到多数派应答的AcceptResponse后，形成决议。<br><br>Acceptor收到Accept请求后：<br></p>
+<ul>
+<li>收到ProposalId&gt;=Max_ProposalId【一般情况是等于】，则回复提交成功，持久化ProposalId和value</li>
+<li>收到ProposalId&lt;Max_proposalId，则不回复或者回复提交失败</li>
+</ul>
+<p>Proposer统计投票，propose收集到一些Accept：<br></p>
+<ul>
+<li>回复数量&gt;一半acceptor数量，则表示提交value成功。可以发一个广播给所有Proposer、Learner，通知已commit的value</li>
+<li>回复数量 &lt;= 一半的Acceptor数量，尝试生成更大的 ProposalID，转P1a</li>
+<li>收到提交失败的回复，生成更大ProposalId，转P1a</li>
+</ul>
+<h4 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h4><p>A、proposalId不要求全局唯一，本可以随机生成ProposalId，但是无法通过P1b约束概率很高<br><br>B、paxos流程为了每条日志生成全局唯一递增logId。如果有办法生成全局唯一递增logId，就不需要paxos了，每条日志accept一遍就OK了。<br></p>
+<h4 id="5、multi-paxos算法"><a href="#5、multi-paxos算法" class="headerlink" title="5、multi-paxos算法"></a>5、multi-paxos算法</h4><p>basic-paxos针对每条redolog至少存在三次网络交互（1. 产生logId 2.prepare阶段 3.accept阶段）</p>
+<ul>
+<li>产生logId，集群内有很多proposer，任意server发起redolog同步，进行分布式协商产生全局唯一有序logId</li>
+<li>prepare阶段，paxos instance进行redolog投票</li>
+<li>accept阶段 对prepare的议案进行投票</li>
+</ul>
+<p>server应答prepare和accept前都要持久化本地redolog，最终basic-paxos进行redolog同步的延迟包括了3次网络交互和2次本地写盘。<br></p>
+<h5 id="leader的产生"><a href="#leader的产生" class="headerlink" title="leader的产生"></a>leader的产生</h5><p>multi-paxos协议并不假设全局必须只能有唯一的leader来生成日志，允许有多个自认为是leader的server来并发生成日志，这样的场景退化为basic-paxos。<br><br>可以简单理解为经过一轮basic-paxos,成功得到多数派accept的proposer成为leader【leader elect】，只有通过lease机制，在leader任期内，不必每次向多数派询问logId，也不必执行prepare阶段，直接accept。<br><br>另一个问题：多个server并发执行leader elect，可能出现两个server在相近的时间内，先后leader elect都成功，因此当选leader在开始以leader身份提供服务之前，要使用leaer proposalId写一条日志（StartWorking日志） 得到多数派确认后，再开始提供服务。因为根绝basic-paxos约束，可以推断：先执行leader elect成功的leaer（L1)，它的proposalId(p1)一定会小于后执行leader elect成功的leader（L2）的proposalId（p2),而经过两轮leader Elect，集群多数派持久化的proposalId一定是P2，而此时L1使用P1执行accept，由于P1&lt; p2，将无法得到集群内多数派的accept。<br></p>
+<p>顺势引出日志同步逻辑的简化，我们将 Leader 选主看作 Paxos 的 Prepare 阶段，这个 Prepare 操作在逻辑上一次性的将后续所有即将产生的日志都执行 Prepare，因此在 Leader任期内的日志同步，都使用同一个 Proposalid，只执行 Accept 阶段即可<br></p>
+<p>各个备机在执行 Accept 的时候，需要注意什么？<br></p>
+<p>把选主的那轮paos看做prepare，对于后续要accept的日志，遵守两个承诺，对于先后胜出选主的多个当选leader，同步日志时携带的proposalId大小是不同的，只有最大的proposalId能同步成功，称为正式leaderf。<br></p>
+<p>再进一步简化：当选leader必写一条日志确认leader身份，允许多个当选，本质就是拿到集群两个承诺，选主过程对决议内容没有实际意义，进一步简化为只执行prepare阶段，无需accept<br></p>
+<p>再进一步优化，与raft协议不同，multi-paxos不要求新leader拥有全部日志，需要知道补全哪些日志，向多数派查询各个机器maxLogId，确定补全日志结束的Logid。可以将这个操作与prepare一起发出。并非multi-paxos一部分。<br></p>
+<p>回放逻辑：对每条形成多数派的日志，异步写出确认日志，回放时如果一条日志有对应的确认日志，不需重新执行paxos，直接回放。对于没有确认日志的，需要执行paxos。工程上为了避免“确认日志”与对应的 Redolog 距离过大而带来回放的复杂度，往往使用滑动窗口机制来控制他们的距离。同时“确认日志”也用来提示备机可以回放收到的日志了。与Raft协议不同，由于 Multi-Paxos 允许日志不连续的确认，以及允许任何成员都可以当选 Leader，因此新任leader需要补全自己本地缺失的日志，以及对未“确认”的日志重新执行 Paxos。我把这个过程叫做日志的“重确认”，本质上就是按照“最大commit原则”，使用当前最新的Proposalid，逐条的对这些日志重新执行Paxos，成功后再补上对应的“确认日志”。<br></p>
+<p>功能：自动选主  简化同步逻辑  简化回放逻辑</p>
+<h4 id="6、multi-paxos的问题"><a href="#6、multi-paxos的问题" class="headerlink" title="6、multi-paxos的问题"></a>6、multi-paxos的问题</h4><p>6.1 paxos存在永远无法达成一致的可能，就是所谓的活锁问题：</p>
+<ul>
+<li>被打回的第一阶段再次发起PrepareRequest请求前加入随机等待时间</li>
+<li>设置一个超时时间，到达超时时间后，不再接受PrepareRequest请求</li>
+<li>proposer选出一个leader，通过leader统一发出PrepareRequest和AcceptRequest</li>
+</ul>
+<p>6.2 影子日志<br><br>幽灵复现问题的根本原因是leader的乱序提交log<br><br>解决方法：<br>需要leader在完成日志冲确认，开始写入新的redolog之前，写一条StartWorking的日志，这条日志记录了当前leader的EpochId（可以使用ProposalId），leader每写一条日志都在日志内容中携带现任leader的EpochId，回放时，经过了一条StartWorking日志后，再遇到epochId比它小的日志，直接忽略。</p>
+<h4 id="7、依赖时钟误差的变种-Paxos-选主协议"><a href="#7、依赖时钟误差的变种-Paxos-选主协议" class="headerlink" title="7、依赖时钟误差的变种 Paxos 选主协议"></a>7、依赖时钟误差的变种 Paxos 选主协议</h4><p>相对MultiPaxos和Raft协议的优势在于，它不需要持久化任何数据，引入选主窗口的概念，使得大部分场景下集群内的所有机器能够几乎同时发起选主请求，便于投票时比对预定的优先级。<br>选主协议规定选主窗口开启是当前时间对一个T取余为0的时间，即只能在第 0，T，2T，3T…N*T 的时间点上开启选主窗口，协议将一次选主划分为三个阶段<br></p>
+<ol>
+<li>T1 预投票开始即由各个选举组成员向集群里的其他机器发送拉票请求；</li>
+<li>一段时间后进入 T2 预投票开始，选举组各个成员根据接受到的拉票请，从中选出优先级最高的，给它投票应答；</li>
+<li>一段时间后进入 T3 计票阶段，收到多数派投票的成员成为 leader，并向投票组其他成员发送自己上任的消息。</li>
+</ol>
+<p>这个选主算法相对Paxos和Raft更加简单，但是对时钟误差有比较强的依赖，时钟误差过大的情况下，会造成投票分裂无法选出主，甚至可能出现双主,但是任何保持Leader身份的Lease机制都得依赖时钟，因此可能仅仅适合 BAT 这种配备了原子钟和 GPS校准时钟，能够控制时钟误差在 100ms 以内的土豪机房</p>
+<h4 id="8、raft算法和paxos算法差异"><a href="#8、raft算法和paxos算法差异" class="headerlink" title="8、raft算法和paxos算法差异"></a>8、raft算法和paxos算法差异</h4><p>Raft可以认为是一种简化的Multi-Paxos实现，最大简化之处在于备机接受Leader日志的前提是收到LogID连续的日志，在这个假设前提下，没有“幽灵复现”和“重确认”问题。简化带来的代价是对网络抖动的容忍度稍低一些。raft不允许日志的空洞，这也是为了比较方便和拉平两个节点的日志方便。Raft连续确认更大的一个优势是新主上任过程简单了。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://hcyxy.tech/2018/10/29/矩阵最长上升路径/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="hecy">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="无病呻吟">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/10/29/矩阵最长上升路径/" itemprop="url">矩阵最长上升路径</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-29T22:12:25+08:00">
+                2018-10-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/算法与数据结构/" itemprop="url" rel="index">
+                    <span itemprop="name">算法与数据结构</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h5 id="矩阵中的最长上升路径"><a href="#矩阵中的最长上升路径" class="headerlink" title="矩阵中的最长上升路径"></a>矩阵中的最长上升路径</h5><p>给出一个数字矩阵，寻找一条最长上升路径，每个位置只能向上下左右四个位置移动。<br>Example：</p>
+<p>nums = [</p>
+<pre><code>[9, 9, 4],
+
+[6, 6, 8],
+
+[2, 2, 1]
+</code></pre><p>]</p>
+<p>返回 4，最长上升路径是[1, 2, 6, 9]</p>
+<p>可以采用bfs，时间复杂度可能达到O(n^4)，或者dp、记忆化搜索<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">val dx = arrayListOf(<span class="number">1</span>, -<span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>)</span><br><span class="line">val dy = arrayListOf(<span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>, -<span class="number">1</span>)</span><br><span class="line">var n: Int = <span class="number">0</span></span><br><span class="line">var m: Int = <span class="number">0</span></span><br><span class="line">var dp: Array&lt;IntArray&gt; = Array(<span class="number">3</span>) &#123; IntArray(<span class="number">3</span>) &#125;</span><br><span class="line">var flag: Array&lt;IntArray&gt; = Array(<span class="number">3</span>) &#123; IntArray(<span class="number">3</span>) &#125;</span><br><span class="line"><span class="function">fun <span class="title">search</span><span class="params">(x: Int, y: Int, A: Array&lt;IntArray&gt;)</span>: Int </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (flag[x][y] != <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> dp[x][y]</span><br><span class="line">    &#125;</span><br><span class="line">    var ans = <span class="number">1</span></span><br><span class="line">    var nx: Int</span><br><span class="line">    var ny: Int</span><br><span class="line">    <span class="keyword">for</span> (i in <span class="number">0</span> until <span class="number">4</span>) &#123;</span><br><span class="line">        nx = x + dx[i]</span><br><span class="line">        ny = y + dy[i]</span><br><span class="line">        <span class="keyword">if</span> (nx in <span class="number">0</span>..(n - <span class="number">1</span>) &amp;&amp; ny in <span class="number">0</span>..(m - <span class="number">1</span>)) &#123;</span><br><span class="line">            <span class="keyword">if</span> (A[x][y] &gt; A[nx][ny]) &#123;</span><br><span class="line">                ans = Math.max(ans, search(nx, ny, A) + <span class="number">1</span>)</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    flag[x][y] = <span class="number">1</span></span><br><span class="line">    dp[x][y] = ans</span><br><span class="line">    <span class="keyword">return</span> ans</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">fun <span class="title">longest</span><span class="params">(A: Array&lt;IntArray&gt;)</span>: Int </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (A.isEmpty()) <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">    n = A.size</span><br><span class="line">    m = A[<span class="number">0</span>].size</span><br><span class="line">    var ans = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> (i in <span class="number">0</span> until n) &#123;</span><br><span class="line">        <span class="keyword">for</span> (j in <span class="number">0</span> until m) &#123;</span><br><span class="line">            dp[i][j] = search(i, j, A)</span><br><span class="line">            ans = Math.max(ans, dp[i][j])</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> ans</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">fun <span class="title">main</span><span class="params">(vararg args: String)</span> </span>&#123;</span><br><span class="line">    val arr: Array&lt;IntArray&gt; = arrayOf(intArrayOf(<span class="number">9</span>, <span class="number">9</span>, <span class="number">4</span>), intArrayOf(<span class="number">6</span>, <span class="number">6</span>, <span class="number">8</span>), intArrayOf(<span class="number">2</span>, <span class="number">2</span>, <span class="number">1</span>))</span><br><span class="line">    println(longest(arr))</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://hcyxy.tech/2018/10/28/复数的意义/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="hecy">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="无病呻吟">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/10/28/复数的意义/" itemprop="url">复数的意义</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-28T23:00:19+08:00">
+                2018-10-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/数学/" itemprop="url" rel="index">
+                    <span itemprop="name">数学</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>转来自知乎ID：Heinrich</p>
+<p>链接：<a href="https://www.zhihu.com/question/23234701/answer/26017000" target="_blank" rel="noopener">https://www.zhihu.com/question/23234701/answer/26017000</a></p>
+<h5 id="复数（虚数）赋予了旋转的意义。"><a href="#复数（虚数）赋予了旋转的意义。" class="headerlink" title="复数（虚数）赋予了旋转的意义。"></a>复数（虚数）赋予了旋转的意义。</h5><h5 id="比如-4-i-i-4-代表在数轴上旋转了180度"><a href="#比如-4-i-i-4-代表在数轴上旋转了180度" class="headerlink" title="比如 4*i*i=-4 代表在数轴上旋转了180度"></a>比如 <code>4*i*i=-4</code> 代表在数轴上旋转了180度</h5><p><img src="https://note.youdao.com/yws/public/resource/083b6154a87fc9b36abce052e7369c8d/xmlnote/WEBRESOURCEd388d4d126fe37eddf38f5e45bc0147c/23237" alt="image"></p>
+<p>来看一个函数<code>$e^t$</code><br><img src="https://note.youdao.com/yws/public/resource/083b6154a87fc9b36abce052e7369c8d/xmlnote/WEBRESOURCE9ad10deb44c13b2cc6a2dbad96df5354/23233" alt="image"></p>
+<p>再加上一个参数i:<br><img src="https://note.youdao.com/yws/public/resource/083b6154a87fc9b36abce052e7369c8d/xmlnote/WEBRESOURCE0a6d646b45aa3e096a20b3f0c1b77510/23231" alt="image"></p>
+<p>变成了一个螺旋线，和电磁场非常像</p>
+<h4 id="更重要的意义在于保留了二维信息"><a href="#更重要的意义在于保留了二维信息" class="headerlink" title="更重要的意义在于保留了二维信息"></a>更重要的意义在于保留了二维信息</h4><p>如果分解一个实数8，可以有无数种分解方法，但是计算3+5i的话，可以分解出实部和虚部。可以让电场强度和复数磁场强度相加不损失各自的信息，而且满足电场与磁场垂直要求。<br><img src="https://note.youdao.com/yws/public/resource/083b6154a87fc9b36abce052e7369c8d/xmlnote/WEBRESOURCE4ba1f885390bb0b2025491366e1b6b74/23235" alt="image"></p>
+<p>正弦波可以看做自然数中的1，可以构成其他数字的基础元素。</p>
+<h5 id="复数的引入大大方便了涉及到的旋转计算"><a href="#复数的引入大大方便了涉及到的旋转计算" class="headerlink" title="复数的引入大大方便了涉及到的旋转计算"></a>复数的引入大大方便了涉及到的旋转计算</h5><p>比如计算合力，比如一个力是(3+i)，另一个力(1+3i)，求合力是多少？只需简单相加即可(4+4i)</p>
+<h5 id="复数涉及乘法的计算"><a href="#复数涉及乘法的计算" class="headerlink" title="复数涉及乘法的计算"></a>复数涉及乘法的计算</h5><p>比如一条船航向（ 3 + 4i）<br>如果该船的航向，逆时针增加45度，新的航向是多少<br><img src="https://note.youdao.com/yws/public/resource/083b6154a87fc9b36abce052e7369c8d/xmlnote/WEBRESOURCE74c87b124fe4f6a37e7db3ac6a086c94/23278" alt="image"></p>
+<p>( 3 + 4i ) * ( 1 + i ) = ( -1 + 7i )</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://hcyxy.tech/2018/10/27/有趣的条件概率/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1431,519 +1949,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://hcyxy.tech/2018/10/10/数字最小范围/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="hecy">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="无病呻吟">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/10/10/数字最小范围/" itemprop="url">数组补丁</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-10T21:19:18+08:00">
-                2018-10-10
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/算法与数据结构/" itemprop="url" rel="index">
-                    <span itemprop="name">算法与数据结构</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h5 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h5><p>给出一个从小到大排好序的整数数组nums和一个整数n，在数组中添加若干个补丁（元素）使得[1,n]的区间内的所有数都可以表示成nums中若干给出一个从小到大排好序的整数数组nums和一个整数n，在数组中添加若干个补丁（元素）使得[1,n]的区间内的所有数都可以表示成nums中若干。</p>
-<ol>
-<li>nums[1,3],n=6 返回1</li>
-<li>nums[1,5,10], n=20,返回2</li>
-</ol>
-<h5 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h5><p>每次使用1，2，4…2k这样k+1个数可以构造出[1,2k+1]之间任何数。但是这样肯定不是最少。<br>优化：</p>
-<ol>
-<li>开始1是表示范围的upper，每次尝试用已有的数字来扩大能表示的连续范围</li>
-<li>假定当前上界U，下一个元素X，如果X&lt;=U，上界可以继续扩大。每个之前能表示出的数加上X，就扩大了能表示的范围。</li>
-<li>如果X&gt;U，这时候意味不能增加在给定数组中的元素</li>
-<li>此时，假定当前上界为U，需要把U加进来，这样U到2U-1之间这段就可以补进来</li>
-<li>从而上界变成2U，从而上界变成2U，以此类推</li>
-</ol>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">solve</span><span class="params">(<span class="keyword">int</span>[] arr, <span class="keyword">int</span> N)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> upper = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">int</span> miss = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> idx = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span> (upper &lt;= N) &#123;</span><br><span class="line">            <span class="keyword">if</span> (idx &lt; arr.length &amp;&amp; arr[idx] &lt;= upper) &#123;</span><br><span class="line">                upper += arr[idx];</span><br><span class="line">                idx += <span class="number">1</span>;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                upper += upper;</span><br><span class="line">                miss += <span class="number">1</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> miss;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-<p>时间复杂度O(N)</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://hcyxy.tech/2018/10/07/动态规划/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="hecy">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="无病呻吟">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/10/07/动态规划/" itemprop="url">动态规划</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-07T19:09:14+08:00">
-                2018-10-07
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/算法与数据结构/" itemprop="url" rel="index">
-                    <span itemprop="name">算法与数据结构</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h5 id="什么是动态规划？"><a href="#什么是动态规划？" class="headerlink" title="什么是动态规划？"></a>什么是动态规划？</h5><p>动态规划算法通常基于一个递推公式及一个或多个初始状态。 当前子问题的解将由上一次子问题的解推出。使用动态规划来解题只需要多项式时间复杂度， 因此它比回溯法、暴力法等要快许多。</p>
-<h5 id="“状态”代表什么及如何找到这些状态？"><a href="#“状态”代表什么及如何找到这些状态？" class="headerlink" title="“状态”代表什么及如何找到这些状态？"></a>“状态”代表什么及如何找到这些状态？</h5><p>“状态”用来描述该问题的子问题的解。</p>
-<h6 id="用一个例子说明"><a href="#用一个例子说明" class="headerlink" title="用一个例子说明"></a>用一个例子说明</h6><p>如果我们有面值为1元、3元和5元的硬币若干枚，如何用最少的硬币凑够11元？ (表面上这道题可以用贪心算法，但贪心算法无法保证可以求出解，比如1元换成2元的时候)</p>
-<p>首先我们思考一个问题，如何用最少的硬币凑够i元(i&lt;11)？为什么要这么问呢？<br> 两个原因：</p>
-<ol>
-<li>当我们遇到一个大问题时，总是习惯把问题的规模变小，这样便于分析讨论。 </li>
-<li>这个规模变小后的问题和原来的问题是同质的，除了规模变小，其它的都是一样的， 本质上它还是同一个问题(规模变小后的问题其实是原问题的子问题)。</li>
-</ol>
-<p>从最小的i开始吧。当i=0，即我们需要多少个硬币来凑够0元。  由于1，3，5都大于0，即没有比0小的币值，因此凑够0元我们最少需要0个硬币。 这时候我们发现用一个标记来表示这句“凑够0元我们最少需要0个硬币。”会比较方便。<br>那么，用d(i)=j来表示凑够i元最少需要j个硬币。于是我们已经得到了d(0)=0， 表示凑够0元最小需要0个硬币。</p>
-<ul>
-<li>当i=1时，只有面值为1元的硬币可用， 因此我们拿起一个面值为1的硬币，接下来只需要凑够0元即可，而这个是已经知道答案的， 即d(0)=0。所以，d(1)=d(1-1)+1=d(0)+1=0+1=1。</li>
-<li>当i=2时， 仍然只有面值为1的硬币可用，于是我拿起一个面值为1的硬币， 接下来我只需要再凑够2-1=1元即可(记得要用最小的硬币数量)，而这个答案也已经知道了。 所以d(2)=d(2-1)+1=d(1)+1=1+1=2。<br>一直到这里，你都可能会觉得，好无聊， 感觉像做小学生的题目似的。因为我们一直都只能操作面值为1的硬币！ </li>
-<li>让我们看看i=3时的情况。当i=3时，我们能用的硬币就有两种了：1元的和3元的 既然能用的硬币有两种，我就有两种方案。如果我拿了一个1元的硬币，我的目标就变为了： 凑够3-1=2元需要的最少硬币数量。即d(3)=d(3-1)+1=d(2)+1=2+1=3。 这个方案说的是，我拿3个1元的硬币；第二种方案是我拿起一个3元的硬币， 我的目标就变成：凑够3-3=0元需要的最少硬币数量。即d(3)=d(3-3)+1=d(0)+1=0+1=1. 这个方案说的是，我拿1个3元的硬币。好了，这两种方案哪种更优呢？ 记得我们可是要用最少的硬币数量来凑够3元的。所以， 选择d(3)=1，怎么来的呢？具体是这样得到的：d(3)=min{d(3-1)+1, d(3-3)+1}。</li>
-</ul>
-<p><b>从以上的文字中， 我们要抽出动态规划里非常重要的两个概念：状态和状态转移方程。</b></p>
-<p>上文中d(i)表示凑够i元需要的最少硬币数量，我们将它定义为该问题的”状态”，<br>根据子问题定义状态。找到子问题，状态也就浮出水面了。 最终我们要求解的问题，可以用这个状态来表示：d(11)，即凑够11元最少需要多少个硬币。 那状态转移方程是什么呢？既然我们用d(i)表示状态，那么状态转移方程自然包含d(i)， 上文中包含状态d(i)的方程是：d(3)=min{d(3-1)+1, d(3-3)+1}。没错， 它就是状态转移方程，描述状态之间是如何转移的。当然，我们要对它抽象一下，</p>
-<p>d(i)=min{ d(i-vj)+1 }，其中i-vj &gt;=0，vj表示第j个硬币的面值;</p>
-<h6 id="例子2-一个序列有N个数：A-1-A-2-…-A-N-，求出最长非降子序列的长度。"><a href="#例子2-一个序列有N个数：A-1-A-2-…-A-N-，求出最长非降子序列的长度。" class="headerlink" title="例子2 一个序列有N个数：A[1],A[2],…,A[N]，求出最长非降子序列的长度。"></a>例子2 一个序列有N个数：A[1],A[2],…,A[N]，求出最长非降子序列的长度。</h6><p>首先要找到“状态”和“状态转移方程”<br>假设要求的这N个数的序列是：5，3，4，8，6，7<br>根据上面找到的状态，我们可以得到：（下文的最长非降子序列都用LIS表示）</p>
-<ul>
-<li><p>前1个数的LIS长度d(1)=1(序列：5)</p>
-</li>
-<li><p>前2个数的LIS长度d(2)=1(序列：3；3前面没有比3小的)</p>
-</li>
-<li><p>前3个数的LIS长度d(3)=2(序列：3，4；4前面有个比它小的3，所以d(3)=d(2)+1)</p>
-</li>
-<li><p>前4个数的LIS长度d(4)=3(序列：3，4，8；8前面比它小的有3个数，所以 d(4)=max{d(1),d(2),d(3)}+1=3)</p>
-</li>
-</ul>
-<p>状态转移方程已经很明显了，如果我们已经求出了d(1)到d(i-1)， 那么d(i)可以用下面的状态转移方程得到：<br>d(i) = max{1, d(j)+1},其中j&#60;i, A[j]&#60;=A[i]<br>用大白话解释就是，想要求d(i)，就把i前面的各个子序列中， 最后一个数不大于A[i]的序列长度加1，然后取出最大的长度即为d(i)。 当然了，有可能i前面的各个子序列中最后一个数都大于A[i]，那么d(i)=1， 即它自身成为一个长度为1的子序列。</p>
-<p>该算法的时间复杂度是O(n2 )，并不是最优的解法。 还有一种很巧妙的算法可以将时间复杂度降到O(nlogn)，网上已经有各种文章介绍它。</p>
-<h5 id="动态规划原理"><a href="#动态规划原理" class="headerlink" title="动态规划原理"></a>动态规划原理</h5><p>何时该使用动态规划方法解决问题呢？<br>问题应该具备两个要素：</p>
-<ul>
-<li>最优子结构</li>
-<li>子问题重叠</li>
-</ul>
-<h6 id="最优子结构"><a href="#最优子结构" class="headerlink" title="最优子结构"></a>最优子结构</h6><p>如果一个问题的最优解包含其子问题的最优解，称此问题具有最优子结构性质。【具有最优子结构性质可能意味着可以使用贪心策略】</p>
-<h6 id="重叠子问题"><a href="#重叠子问题" class="headerlink" title="重叠子问题"></a>重叠子问题</h6><p>子问题空间必须足够小，递归算法反复求解相同子问题，不是一直生成新的子问题，不同子问题的总数是输入规模的多项式函数最好。如果递归算法反复求解相同的子问题，称最优化问题具有重叠子问题性质。<br><b>适合分治算法求解的问题通常在递归的每一步都会生成全新子问题。</b></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://hcyxy.tech/2018/10/06/prepare/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="hecy">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="无病呻吟">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/10/06/prepare/" itemprop="url">others' advice</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-06T14:09:24+08:00">
-                2018-10-06
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/算法与数据结构/" itemprop="url" rel="index">
-                    <span itemprop="name">算法与数据结构</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h5 id="面试前简历准备"><a href="#面试前简历准备" class="headerlink" title="面试前简历准备"></a>面试前简历准备</h5><p>如果没有好的简历，就没有面试，没有好的经历，就没有好的简历。因此第一步就是要获取有用的经历。<br>对于学生而言：</p>
-<ul>
-<li>参加大型项目，获取优秀的项目经验、设计思路、代码经历</li>
-<li>大型公司的实习经历，学习大公司的编码规范、设计流程、运作规律</li>
-<li>利用自己的空闲时间，设计一些开源项目、有意义的项目<br>对于已工作的、想要从小公司跳槽去大公司：</li>
-<li>工作中，尽可能承担更大的责任，挑战难度大的项目，将其添加到简历中</li>
-<li>利用空闲时间，建立开源项目、网站、app。总结技术，展示自己。</li>
-</ul>
-<h5 id="面试前问题准备"><a href="#面试前问题准备" class="headerlink" title="面试前问题准备"></a>面试前问题准备</h5><ol>
-<li>以下面试表格需要思考：<br><img src="https://raw.githubusercontent.com/hecyxy/expand/master/src/main/resources/pic/table.png" alt="表格" title="table"></li>
-<li>你的缺点是什么？<br>不要自作聪明的回答：我的缺点就是太努力…<br>你可以这么回答：有时我对细节没有很好地把控，但是有时也有好的一方面，能让我很快的执行，同时也意味着很容易犯一些低级错误，我也想到一些方法来解决，比如让我的同事帮我review。</li>
-<li>问面试官的问题？<br>真诚的问题：<ul>
-<li>公司的测试、开发之间如何交流？比例多少？项目计划是怎样的</li>
-<li>公司能给我带来什么？对我来说最挑战的是什么<br>见解的问题：</li>
-<li>你们公司用的是X语言，怎么解决Y问题的</li>
-<li>为什么选择使用X协议，不使用Y。优缺点是什么<br>激情的问题：</li>
-<li>我对扩展性很有兴趣，想学习的更多，在贵公司什么地方能学到相关的知识</li>
-<li>对X不太熟悉，听起来很有趣，能告诉更多关于它是如何工作的么</li>
-</ul>
-</li>
-</ol>
-<h4 id="面试过程"><a href="#面试过程" class="headerlink" title="面试过程"></a>面试过程</h4><h5 id="分析过程"><a href="#分析过程" class="headerlink" title="分析过程"></a>分析过程</h5><p>比如，给你一个文件让你从北京传到上海，根绝文件大小，选用网络传输还是交通工具运输。</p>
-<h5 id="时间复杂度"><a href="#时间复杂度" class="headerlink" title="时间复杂度"></a>时间复杂度</h5><p>包括最好情况、最坏情况、期望情况</p>
-<h5 id="空间复杂度"><a href="#空间复杂度" class="headerlink" title="空间复杂度"></a>空间复杂度</h5><h5 id="专业问题回答过程"><a href="#专业问题回答过程" class="headerlink" title="专业问题回答过程"></a>专业问题回答过程</h5><p>以下基础知识需要掌握：<br><img src="https://raw.githubusercontent.com/hecyxy/expand/master/src/main/resources/pic/algorithm.png" alt="表格" title="table"></p>
-<pre><code>- 仔细听
-- 示例
-- 暴力解法
-- 优化
-- 通过
-- 实现
-- 测试
-</code></pre><h6 id="优化："><a href="#优化：" class="headerlink" title="优化："></a>优化：</h6><pre><code>- 找出最耗时的关键步骤，比如算法时间复杂度O(N)+O(nlogN)，很明显要解决第二步
-- 去除不必要的步骤、重复的步骤
-- 代入实际问题，形象化
-- 找出最适合的数据结构 队列、栈、hashmap、heap、tree
-- BCR（最好的时间复杂度应该是多少）。 比如你想要找出A、B数组[AB为长度]的公共元素，最好的时间复杂度应该是O(A+B)
-</code></pre><h6 id="好的代码"><a href="#好的代码" class="headerlink" title="好的代码"></a>好的代码</h6><pre><code>正确、高效、简单、可读性强、健壮、可维护
-使用datastructure、附庸代码、模块化、灵活健壮、错误检测、
-</code></pre>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1994,7 +1999,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">62</span>
+                  <span class="site-state-item-count">65</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

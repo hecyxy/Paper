@@ -232,6 +232,598 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://hcyxy.tech/2018/07/08/线性回归/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="hecy">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="无病呻吟">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/07/08/线性回归/" itemprop="url">线性回归</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-08T10:15:58+08:00">
+                2018-07-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/机器学习/" itemprop="url" rel="index">
+                    <span itemprop="name">机器学习</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"> </script>
+
+<h4 id="线性回归"><a href="#线性回归" class="headerlink" title="线性回归"></a>线性回归</h4><p>令$$X^T=(X_1,X_2,…,Xp)$$,单独的X可以看做列向量。用y1代表预测值，y代表观测值。利用最小二乘法求$$f(X)=\beta_0+\sum_{j=1}^pXj\beta_j=X^T\beta+\epsilon$$<br></p>
+<p>利用残差平方和衡量误差:$$RSS(\beta)=\sum_{i=1}^N(y_i-f(x_i))^2$$<br></p>
+<p>假设N是一个<strong>Nx(P+1)</strong> 的矩阵，则可得到：<br><br>$$arg\ minRSS(\beta)=(y-X\beta)^T(y-X\beta)$$<br></p>
+<p>求导得到$$\tfrac{\partial RSS}{\partial \beta}=-2X^T(y-X\beta)$$<br></p>
+<p>$$\tfrac{\partial^2 RSS}{\partial \beta \partial \beta^T}=2X^TX$$<br><br>加入X是列满秩矩阵，则$$X^TX$$是正定的，可以得到<br><br>$$X^T(y-X\beta)=0$$ (3.5)<br></p>
+<p>得到$$\hat{\beta}=(X^TX)^{-1}X^Ty$$<br></p>
+<p>因此$$y1=X\beta=X(X^TX)^{-1}X^Ty$$<br></p>
+<p>令$$H=X(X^TX)^{-1}X^T$$,把H称作投影矩阵。</p>
+<p><strong>为什么X是p维的，后面会变成p+1</strong><br></p>
+<h2 id="因为模型转变为-f-x-X-T-beta-去掉了-beta-0-那一项，所以X加了一列全是1的。"><a href="#因为模型转变为-f-x-X-T-beta-去掉了-beta-0-那一项，所以X加了一列全是1的。" class="headerlink" title="因为模型转变为$$f(x)=X^T\beta$$去掉了$$\beta_0$$那一项，所以X加了一列全是1的。"></a>因为模型转变为$$f(x)=X^T\beta$$去掉了$$\beta_0$$那一项，所以X加了一列全是1的。</h2><p><strong>证明$$Var(\beta)=(X^TX)^{-1}\sigma^2$$</strong><br><br>$$E(y)=X\beta$$,可以得到<br><br>$$E(\hat{\beta})=(X^TX)^{-1}X^TX\beta$$</p>
+<p>$$\hat{\beta}-E(\hat{\beta})=(X^TX)^{-1}X^Ty-(X^TX)^{-1}X^TX\beta=(X^TX)^{-1}X^T(y-X\beta)=(X^TX)^{-1}X^T\epsilon$$<br><br>$$Var(\hat{\beta})=E[(\hat{\beta}-E(\hat{\beta}))(\hat{\beta}-E(\hat{\beta}))^T]=(X^TX)^{-1}X^TE(\epsilon \epsilon)^TX(X^TX)^{-1}=(X^TX)^{-1}X^TVar(\epsilon)X(X^TX)^{-1}$$<br></p>
+<p>假设y是不相关的，方差为$$\sigma^2$$，所以有$$Var(\epsilon)=\sigma^2I_N$$,其中$$I_N$$是一个NxN的单位矩阵。所以就有:<br></p>
+<h2 id="Var-hat-beta-sigma-2-X-TX-1-X-TX-X-TX-1-X-TX-1-sigma-2"><a href="#Var-hat-beta-sigma-2-X-TX-1-X-TX-X-TX-1-X-TX-1-sigma-2" class="headerlink" title="$$Var(\hat{\beta})=\sigma^2(X^TX)^{-1}X^TX(X^TX)^{-1}=(X^TX)^{-1}\sigma^2$$"></a>$$Var(\hat{\beta})=\sigma^2(X^TX)^{-1}X^TX(X^TX)^{-1}=(X^TX)^{-1}\sigma^2$$</h2><p><strong>证明$$\hat{\sigma^2}=\tfrac{1}{N-p-1}\sum_{i=1}^N(y_i-\hat{y_i})^2$$为$$\sigma^2$$的无偏估计</strong><br></p>
+<p>假设x服从标准正态分布。由上面3.5式可得残差向量$$y-\hat{y}$$和R的子空间$$X^T$$正交，所以$$y-\hat{y}$$的维度是N-p-1，且服从$$N(0,\sigma^2I_{N-p-1})$$分布。因此$$E(\sum_{i=1}^N(y_i-\hat{y_i})^2)=(N-p-1)\sigma^2$$,于是就得到：<br>$$E(\hat{\sigma^2})=\sigma^2$$,即$$\hat{\sigma^2}$$是$$\sigma^2$$的无偏估计。</p>
+<hr>
+<p><strong>高斯-马尔科夫定理</strong><br><br>在给定经典线性回归的假定下，最小二乘估计量是具有最小方差的线性无偏估计量，即BLUE(best linear unbiased estimator)，条件是误差不相关性。<br><br>假设X是固定的，有一个线性输出函数$$c_0^Ty$$，假设这个线性模型是正确的，则$$a^T\hat{\beta}$$是无偏的，因为$$E(a^T\beta)=E(a^T(X^TX)^{-1}X^Ty)=a^T(X^TX)^{-1}X^TX\beta=a^T\beta$$<br><br>高斯马尔科夫理论表明加入有另一个线性估计：$$\hat{\theta}=c^Ty$$是$$a^Ty$$的无偏估计，即$$E(c^Ty)=a^T\beta $$根据高斯马尔科夫定理：<br><br>$$Var(a^T\hat{\beta})&lt;=Var(c^Ty)$$<br><br>利用三角不等式证明：<br><br>设b是一个长度为N的列向量，$$E(b^Ty)=\alpha^T\beta$$，b值是固定的，等式对于所有的$$\beta$$都成立，假设X不是随机的，于是$$E(b^Ty)=b^TX\beta$$，于是$$b^TX=\alpha^T$$,又得到：$$Var(\alpha^T\hat{\beta})=\alpha^T(X^TX)^{-1}\alpha=b^TX(X^TX)^{-1}X^Tb$$，$$Var(b^Ty)=b^Tb$$，所以我们要证明的是$$X(X^TX)^{-1}X^T&lt;=I_N$$<br><br>为了证明，引入QR分解，X=QR,Q具有正交列NxP<br>,R是一个p*p的上三角值，且值是正的。列满秩矩阵一定可以QR分解。所以$$X^TX=R^TQ^TQR=R^TR$$，因此$$X(X^TX)^{-1}X^T=QQ^T$$，设[QQ1]是一个正交矩阵(N,N)。因此$$I_N=[Q\ Q_1] [Q^T\ Q_!^T]=QQ^T+Q_1Q_1^T$$<br></p>
+<p>估计参数$$\theta$$的均方差：<br><br>$$MSE(\hat{\theta})=E(\hat{\theta}-\theta)^2=E[(\hat{\theta}-E(\hat{\theta}))^2+2(\hat{\theta}-E(\hat{\theta}))(E(\hat{\theta})-\theta)+(E(\hat{\theta})-\theta)^2]=Var(\hat{\theta})+2(E(\hat{\theta})-E(\hat{\theta}))(E(\hat{\theta})-\theta)+(E(\hat{\theta})-\theta)^2=Var(\hat{\theta})+(E(\hat{\theta})-\theta)^2$$<br><br>一个模型的误差可以写为:<br><br>$$E(Y_0-f(x_0))^2=\sigma^2+MSE(f(x_0))$$<br></p>
+<p>在无偏估计的线性模型中，最小二乘的平方误差最小。或许存在有偏估计有更小的平方误差呢，这样一个估计可以损失一点偏差，但是可以减小方差。有偏估计也是常用的。任何把最小二乘参数缩小到0的方法都可能导致有偏估计，包括变量子集选择、岭回归。从更实际的角度看，大多数模型都是无偏估计的变形，因此是有偏的。模型的选择就是偏差和方差的均衡。<br></p>
+<hr>
+<p><strong>简单变量回归到多元回归</strong><br>由于矩阵维数增加后，求逆比较麻烦引入斯密特正交化方法，进而再利用QR分解，使$$X=QR$$，Q是一个Nxp的列正交矩阵，$$Q^TQ=I$$；R是(p+1)x(p+1)的上三角矩阵。QR分解是X的一个正交基。通过这种方式很显然：<br><br>$$\hat{\beta}=(X^TX)X^Ty=(R^TR)^{-1}R^TQ^Ty=R^{-1}R^{-T}R^TQ^Ty=R^{-1}Q^Ty$$<br><br>$$\hat{y}=X\hat{\beta}=QRR^{-1}Q^Ty=QQ^Ty$$</p>
+<hr>
+<p><strong>子集选择</strong><br><br>不满意最小二乘的两点：<br><br>1、预测精度。最小二乘是低偏差、高方差。所以我们可以牺牲一些偏差，降低一些方差。<br><br>2、解释性。参数过多，解释性就不强。我们可以选择更小的子集，忽略一些细节。<br><br><strong>下面介绍几种变量子集选择</strong><br><br><strong>A、最佳子集选择</strong><br><br>其实就是偏差和方差的权衡，选哪些维度。有大量的准则可以用，比如AIC。<br><br><strong>B-1、向前  向后逐步选择</strong><br><br>相比最佳子集选择是要从所有的子集里选择，向前逐步选择是从截距开始选择，连续的选择使模型最优的维度。但是你可能会认为会有很大的计算量，但是QR分解会使计算相当方便。向前逐步选择主要有两大有点：<br><br>（1）计算量上，当p&gt;&gt;N，仍然是可以选择这个子集的；<br><br>（2）统计量上，经常会有一个更高的偏差，和更低的方差。<br><br><strong>B-2、后向逐步选择</strong><br><br>这个算法是从所有子集里面选择，连续的删掉一些对模型影响最小的维度，这种方法只适用于$$p&lt;N$$，而前向逐步回归都适用。这几种表现都很相似，前向分段回归会花更长的时间达到最小误差。<br>一些软件包中会提供前向后向的集成方法,比如某一步会选择增加一个项或删去一个项，选择这两者中最好的，比如依照AIC准则，或者依据F统计量(过时了，因为这个统计量不能衡量多种统计量)<br><br><strong>C、向前分段回归</strong><br></p>
+<h2 id="适用于-p-lt-N-，forward-stagewise-FS比前向逐步回归约束更多，像前向逐步回归一样，从截距-overline-y-开始，以系数为中心，初始化为0。不像前向逐步回归，当加入一项时，其他变量不会更改。因此FS花费的步骤要大于p，因此高维度下，会出现拟合很慢的情况。"><a href="#适用于-p-lt-N-，forward-stagewise-FS比前向逐步回归约束更多，像前向逐步回归一样，从截距-overline-y-开始，以系数为中心，初始化为0。不像前向逐步回归，当加入一项时，其他变量不会更改。因此FS花费的步骤要大于p，因此高维度下，会出现拟合很慢的情况。" class="headerlink" title="适用于$$p&lt;N$$，forward-stagewise FS比前向逐步回归约束更多，像前向逐步回归一样，从截距$$\overline{y}$$开始，以系数为中心，初始化为0。不像前向逐步回归，当加入一项时，其他变量不会更改。因此FS花费的步骤要大于p，因此高维度下，会出现拟合很慢的情况。"></a>适用于$$p&lt;N$$，forward-stagewise FS比前向逐步回归约束更多，像前向逐步回归一样，从截距$$\overline{y}$$开始，以系数为中心，初始化为0。不像前向逐步回归，当加入一项时，其他变量不会更改。因此FS花费的步骤要大于p，因此高维度下，会出现拟合很慢的情况。<br></h2><p><strong>缩减方法</strong><br><br>这里也称作特征缩减技术<br><br>通过保留部分子集舍去剩下的，只选择部分子集比全部数据集，会更容易理解、低误差,这是一个离散过程，一些变量要么被保留要么被舍弃，表现出高方差;方法缩减更加连续，不会有高变异性。<br><br><strong>Lasso：L1正则化</strong><br><br><strong>Ridge：L2正则化</strong><br><br><strong>1、Ridge Regression岭回归</strong><br><br>岭回归通过增加惩罚系数，来收缩回归系数。岭系数最小化残差平方和。$$\hat{\beta}<em>{ridge}=argmin</em>{\beta}{\sum_{i=1}^N(y_i-\beta_0-\sum_{j=1}^px_{ij}\beta_j)^2+\lambda\sum_{j=1}^p\beta_j^2}$$<br><br>$$\lambda$$是一个控制收缩量的复杂参数，$$\lambda$$越大，收缩量越大，甚至可以缩减至0.通过残差平方作为惩罚项也被用在神经网络中，被称为权重衰减。一个相等的方式也可写为：<br><br>$$\hat{\beta}^{ridge}=argmin_{\beta}\sum_{i=1}^N(y_i-\beta_0-\sum_{j=1}^px_{ij}\beta_j)^2,$$<br><br>条件：$$\sum_{j=1}^N\beta_j^2\leq t$$<br><br>当线性模型参数比较多时，参数就无法确定，表现出高方差。一些变量上比较大的参数可以和相关的变量负参数抵消，通过控制$$\lambda$$的大小，这个问题得到缓解。第一步先将输入的数据规范化，注意到惩罚项对截距不起作用，可以令$$x_{ij}=x_{ij}-\overline{x}$$，令$$\beta_0=\tfrac{1}{N}\sum_1^Ny_i$$,因此X是p维(列)。<br><br>$$RSS()=(y-X\beta)^T(y-X\beta)+\lambda\beta^T\beta$$<br><br>因此岭回归的解可以很容易得到：<br><br>$$\hat{\beta}^{ridge}=(X^TX+\lambda I)^{-1}X^Ty$$<br><br>I是一个(p,p)的矩阵，从公式可以看出仍然是关于y的线性函数，这就使得这个问题变成非奇异问题。在标准正交输入的情况下，岭回归只是最小二乘的一个标度形式，$$\hat{\beta}^{ridge}=\hat{\beta}/(1+\lambda)$$<br><br><strong>扩展</strong><br></p>
+<ol>
+<li>least square解析解可以用Gaussian分布和最大似然估计求得；</li>
+<li>ridge回归可以用Gaussian分布和最大后验估计解释；</li>
+<li>lasso回归可以用拉普拉斯分布和最大后验估计解释。<br></li>
+</ol>
+<p>岭回归可以推导为后验均值，利用一个合适的先验分布。假设$$y_i\in N(\beta_0+x_i^T\beta,\sigma^2)$$,参数$$\beta_j$$互相独立服从$$N(0,\tau^2)$$,利用对数后验密度，得到$$\lambda=\tfrac{\sigma^2}{\tau^2}$$因此岭回归是后验分布模式，因为是高斯分布，也叫做后验均值。<br></p>
+<p><strong>posterior mean:</strong> 利用MSE作为风险项，利用贝叶斯对未知参数进行估计，就称作后验分布的均值：$$\hat{\theta}(x)=E(\theta|x)=\int \theta p(\theta|x)d\theta$$<br><br>可以利用SVD(singular value decomposition)对输入矩阵X获得额外的见解，$$X=UDV^T$$,U(N,p)和V(p,p)都是正交矩阵,D(p,p)对角矩阵，$$d_1\geq d_2 \geq d_3 \geq …\geq d_p\geq 0$$,叫做X的奇异值，如果有一个或更多$$d_j=0$$，X就是奇异的。因此最小二乘可以写为：$$X^TX=VDU^TUDV^T=VD^2V^T$$,<br></p>
+<p>$$X\hat{\beta}^{ls}=X(X^TX)^{-1}X^Ty=UDV^T(VD^2V^T)^{-1}VDU^Ty=UDV^T(V^{-T}D^{-2}V^{-1})VDU^Ty=UU^Ty=\sum_{j=1}^pu_j(u_j^Ty)$$<br></p>
+<p>岭回归可以写为：<br><br>$$\hat{\beta}^{ridge}=X(X^TX+\lambda I)^{-1}X^Ty=(VD^2V^T+\lambda VV^T)^{-1}VDU^Ty=(V(D^2+\lambda I)V^T)^{-1}VDU^Ty=V(D^2+\lambda I)^{-1}DU^Ty$$</p>
+<p>因此：<br><br>$$X\hat{\beta}^{ridge}=UD(D^2+\lambda I)^{-1}DU^Ty=\sum_{j=1}^pu_j\tfrac{d_j^2}{d_j^2+\lambda}u_j^Ty$$,其中$$u_j$$是U的列。对比QR分解$$\hat{y}=QQ^Ty$$和SVD分解$$\hat{y}=UU^Ty$$，Q和U是X的列的不同正交基。<br></p>
+<h2 id="d-j-2-越小惩罚力度越大。SVD其实是PCA的另一种展示方式。"><a href="#d-j-2-越小惩罚力度越大。SVD其实是PCA的另一种展示方式。" class="headerlink" title="$$d_j^2$$越小惩罚力度越大。SVD其实是PCA的另一种展示方式。"></a>$$d_j^2$$越小惩罚力度越大。SVD其实是PCA的另一种展示方式。</h2><p><strong>关于有效自由度的讨论</strong><br><br>$$df(\lambda)=tr[X(X^TX+\lambda I)^{-1}X^T]=tr(H_{\lambda})=\sum_{j=1}^p\tfrac{d_j^2}{d_j^2+\lambda}$$<br><br>$$\lambda$$的单调递减函数是回归拟合的有效自由度，$$\lambda=0,df(\lambda)=p$$,即不正则化处理。其实总是会有一个额外的度，但X中心化处理后，被移除了。我们可以利用这个表达式来确定一个值，利用它应用交叉验证。通过$$\lambda$$保证所有可能的正则线性模型都有精确地覆盖。令$$df(\lambda)=k$$，k=1,2,3…,p代表了所有可能的自由度，利用牛顿法去求解$$\lambda$$。<br><br>$$\sum_{i=1}^p=\tfrac{d_j^2}{d_j^2+\lambda}=k$$, $$d(\lambda)=\sum_{i=1}^p=\tfrac{d_j^2}{d_j^2+\lambda}-k$$<br><br>想利用$$d(\lambda)=0$$,从而求出$$\lambda$$，利用牛顿法迭代<br><br>$$\lambda_{n+1}=\lambda_n-\frac{d(\lambda_n)}{d’(\lambda_n)}$$<br></p>
+<p>$$d’(\lambda)=-\sum_{i=1}^p\frac{d_j^2}{(d_j^2+\lambda)^2}$$ 给$$\lambda_0$$一个初始值</p>
+<hr>
+<p><strong>Lasso</strong><br><br>公式定义为:<br><br>$$\hat{\beta}^{lasso}=argmin\sum_{i=1}^N(y_i-\beta_0-\sum_{j=1}^px_{ij}\beta_j)^2$$,subject to $$\sum_{j=1}^p|\beta_j|\leq t$$<br><br>在信号处理中，被称为基追踪。<br></p>
+<p>$$\hat{\beta}^{lasso}=argmin{\sum_{i=1}^N(y_i-\beta_0-\sum_{j=1}^px_{ij}\beta_j)^2+\lambda\sum_{j=1}^p|\beta_j|}$$<br></p>
+<p>t如果很小，有些$$\beta$$就会为0，因此lasso就是连续子集选择。</p>
+<hr>
+<p><strong>子集选择 岭回归  lasso回归</strong><br><br>在输入数据X是正交矩阵的情况下，这三种方法都有明确的方法，都是最小二乘的一个简单变形。岭回归做的是一个比例收缩，lasso是利用常数$$\lambda$$来衡量每一个系数，在0处截断，也被称为软阈值法(soft thresholding)。子集选择只是选择M维数据中的部分，也就是硬阈值hard-thresholding，没有软阈值那么常见，可能因为硬阈值解决的问题是非凸问题。<br><br>$$n_s(w,\lambda)=w+\lambda,(w\leq -\lambda);0,|w|\leq\lambda;w-\lambda,w\geq\lambda$$<br><br>软阈值用来解决如下优化问题：<br><br>$$argmin|X-B|^2+\lambda ||X||_1,i\in(1,n)$$</p>
+<p>硬阈值:$$\eta_H(w,\lambda)=w,|w|\geq\lambda;0,|w|\leq\lambda$$<br><br>用于解决：<br><br>$$argmin|X-B|^2+\lambda||X||_0$$<br><br>$$|X|_0$$是求向量X的零范数，$$|x|_0=1,x!=0;0,x=0$$<br></p>
+<ul>
+<li>best subset:  $$\beta_j*I[rank(|\hat{\beta}_j|\leq M)]$$</li>
+<li>Ridge: $$\hat{\beta}/(1+\lambda)$$</li>
+<li>Lasso: $$sign(\hat{\beta}_j)(|\hat{\beta}<em>j|-\lambda)</em>+$$ <br></li>
+</ul>
+<p><strong>稀疏与正则约束 ridge lasso</strong><br><br>通常为了推导的简洁性会加上1/2，变为:<br><br>$$J_R(w)=\frac{1}{2}||y-Xw||^2+\frac{\lambda}{2}||w||^2$$<br><br>上述求得的就是参数$$\beta$$的最优解<br><br>ridge实际上就是做了个缩减，而lasso实际上是做了一个soft thresholding，把很多权重项置为0，所以就得到了稀疏结果。<br><img src="https://note.youdao.com/yws/public/resource/5702a21be94cca30edfd03987e6050c7/xmlnote/WEBRESOURCE44cb57c3de0d5a86fea2a23ea1bccac2/4445" alt="image"></p>
+<p><strong>范数与稀疏矩阵</strong><br><br><strong>L-P范数</strong><br><br>与闵可夫斯基距离定义一样，L-P范数不是一个范数而是一组范数，定义如下:<br><br>$$L_p=p\sqrt{\sum_1^nx_i^p},x=(x1,x2,…,xn)$$</p>
+<p>ridge regression是对权重w(或$$\beta$$)做L2范式约束，把解约束把在一个l2-ball里面，放缩是对球的半径放缩，因此w的每一个维度都在以同一个系数放缩，通过放缩不会产生稀疏的解，即某些w的维度是0.而实际应用中，数据的维度中是存在噪声和冗余的，稀疏的解可以找到有用的维度并减少冗余，提高回归预测的准确性和鲁棒性(减少overfitting)，在压缩感知、稀疏编码等非常多的机器学习模型中都需要用到稀疏约束。<br></p>
+<p>稀疏约束最直观的形式应该是L0范式，很明显w的0范式是求w中非0元素的个数，而且L0是非凸的，在线性回归中，加上L0范式约束就变成了一个组合优化问题，这是一个NP问题。但是L1范式也可以达到稀疏的效果，是0范式的最优凸近似。L1范式容易求解，是凸的，几乎看的到稀疏约束的地方都是用L1范式。<br><br><strong>贝叶斯先验</strong><br><br>从贝叶斯角度看，加入正则项相当于加入了一种先验，当训练一个模型时，仅依靠当前的训练集是不够的，为了实现更好的汉化能力，往往需要加入先验项。<br></p>
+<ul>
+<li>L1范数相当于加入了一个拉普拉斯先验</li>
+<li>L2范数相当于加入了一个高斯先验<br><img src="https://note.youdao.com/yws/public/resource/5702a21be94cca30edfd03987e6050c7/xmlnote/WEBRESOURCE83564292b019ae4286754ec067d1b5ba/4492" alt="image"><br><br><strong>过拟合与规则化</strong><br><br>机器学习中出现的非常频繁的问题：过拟合和规则化。常见的有：L0,L1,L2和核范数规则化，然后就是规则化项参数的选择问题。<br><br><strong>监督学习问题无非就是：在规则化参数的同时最小化误差。</strong> 最小化误差是为了让模型拟合训练数据，而规则化参数是防止模型过分拟合训练数据。因此需要保证简单的基础上最小化训练误差，这样的参数才具有好的泛化性能（测试误差小）。模型简单通过规则函数实现的，规则相的使用可以约束模型特性，将人对这个模型的先验知识融入到模型的学习中，强行的让学习到的模型具有人想要的特性，例如稀疏、低秩、平滑。<br><br>奥卡姆剃刀原理：在所有可能或者性能相似的模型中，选择能够很好地解释已知数据并且十分简单的模型。从贝叶斯角度看，规则化项对应于模型的先验概率。民间说法：规则化项是结构风险最小化策略的实现，是在经验风险上加一个正则化项regularizer或惩罚项penalty term。一般来说，监督学习可以看做最小化下面的目标函数：<br><br>$$w^*=argmin\sum_iL(y_i,f(x_i;w))+\lambda\Omega(x)$$<br><br>对于第一项Loss函数，如果是square-loss，就是最小二乘；如果是Hinge Loss(max margin)，就是SVM；如果是exp-Loss，就是boosting；如果是log-loss，就是logistic regression；不同的loss函数具有不同的拟合特性。<br><br>规则化函数$$\Omega(x)$$也有很多选择，一般是模型复杂度的单调递增函数，模型越复杂，规则化值越大。规则化项可以是模型参数向量的范数。不同的选择对参数w的约束不同，取得的效果不同。范数聚集在零范数、一范数、二范数、迹范数、核范数。<br></li>
+</ul>
+<p><strong>L0范数与L1范数</strong><br><br>L0范数指向量中非0元素个数，L0范数规则化一个参数矩阵W，就是希望W大部分元素都是0，让参数W是稀疏的，压缩感知、稀疏编码就是利用L0实现的。L1是求各个元素绝对值和，也叫稀疏规划算子。为什么L1会使权值稀疏，是L0范数的最优凸近似；而且任何的规则化算子，如果在Wi=0的地方不可微，则可以分解为一个求和形式，这个算子就可以实现稀疏。<br><br>L0和L1可以实现稀疏，优点：</p>
+<ul>
+<li>特征选择feature selection：可以实现特征的自动选择。稀疏规则化算子的引入就是为了完成特征自动选择的光荣使命，会学习的去掉这些没有信息的特征，也就是把这些特征对应的权重置为0.</li>
+<li>可解释性 Interpretability:模型更容易理解。</li>
+</ul>
+<p><strong>L2范数</strong><br><br>有两个称呼岭回归、权值衰减weight decay。用来解决过拟合。L2范数最小，可以使w每个元素都很小，接近于0.与L1不同，不会让它等于0，而是接近于0。这里有很大区别，越小的参数说明模型越简单，越简单的模型越不容易过拟合。<br><br>L2范数好处：<br></p>
+<ul>
+<li>学习理论角度：防止过拟合</li>
+<li>优化计算角度：L2范数有助于处理condition number不好的情况下矩阵求逆问题，就是奇异矩阵。优化有两大难题:局部最小值；illcondition病态问题。condition number:是一个矩阵的稳定性或者敏感度度量，如果一个矩阵condition number在1附近就是well-conditioned，大于1就是ill-conditioned的。专业点描述：要得到这个解，通常不直接求逆，而是通过解线性方程组方式如高斯消元法来计算，没有规则项时候，矩阵XTX很大，解线性方程组数值上很不稳定，规则项引入可以改善condition number。如果使用迭代优化算法，condition number太大仍然会导致问题，拖慢迭代收敛速度。规则相从优化角度来看，实际上是将目标函数变成$$\lambda-strongly convex$$。<strong>梯度下降中，目标函数收敛速率的上街和矩阵的XTX的condition number有关，越小，上届就越小，收敛速度越快</strong>总结：L2范数不但可以防止过拟合，还可以让我们的优化求解变得稳定和快速。<br></li>
+</ul>
+<p><strong>总结L1和L2：L1趋向于产生少量特征，其他特征是0；L2选择更多特征，这些特征都接近于0.Lasso在特征选择非常有用，ridge只是一种规则化。</strong></p>
+<p><strong>核范数 nuclear norm</strong><br><br>指矩阵奇异值得和，用于约束Low-rand(低秩)。秩代表了矩阵行列之间的相关性。如果X是一个m行n列的数值矩阵，rank(X)远小于m和n，称X是低秩矩阵。包含大量冗余信息，可以对缺失信息进行恢复，也可以对数据进行特征提取。约束低秩和核范数有什么关系呢，rank()是非凸的，优化问题里很难求解，需要寻找凸近似，核范数$$||W||_*$$就是rank()的凸近似。核范数应用：</p>
+<ul>
+<li>矩阵填充 matrix completion：应用在推荐系统中，利用低秩矩阵重构。</li>
+<li>鲁棒PCA。PCA:找出数据中最主要的元素和结构，去除噪声和冗余，将原有的数据降维，揭示隐藏在复杂数据背后的简单结构。鲁棒性主成分分析Robust PCA:一般我们的数据矩阵包含结构信息也包含噪声，可以将矩阵分解为两个矩阵相加，一个低秩，另一个稀疏的（含有噪声，而噪声是稀疏的）.可以写成$$min rank(A)+\lambda||E||_0,s.t=A+E$$，与经典PCA一样，鲁棒PCA本质上也是寻找数据在低维空间上最佳投影问题。假如X受到随机（稀疏）噪声影响，可能会变成满秩的。PCA假设数据噪声是高斯分布。Robust PCA假设噪声是稀疏的，不管噪声强弱。</li>
+<li>背景建模</li>
+</ul>
+<p><strong>规则化参数选择</strong><br><br>除了loss和规则项两块外，还有个参数$$\lambda$$，叫做超参hyper-parameter。用于平衡loss和规则项，事关模型生死，决定模型性能。$$\lambda$$越大，表示规则项更重要，$$\lambda=0$$，容易过拟合。<br></p>
+<hr>
+<p>将岭回归和lasso回归一般化，将其看做贝叶斯估计:<br><br>$$\hat{\beta}=argmin{\sum_{i=1}^N(y_i-\beta_0-\sum_{j=1}^px_{ij}\beta_j)^2+\lambda\sum_{j=1}^p|\beta_j|^q}$$<br></p>
+<p>$$|\beta_j|^q$$作为$$\beta_j$$的对数先验密度,他们也是参数的先验分布。q=0，相当于子集选择，因为惩罚项统计的是非0参数；q=1，对应的是lasso回归，q=2对应的是岭回归。注意到$$q\leq1$$,前者在方向上不均匀，但在坐标方向集中。<br><br>从这些观点看，lasso、ridge、最佳子集选择都是在不同先验分布情况下的贝叶斯估计。岭回归使用后验均值作为贝叶斯估计，lasso和最佳子集选择不是这样做。<br><br>贝叶斯估计，基于$$\pi(\theta|x1,x2,…,xn)$$对$$\theta$$所作的贝叶斯不急有多种，常用有三种方式：</p>
+<ul>
+<li>使用后验分布的密度函数最大值作为$$\theta$$的点估计，称为最大后验估计；</li>
+<li>使用后验分布的中位数作为$$\theta$$的点估计，称为后验中位数估计</li>
+<li>使用后验分布的均值作为$$\theta$$的点估计，称为后验期望估计。</li>
+</ul>
+<p>Elastic Net是一种使用L1和L2先验作为正则化矩阵的线性回归模型，这种组合用于只有很少权重非零的稀疏模型，比如class:Lasso，但是又能保持Ridge的正则化属性。我们可以使用L1_ration参数来调节L1和L2的凸组合（一类特殊的线性组合）。<br><br>当多个特征和另一个特征相关的时候，弹性网络非常有用，lasso倾向于随机选择其中一个，而弹性网更倾向于选择两个。实践中，Lasso和Ridge之间权衡的一个优势之间权衡的一个优势是它允许循环过程under rotate中继承ridge的稳定性。弹性网的目标函数是最小化：<br><br>$$\lambda\sum_{j=1}^p(\alpha\beta_j^2+(1-\alpha)|\beta_j|)$$</p>
+<hr>
+<p><strong>最小角回归 least angle regression</strong><br><br>逐步选择forward selection算法(比如forward stepwise regression)在进行子集选择的时候可能会显得太具有侵略性，每次在选择一个变量后都要重新拟合模型，比如第一步选择了一个变量x1，第二步可能会删掉一个和x1相关但也很重要的变量。<br><br>相比forward stagewise是一种比起上面的逐步选择更谨慎的方法，但是可能要经过很多步才能达到最后的模型。就是每次在变量的solution path上前进一小步，而forwar stepwise每次前进一大步。前者带来了高昂的计算代价。<br><br>forward stagewise有着和lasso很大的相似性。<br><br>FS每次根据选择的变量子集，完全拟合出线性模型，计算出RSS，再设计统计量如AIC对较高的模型复杂度做出惩罚，而LARS是每次先找出和因变量相关度最高的那个变量，再沿着LSE的方向一点点调整这个predictor的系数，在这个过程中，这个变量和残差的相关系数会逐渐减少，等到这个相关性没那么显著的时候，就要选进新的相关性最高的变量，然后重新沿着LSE的方向进行变动，而到最后，所有变量都被选中，估计和LSE相同。<br><br>LARS第一次选取的不是最拟合模型的，而是和因变量相关性最强的，算法实际执行步骤如下：<br></p>
+<ul>
+<li>1、对predictor进行标准化(去除不同尺度的影响)，对target variable进行中心化(去除截距的影响),初始的所有系数都设为0，此时残差r就等于中心化后的target variable</li>
+<li>2、找出和残差r相关度最高的变量$$x_j$$</li>
+<li>3、将$$x_j$$的系数$$\beta_j$$从0开始沿着LSE(只有一个变量$$x_j$$的最小二乘估计)的方向变化，直到某个新的变量$$x_k$$与残差r的相关性大于$$x_j$$时</li>
+<li>4、$$x_j$$和$$x_k$$的系数$$\beta_j,\beta_k$$一起沿着新的LSE(加入新变量$$x_k$$的最小二乘估计)的方向移动，直到有新的变量被选入</li>
+<li>5、重复2，3，4直到所有变量被选入，最后得到的估计就是普通线性回归的OLS<br>LARS明显和OLS、Ridge regress等给出了封闭形式的解决方案不同，而是给出了一套对计算机友好的算法。现代统计基本上越来越靠近算法，而和模型无关。<br><br><img src="https://note.youdao.com/yws/public/resource/5702a21be94cca30edfd03987e6050c7/xmlnote/WEBRESOURCE7b08ecd764bcce83e5967c80e60cf639/6065" alt="image"><br><br>记$$\hat{\mu}$$为当前拟合值，初始化为0向量，定义$$c(\hat{\mu})$$：<br><br>$$\hat{c}=c(\hat{\mu})=X^T(y-\hat{\mu})$$<br><br>所以$$\hat{c}_j$$正比于变量$$x_j$$和当前残差向量的相关度。<br><br>可以看到，只有两个变量的情况下，当前残差(1)只与y在x1,x2生成的空间上的投影$$\overline{y}_2$$有关，即:<br><br>$$c(\hat{\mu})=X^T(y-\mu)=X^T(y2-\mu)$$<br><br>因为x1与y2-u比x2与y2-u的角度更小，即$$c_1(\hat\mu_0)\gt c2(\hat\mu_0)$$<br><br>LAR算法更新当前值：<br><br>$$\hat\mu_1=\hat\mu_0+\hat y_1x_1$$<br><br>如果是stagewise，那么$$\hat y_1$$是个很小的常数，然后算法重复进行此步骤；如果是逐步选择算法，其是使$$\hat\mu_1$$等于$$\overline{y}_1$$的值；LAR算法采取了二者中一个折中，选取$$\hat y_1$$使得$$\overline y_2-\hat\mu$$与x1,x2相关度相等，也就是说，使得$$y_2-\hat\mu$$评分x1和x2的夹角。<br><br>定义$$\mu_2$$为角平分线方向上的单位向量，则下一步LAR估计是<br><br>$$\hat\mu_2=\hat\mu_1+\hat y_2\mu_2$$<br><br>LARS最后一步，当前活跃集包括了所有自变量，所以步长是任意的，LARS最后一步使得拟合值和OLS的估计值相等。LARS具有较低的计算复杂度，m步的计算开销和OLS的解是同阶的。<br></li>
+</ul>
+<hr>
+<p>LAR和LASSO的自由度<br><br>假定在一定步数之后停止，或者是利用t限制lasso的正则项，那么我们用到多少参数，或者自由度是多少，定义拟合变量$$\hat{y}=(\hat{y_1},\hat{y_2},…,\hat{y_N})$$的自由度:<br><br>$$df(\hat{y})=\tfrac{1}{\sigma^2}\sum_{i=1}^NCov(\hat{y_i},y_i)$$,Cov代表的是预测值和结果的协方差，拟合度越差，协方差越大。<br></p>
+<h2 id="对于一个线性模型有k个固定预测属性。很明显-df-hat-y-k-然后岭回归中的定义是-df-hat-y-tr-S-lambda-。在这两种定义的情况下，协方差定义是一种更简单的估计方式，因为-hat-y-H-lambda-y-在y中是线性的-然后对子集选择并没有封闭形式的估计方法。lasso和LAR技术是自适应的，比子集选择更加平滑，自由度更可控。"><a href="#对于一个线性模型有k个固定预测属性。很明显-df-hat-y-k-然后岭回归中的定义是-df-hat-y-tr-S-lambda-。在这两种定义的情况下，协方差定义是一种更简单的估计方式，因为-hat-y-H-lambda-y-在y中是线性的-然后对子集选择并没有封闭形式的估计方法。lasso和LAR技术是自适应的，比子集选择更加平滑，自由度更可控。" class="headerlink" title="对于一个线性模型有k个固定预测属性。很明显$$df(\hat{y})=k$$,然后岭回归中的定义是:$$df(\hat{y})=tr(S_{\lambda})$$。在这两种定义的情况下，协方差定义是一种更简单的估计方式，因为$$\hat{y}=H_{\lambda}y$$在y中是线性的,然后对子集选择并没有封闭形式的估计方法。lasso和LAR技术是自适应的，比子集选择更加平滑，自由度更可控。"></a>对于一个线性模型有k个固定预测属性。很明显$$df(\hat{y})=k$$,然后岭回归中的定义是:$$df(\hat{y})=tr(S_{\lambda})$$。在这两种定义的情况下，协方差定义是一种更简单的估计方式，因为$$\hat{y}=H_{\lambda}y$$在y中是线性的,然后对子集选择并没有封闭形式的估计方法。lasso和LAR技术是自适应的，比子集选择更加平滑，自由度更可控。</h2><p><strong>使用派生输入方向的方法</strong><br><br>有时输入的大量数据之间是相关的，这个方法就是产生一些线性组合。<br><br><strong>1、PCR</strong><br><br>将输入数据进行重新格式化，使输入数据是正交化的，使这个回归是单变量回归的和。输入列$$z_m=Xv_m$$，这个$$v_m$$来自于SVD分解中参数$$X=UDV^T,XV=UD$$然后利用$$z_1,z_2,…,z_m$$回归y值，$$M\leq p$$。<br><br>$$\hat{y}<em>{(M)}^{pcr}=\overline{y}1+\sum</em>{m=1}^M\hat\theta_mz_m$$, $$\hat\theta_m=&lt;z_m,y&gt;/&lt;z_m,z_m&gt;$$<br><br>$$\hat\beta^{pcr}(M)=\sum_{m=1}^M\hat\theta_mv_m$$<br><br>ridge regression和pcr回归很像，岭回归收缩主成分的系数，收缩更多的取决于相应的特征值大小。PCR舍弃p-M个最小的特征值的成分<br><br>主成分分析可以减少自变量个数，还可以用来解决自变量共线性问题。<br><br>方法：借助主成分分析，用主成分回归求回归系数。先用主成分分析计算出主成分表达式和主成分得分变量，而主成分得分变量是相互独立的，因此可以将因变量对主成分得分变量回归，然后将主成分的表达式代回到回归模型中，即可得到标准化自变量与因变量的回归模型，最后将标准化自变量转为原始自变量。<br><br>具体步骤：<br><br>1、用主成分分析法计算出主成分表达式和主成分得分变量，将贡献小的主成分舍去，即求得Z=WX;<br><br>2、用回归分析法将因变量对主成分得分变量进行回归，求得y=AZ;<br><br>3、将主成分的表达式代回到回归模型中，即可得到标准化自变量与因变量的回归模型，即可得到y=AZ=A(WX)=BX;<br><br>4、将标准化自变量转换为原始自变量，即可得到原始自变量与因变量的回归模型。</p>
+<p><strong>2、偏最小二乘回归  partial least square</strong><br><br>实际问题中，会遇到需要研究两组多重相关变量间的相互依赖关系，并研究用一组变量(自变量或预测变量)去预测另一组变量（因变量或响应变量），除了最小二乘准则下的经典多元线性回归分析MLR，提取自变量组主成分的主成分回归分析PCR，还有片最小二乘PLS回归方法。<br><br>偏最小二乘回归提供一种多对多线性回归建模的方法，特别当两组变量的个数很多，且都存在多重相关性，而样本量又较少时，用偏最小二乘回归建立的模型具有传统的经典回归分析等方法所没有的优点。偏最小二乘回归分析在建模过程中集中了主成分分析，典型相关分析和线性回归分析方法的特点。<br><br>考虑p个因变量y1,y2,..,yp与m个自变量x1,x2,..,xm的建模问题。偏最小二乘基本做法：在自变量集中提出第一成分u1(是x1~xm的线性组合，尽可能多的提取原自变量中的变异信息)， <strong>同时在因变量集中也提取第一成分v1，并要求u1与v1相关程度最大，然后建立因变量y1~yp与u1的回归，如果回归方程已达到满意的精度，则算法中止。否则对第二成分进行提取，直到能达到满意的精度为止，若最终对自变量集提取r个成分u1,u2,..,ur，偏最小二乘回归将通过建立y1,..,yp与u1,..,ur的回归式，然后再表示为y1,…yp与原自变量的回归方程式，即偏最小二乘回归方程式。</strong> <br><br>算法步骤：<br><br>假定p个因变量$$y_1~y_p$$与m个自变量$$x_1~x_m$$<br><br>1、将自变量组合因变量组进行标准化，并使自变量的均值为0，方差为1;<br>2、分别提取两变量组的第一对成分，并使之相关性达到最大;假设从两组变量分别提出第一对成分u1和v1，u1是自变量集$$X=[x_1,…,x_m]^T$$的线性组合$$u_1=\alpha_{11}x_1+…+\alpha_{am}x_m=\rho^{(1)T}X$$<br><br>v1是因变量$$Y=[y_1,…,y_p]^T$$的线性组合<br><br>$$v_1=\beta_{11}y_1+…+\beta_{1p}y_p=\gamma^{(1)T}Y$$<br><br>为了回归分析需要要求：</p>
+<ul>
+<li>u1和v1各自尽可能多的提取所在变量组的变异信息；</li>
+<li>u1和v1相关程度达到最大<br>对第一成分u1和v1的协方差Cov(u1,v1)可用第一对成分的得分向量的内积来计算，上述的要求可以转化为数学上的条件极值来计算<br><br>3、建立y1…yp对u1的回归及x1,…,xm对u1的回归,再将原变量带入得到新的回归公式<br><br>4、进行交叉有效性检验<br><br>一般情况下，偏最小二乘法并不需要选用存在的r个成分来建立回归式，而像主成分分析一样，选用前l个成分。对于建模所需提取的成分个数l，可以通过交叉有效性检验来确定。<br><br>PLS寻找自变量方差最大和与因变量相关性最高的方向，而PCR只关注方差最大。<br></li>
+<li>岭回归收缩所有的方向，更侧重缩减低方差的方向。</li>
+<li>PCR只留下M个高方差的方向的列，舍弃剩下的</li>
+<li>PLS不仅会收缩低方差方向，而且会导致高方差方向有更高的方差。可能会使这个算法不稳定。</li>
+</ul>
+<p>如果想要减小预测误差，通常岭回归比子集选择、PAR、PLS更加实用。PCR和PLS只是做了很小的改进。总的来说，PLS、PCR、ridge regression表现的很像。但是岭回归表现的更加平滑，另外两种算法收缩是自离散的步骤下完成。</p>
+<hr>
+<p><strong>more on the lasso and related path algorithms</strong><br><br><strong>1、增量向前逐段回归</strong><br><br><strong>2、Dantzing selector(DS)</strong><br><br>针对变量数大于样本量选择问题，DS模型：<br><br>$$min_\beta||\beta||<em>1\ subject\ to ||X^T(y-X\beta||</em>\infty\leq t$$<br><br>可以看出来DS算法限制的是相关残差向量$$X^T(Y-X\hat\beta)$$,而不是残差$$Y-X\hat\beta$$.一方面相关残差具有正交变换不变性，而残差没有这种不变性;另一方面相关残差有助于选取与响应变量Y具有高相关性的变量。<br><br>但是这个算法的性能并不尽如人意，算法思想上和lasso是相似的。DS算法试图用所有的预测因子来最小化当前残差的最大内积。<br><strong>3、grouped lasso</strong><br><br>当协变量之间存在一些组结构，进行变量选择时都应该同时选入模型中。比如在分类数据中，通常处理方式是将其变成哑变量，如地域：江苏、浙江、上海。这时需要设置2个哑变量地域=1,浙江;0,非浙江;地狱(2)=1,上海;0,非上海.从而:江苏=0，0；浙江=1，0；上海=0，1;形式如下：<br><br>$$min_{\theta_0\in R,\theta_j\in R^{P_j}}1/2\sum_{i=1}^N(y_i-\theta_0-\sum_{j=1}^Jz_i^T\theta_j)^2+\lambda\sum_{j=1}^J||\theta_j||_2$$<br><br>将会使组合和单个属性进行稀疏性处理。<br><br><strong>4、增量向前逐段回归</strong><br></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://hcyxy.tech/2018/07/08/数学空间/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="hecy">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="无病呻吟">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/07/08/数学空间/" itemprop="url">数学空间</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-08T09:24:28+08:00">
+                2018-07-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/机器学习/" itemprop="url" rel="index">
+                    <span itemprop="name">机器学习</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"> </script>
+
+<p>数学中有很多空间，比如欧几里得空间、赋范空间、希尔伯特空间，空间之间有什么关系。<br><br>说空间要从距离说起，距离是一个抽象的概念，定义为：设X为任一非空集，对X任意两点x,y，有一实数d(x,y)与之对应且满足:</p>
+<ul>
+<li>1、$$d(x,y)\geq 0$$当且仅当x=y;</li>
+<li>2、$$d(x,y)=d(y,x)$$</li>
+<li>3、$$d(x,y)\leq d(x,z)+d(z,y)$$</li>
+</ul>
+<p>定义了距离后，再加上线性结构，如向量加法、数乘，使其满足加法交换律、结合律、零元、负元；数乘的交换律、单位一；数乘与加法的结合律共八点要求，形成一个线性空间，这个线性空间就是向量空间。<br></p>
+<p>向量空间中，定义了范数的概念，表示某点到空间零点的距离：<br></p>
+<ul>
+<li>$$||x||\geq 0$$</li>
+<li>$$||ax||=|a|||x||$$</li>
+<li>$$||x+y||\leq ||x||+||y||$$</li>
+</ul>
+<p>范数与距离比较，可知距离多了一个条件2，数乘的运算表明了其是一个强化了的距离概念。<br></p>
+<p>对范数和距离进行扩展，形成：<br></p>
+<ul>
+<li>范数集合$$\rightarrow$$赋范空间+线性结构$$\rightarrow$$线性赋范空间<br></li>
+<li>距离集合$$\rightarrow$$度量空间+线性结构$$\rightarrow$$线性度量空间<br></li>
+</ul>
+<p>在已经构成的线性赋范空间上继续扩展，添加内积运算，使空间中有角的概念，形成如下：<br></p>
+<ul>
+<li>线性赋范空间+内积运算$$\rightarrow$$内积空间<br></li>
+</ul>
+<p>这时内积空间已经有了距离、长度、角，有限维的内积空间就是我们熟悉的欧式空间。<br></p>
+<p>继续在内积空间上扩展，使得内积空间满足完备性，形成希尔伯特空间：<br></p>
+<ul>
+<li>内积空间+完备性$$\rightarrow$$希尔伯特空间<br></li>
+</ul>
+<p>完备性的意思就是空间中的极限运算不能跑出该空间，如有理数空间中的$$\sqrt 2$$的小数表示，其极限随着小数位数增加收敛到$$\sqrt 2$$,但其属于无理数，并不在有理数，不满足完备性。<br></p>
+<p>距离 $$\rightarrow$$范数 $$\rightarrow$$内积 <br></p>
+<p>(向量空间+范数)$$\rightarrow$$(赋范空间+线性结构)$$\rightarrow$$(线性赋范空间+内积运算)$$\rightarrow$$(内积空间+完备性)$$\rightarrow$$(希尔伯特空间)<br></p>
+<p>(内积空间+有限维)$$\rightarrow$$(欧几里得空间)<br></p>
+<p>(赋范空间+完备性)$$\rightarrow$$(巴拿赫空间)<br></p>
+<p>对距离弱化，保留距离的极限和连续概念，就形成了拓扑概念。</p>
+<p>定义一个函数空间中无穷维的矩阵K(x,y)<br><br>其满足：<br><br>1、正定性，即对于任意函数f(x)，都有<br><br>$$\int\int f(x)K(x,y)f(y)dxdy\geq 0$$<br></p>
+<p>2、对称性即K(x,y)=K(y,x)<br><br>$$\int K(x,y)\phi(x)dx=\lambda\phi(y)$$<br><br>则这个二元函数可称为核函数，可证明一个核函数的特征函数之间是正交的。<br><br>$$&lt;\phi_1,\phi_2&gt;=\int\phi_1(x)\phi_2(x)dx=0$$<br><br>所以$${\phi_i}^\infty_{i=1}$$是原来函数空间的一组基底。<br></p>
+<p>同时原来的核函数也可以分解成为核函数之间相乘的结果：<br></p>
+<h2 id="K-x-y-sum-i-0-infty-lambda-i-phi-i-x-phi-i-y"><a href="#K-x-y-sum-i-0-infty-lambda-i-phi-i-x-phi-i-y" class="headerlink" title="$$K(x,y)=\sum_{i=0}^\infty\lambda_i\phi_i(x)\phi_i(y)$$"></a>$$K(x,y)=\sum_{i=0}^\infty\lambda_i\phi_i(x)\phi_i(y)$$<br></h2><p><strong>再生核希尔伯特空间RKHS</strong><br><br>RKHS是由核函数构成的空间。基底为$${\sqrt\lambda_i\phi_i}<em>{i=1}^\infty$$<br><br>任意函数都可以由基底表示:<br><br>$$f=\sum</em>{i=1}^{\infty}f_i\sqrt\lambda_i\phi_i$$<br><br>选取其中两个函数，按照坐标表示如下：<br><br>$$f=(f_1,f_2,..)^T_h$$和$$g=(g_1,g_2,…)^T_h$$<br><br>其内积为:$$&lt;f,g&gt;<em>h=\sum</em>{i=1}^{\infty}f_ig_i$$<br><br>再来看核函数K(x,y)将其中一个元素固定K(x0,y),则其也可以看成一个函数<br><br>$$K(x_0,y)=\sum_{i=0}^{\infty}\lambda_i\phi_i(x)\phi_i$$<br></p>
+<p>化成向量坐标表示形式：<br><br>$$K(x_0,y)=(\sqrt\lambda_1\phi_1(x),\sqrt\lambda_2\phi_2(x),…)_h^T$$<br><br>所以计算内积：<br><br>$$&lt;K(x_0,y),K(y_0,x)&gt;<em>h=\sum</em>{i=0}^{\infty}\lambda_i\phi_i(x_0)\phi_i(y_0)=K(x_0,y_0)$$<br><br>这个性质就叫做再生性reproducing property，所以这个空间才叫再生希尔伯特空间。这个性质很好，原本函数之间计算内积需要算无穷维积分的，但是现在只需要计算核函数就好了。<br><br>所以给定一个点的映射一个点x给其映射到一个无穷维的特征空间【即先将这个点变成一个函数，而这个函数可以看成一个无穷维的特征空间】：<br><br>$$\phi(x)=K(x,\cdot)=(\sqrt\lambda_1\phi_1(x),\sqrt\lambda_2\phi_2(x),…)^T$$<br></p>
+<p>得到两个特征空间上内积为：<br><br>$$&lt;\phi(x),\phi(y)&gt;_h=&lt;K(x,\cdot),K(y,\cdot)&gt;_h=K(x,y)$$<br>这就是kernel trick</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://hcyxy.tech/2018/07/07/假设检验/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="hecy">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="无病呻吟">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/07/07/假设检验/" itemprop="url">假设检验</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-07T23:44:44+08:00">
+                2018-07-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/机器学习/" itemprop="url" rel="index">
+                    <span itemprop="name">机器学习</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"> </script><br><strong>零假设Null hypothesis 备择假设 alternative hypothesis</strong><br><br>参数假设检验中，假设是对总体参数的具体数值所作的陈述。为了使得作为证据的样本统计量必然支持且仅支持一个假设，要建立对于总体参数在逻辑上完备互斥的一对假设，即原假设null pypothesis,记为$$H_0$$,备择假设alternative hypothesis,记为$$H_1$$<br><br>原假设（零假设）假定总体参数未发生变化，备择假设，假定总体参数发生变化。实际建立假设时，原假设与备择假设方向不同，会导致不同的结论。在选择原假设和备择假设时，通常根据研究者是希望收集证据予以支持还是拒绝的判断作为选择依据。<br><br><strong>实际操作中，通常研究者希望收集证据予以拒绝的假设作为原假设，而将研究者希望通过搜集证据予以支持的假设作为备择假设。</strong><br><br><img src="https://note.youdao.com/yws/public/resource/5702a21be94cca30edfd03987e6050c7/xmlnote/64F9BD4B4A324D32A8F2A6709AA2240D/2963" alt="image"></p>
+<hr>
+<p><strong>参数估计的方法</strong><br><br>主要分为点估计和区间估计。点估计的方法有矩估计法、顺序统计量、极大似然法、最小二乘法。<br><br>点估计：1：用样本的估计量直接作为总体参数的估计值。例如用样本均值直接作为总体均值的估计。2:没有给出估计值接近总体参数程度的信息，没有给出可信程度，矩估计、极大似然估计。<br><br><img src="https://note.youdao.com/yws/public/resource/5702a21be94cca30edfd03987e6050c7/xmlnote/9F7BCBC2331342548ED8EE7CA4CA3119/3201" alt="image"><br><strong>评价估计量的标准</strong><br><br>1、无偏性 unbiasedness<br><br>估计量抽样分布的数学期望等于被估计的总体参数。$$E(\hat{\theta})=\theta$$<br><br>2、有效性 efficiency<br><br>对同一总体参数的两个无偏点估计量，有更小标准差的估计量更有效。$$D(\hat{\theta_1})&lt;D(\hat{\theta_2})$$<br><br>3、一致性 consistency<br><br>随着样本容量的增大，估计量的值越来越接近被估计的总体参数$$\lim_{n\rightarrow{\infty}}P(|\hat{\theta}-\theta|&lt;\epsilon)=1$$</p>
+<hr>
+<p><strong>假设检验Hypothesis Test</strong><br><strong>统计推断包括：参数估计和假设检验</strong><br><br><strong>1、假设检验</strong><br><br>亦称显著性检验，是对总体的参数或分布作出某种假设，然后利用适当的方法，根据样本对总体提供的信息，对此假设作出推断。（拒绝或不拒绝）<br><br><strong>基本原理</strong><br><br>1、逻辑学上的反证法，先建立假设，然后提供假设成立与否的证据；<br></p>
+<h2 id="2、小概率事件原理。在一次机会中几乎不发生的原理。"><a href="#2、小概率事件原理。在一次机会中几乎不发生的原理。" class="headerlink" title="2、小概率事件原理。在一次机会中几乎不发生的原理。"></a>2、小概率事件原理。在一次机会中几乎不发生的原理。</h2><p><strong>卡方分布 t分布  F分布 t检验 f检验</strong><br><br><strong>1、卡方</strong><br><br><strong>A、卡方分布</strong><br><br>若N个相互独立的随机变量$$\xi_1,\xi_2,…,\xi_n$$均服从标准正态分布，也称独立同分布与标准正态分布，则这n个服从标准正态分布的随机变量平方和$$Q=\sum_{i=1}^n\xi^2_i$$构成新的随机变量，其分布律称为$$\chi^2$$分布chi-square distribution，其中参数n称为自由度，比如正太分布中均值或fangcha1不同就是另一个正态分布一样，自由度不同就是另一个分布,记为$$Q\sim\chi^2(k)$$。当自由度n很大时，$$\chi^2$$分布近似为正态分布。对于任意正整数k，自由度为k的卡方分布是一个随机变量x的机率分布。<br><img src="https://note.youdao.com/yws/public/resource/5702a21be94cca30edfd03987e6050c7/xmlnote/8CF385741FD04FBBA7D90279C4212076/2821" alt="image"><br>机率函数为：<br><img src="https://note.youdao.com/yws/public/resource/5702a21be94cca30edfd03987e6050c7/xmlnote/C70631BCF15444C897058CECFC0B9418/2824" alt="image"><br><br>$$E(\chi^2)=n,D(\chi^2)=2n$$<br><br><strong>B、卡方检验</strong><br><br>卡方分布用途：检查实际结果与期望结果之间何时存在差异。<br><br>1、检验拟合优度：可以检验一组给定数据与指定分布的吻合程度。如：用它检验抽奖机收益的观察频数与我们所期望的吻合程度。<br><br>2、检验两个变量的独立性：通过这个方法检查变量之间是否存在某种关系。如：独居结果是否取决于坐庄的庄家，庄家是否暗箱操作。<br><br><strong>显著性</strong><br><br>卡方分布指出观察频数与期望频数之间差异显著性，和其他假设一样，取决于显著性水平。1、显著性水平$$\alpha$$进行检验，则写作：（常用的显著水平有1%和5%）$$\chi^2_{\alpha}(v)$$<br><br>检测标准：<strong>卡方分布检验是单尾检验且是右尾，右尾被作为拒绝域。通过查看检验统计量是否位于右尾的拒绝域以内，来判定期望分布得出结果可能性。</strong>卡方临界值表可以查询的。<strong>比如：5%的显著性水平，8的自由度进行检验。查出15.51，只要检验统计量大于15.51，检验统计量就位于拒绝域内。</strong><br><br><img src="https://note.youdao.com/yws/public/resource/5702a21be94cca30edfd03987e6050c7/xmlnote/5713FCB95B2241418C268B71E4C4379A/2862" alt="image"><br><br><strong>检验统一量$$x^2=\sum\frac{(O-E)^2}{E}$$</strong><br><br>解决第一类问题：<br><br>原假设$$H_0$$：老虎机每局收益符合下述概率分布；备择假设$$H_1$$:老虎机每局收益不符合概率分布 <strong>[期望证明的]</strong><br><br><img src="https://note.youdao.com/yws/public/resource/5702a21be94cca30edfd03987e6050c7/xmlnote/6290E44701A4443F8E41771C59426AEA/2901" alt="image"><br><br>所以$$x^2=(965-977)^2/977+…+(7-1)^2/1$$,然后再利用$$x^2$$和显著性水平$$\alpha$$进行比较。<br><br>解决第二类问题：<br><br>原假设$$H_0$$：赌局输赢结果和坐庄的庄家没有关系；备择假设$$H_1$$:赌局输赢和坐庄的庄家有关系。<br><img src="https://note.youdao.com/yws/public/resource/5702a21be94cca30edfd03987e6050c7/xmlnote/FDC530BC6E1D43769D76A5E7BB4832F9/2916" alt="image"><img src="https://note.youdao.com/yws/public/resource/5702a21be94cca30edfd03987e6050c7/xmlnote/5791599DA2324D3F865FE05433523E84/2918" alt="image"><img src="https://note.youdao.com/yws/public/resource/5702a21be94cca30edfd03987e6050c7/xmlnote/5FA8B1BA1F5E41CD98A98B3CCE9078E8/2917" alt="image"></p>
+<p><strong>本质上，自由度是做一个估计时，所拥有的独立信息的数量</strong></p>
+<p><strong>1、拟合优度检验中，v=组数-限制数</strong><br></p>
+<p><strong>2、两个变量独立性检验中,如列联表为h行k列，则：v=(h-1)x(k-1)</strong></p>
+<hr>
+<p><strong>t分布 t假设检验</strong><br><br><strong>A、t分布</strong><br><br>根据中心极限定理，在正态分布总体以固定n，抽取若干样本时，样本均数$$\overline{X}$$的分布仍服从正态分布，即$$N(\mu,\frac{\sigma^2}{n})$$,对样本均数的分布进行u变换，也可变换为标准正态分布N(0,1)。<br>实际中，往往$$\sigma$$(总体方差)是未知的，常用s（样本方差）作为$$\sigma$$的估计值，为了与u变换区别，称为t变换，统计量t值得分布称为t分布。假设X服从标准正态分布N(0,1)，Y服从$$\chi^2(n)$$分布，那么$$Z=\frac{X}{\sqrt{Y/n}}$$的分布称为自由度为n的t分布，记为$$Z\sim t(n)$$，但实际自由度为v=n-1，查表的时候就是按照这个来查。<br><br>特点：t分布以y轴，左右对称。只有一个参数v=n-1,曲线形状与自由度有关。自由度v趋向于$$\infty$$，t分布逼近u分布，标准正态分布是t分布的特例。t分布曲线下的面积是1.<br><img src="https://note.youdao.com/yws/public/resource/5702a21be94cca30edfd03987e6050c7/xmlnote/555684CA43E04E9F8A398F739EC86904/3011" alt="image"><br><br><strong>B、t假设检验</strong><br><br><strong>总体均数估计</strong><br><br><strong>A、点（值）估计point estimation</strong><br><br>用样本统计量直接作为总体参数的估计值。<strong>矩估计法、顺序统计量法、极大似然、最小二乘</strong>举个例子：为了了解某地1岁婴儿体重，随机抽取1岁婴儿25个，平均体重2kg，标准差0.2kg。试估计本地1岁婴儿平均体重<br><br><strong>B、区间估计</strong><br><br>按预先给定的概率，计算一个区间，使它能够包含未知的总体均数。事先给定的概率$$1-\alpha$$称为可信度，通常取$$1-\alpha=0.95$$<br><br>可信度（置信率，置信度）：由样本推断总体特征时，估计正确的概率，用$$1-\alpha$$表示。可信区间confidence interval，按预先给定的概率确定的包含未知总体参数的可能范围。构成可信区间的两个点值称为：下限值、上限值。可信度计算分为两种$$\sigma$$</p>
+<p><br>(1)已知，$$\mu=\frac{\overline{X}-\mu}{\sigma-\sqrt{n}}$$,知道$$P(-1.96&lt;=u&lt;=1.96)=0.95$$,则95%的置信区间$$(\overline{X}-1.96\sigma_{\overline{X}},\overline{X}+1.96\sigma_{\overline{X}})$$,更一般的形式：$$(\overline{X}-u_{\alpha/2}\sigma_{\overline{X}},\overline{X}+u_{\alpha/2}\sigma_{\overline{X}})$$<br></p>
+<p>(2)$$\sigma$$通常未知，这时可以用其估计量S代替，但$$(\overline{X}-\mu)/(S/\sqrt{n})$$已不再服从标准正态分布，而是服从著名的t分布。计算可信区间的原理与前面完全相同，仅仅是两侧概率界值有些差别，即：<br><br>$$P(-t_{\alpha/2(v)}&lt;u&lt;t_{\alpha/2(v)})=1-\alpha$$<br><br>可信区间：$$(\overline{X}-t_{\alpha/2(v)}<em>S_{\overline{X}},\overline{X}+t_{\alpha/2(v)}</em>S_{\overline{X}})$$<br><br>可以得到总体均值的区间估计</p>
+<hr>
+<p><strong>F分布及假设检验</strong><br><br><strong>A、F分布</strong><br><br>Z检验是一般用于大样本(样本容量大于30)平均值差异性检验的方法，用标准正太分布的理论来推断差异发生的概率，从而比较两个平均数的差异是否显著，又被称为u检验。为什么要引入F分布。比如研究A、B、C三种不同学校学生的阅读理解成绩，以为简单多次使用Z检验或t检验，成对比较即可。但是这两种检验也有其局限性，比如研究中出现两个以上的平均数时。<strong>1、比较的组合次数增多。</strong> <strong>2、降低可靠程度，对数据做的Z检验或t检验越多，更容易范I型错误。</strong> 比如一个检验中$$\alpha=0.05$$，即有0.95的概率不犯I型错误，那么两次0.95*0.95=0.9,此时犯I型错误的概率是0.1，翻倍。 <strong>3、缺少综合或整体信息</strong>两个以上的平均数检验中若仍采用Z检验或t检验都只提供了两个组所提供的的信息，而忽略了其余的综合信息。许多情况下这些被忽略的信息可能对检验结果产生更大的影响。同时在十次检验之后所得到的只是零散的信息，并非从总体来分析几种不同条件的效果，也难以获得几种不同条件的直接答案。<br><br><strong>方差分析：</strong> analysis of variance就是对多个平均数进行比较的一种统计方法，又称为变异数分析，即ANOVA。方差分析的三条假设，否则易产生错误的统计结论：A总体分布的正态性；样本必须来自正态分布的总体；B各个实验组方差齐性； C变异具有可加性。影响事物的因素多种多样，方差分析将事物的总变异分解为各个不同变异来源，分解后各部分变异相互独立，相加后构成总变异。<br><br>方差分析有广义与侠义之分。广义方差分析包括方差齐性检验、F检验和多重比计较（逐对平均数的比较）。侠义的方差分析仅指F检验。<br><br><strong>F分布</strong><br><br>若总体$$X\sim N(0,1)$$,(X1,X2,..,Xn),(Y1,Y2,…,Yn)为来自X的两个独立样本，设统计量$$F=\frac{\chi(X)/n1}{\chi{(Y)}/n2}$$，称F服从自由度n1和n2的F分布。记为$$F\sim F(n1,n2)$$<br><br>若总体$$X\sim N(\mu,1)$$,与总体$$Y\sim N(0,1)$$，(X1,X2,..,Xn)为来自X的样本,(Y1,Y2,…,Yn)为来自Y的一个样本，则统计量$$F=\frac{\chi(X)/n1}{\chi{(Y)}/n2}$$称F服从自由度为n1和n2，非中心参数$$\delta=n\mu^2$$的非中心F分布，记为$$F\sim F(n1,n2,\delta)$$<br><br><strong>F分布–方差同质性检验</strong><br><br><img src="https://note.youdao.com/yws/public/resource/5702a21be94cca30edfd03987e6050c7/xmlnote/0CF3B8D93AA849058904AF8FFFDEC43E/3312" alt="image"><br><br>组与组之间的差异称为组间变异variation between classes，反映在各组的平均数不同。同一组内部被试个体之间的差异称为组内变异variation within class，反映在每一个的分数不同。<br>10-1组间变异较大组内变异较小，10-2反之。<br><br><strong>原理：通过组间变异和组内变异比率大小来推论几个相应平均数差异显著性的思想就是方差分析的逻辑依据或基本原理。</strong>方差分析是将实验中总变异分解为组间变异和组内变异，并通过组间变异和组内变异比率的比较来确定影响实验结果因素的数学方法，实质是以方差来表示变异的程度。<br><br><strong>总变异：组间变异、组内变异。</strong> 组间变异：实验条件、随机误差。组内变异：个体差异、实验误差，都属于随机误差。如果组间与组内变异均为随机误差时，二者比率为1，即实验因素的影响较小，由此推论总变异不存在差异。二者比率较大时，实验因素产生影响可能性增大。<br>分析基本过程：<br><br>(一)变异内容与表达<br><br>总变异=组间变异+组内变异<br><br>变异(Variance)即方差$$S^2$$，又称为均方差或均方(Mean Square,MS).$$S^2=\tfrac{\sum(X-\overline{X})^2}{n-1}$$，分母为自由度，总变异及各变异原因记为：$$MS_t=MS_b+MS_w$$<br><br>方差分析是一种参数检验方法，进行均数差异的检验时必须考虑作为参数检验应该具备的条件，应该考虑不同总体的变异水平–个体差异是否一致。<br><br>(二)方差齐性检验test of homogeneity of variance<br><br>方差齐性检验的虚无假设是假设各个总体方差相等，即无显著差异或是各个样本方差来自相同总体，表达式为:$$H_0=\sigma_1^2=\sigma_2^2…==\sigma_k^2$$检验多个总体方差一致性的方法，这是最常用的哈特莱检验法。<br><br>研究假设虽然不能保证所有的方差存在显著差异，但可以假设至少有两总体方差存在显著差异，只要有两种总体方差或样本方差不一致，虚无假设各总体方差相等就不成立了。<br><br>借助于F最大值来检验，F最大值就是把一系列方差中最大方差与最小方差进行比较的方法。即：<br>$$F_{max}=\tfrac{S^2_{n-1}max}{S^2_{(n-1)min}}$$,·在虚无假设下F最大值的分布的临界值已由哈特莱计算出来形成了F最大值理论分布表。查F值时，需根据方差数目及方差的自由度进行。其中自由度为n-1.比如对左图的数据进行方差齐次检验方法如下：<br></p>
+<ol>
+<li>建立假设$$H_0:\sigma_1^2=\sigma_2^2=\sigma_3^2$$, $$H_1$$:至少有两个总体的方差存在显著差异。求各样本的方差：$$S^2=\tfrac{\sum X^2-(\sum X)^2/n}{n-1}$$ <br><br>$$S_A^2=\tfrac{160-30^2/6}{6-1}=2$$ $$S_B^2=0.8$$  $$S_C^2=2.8$$<br><img src="https://note.youdao.com/yws/public/resource/5702a21be94cca30edfd03987e6050c7/xmlnote/WEBRESOURCEba15eb74ea2de6b777e6464298dbf1bb/3419" alt="image"></li>
+<li>求F最大值<br><br>$$F_{max}=2.8/0.8=3.5$$<br><br>3.比较与决策<br><br>当组数k=3，自由度为6-1=5，$$F_{max}=10.8$$因为F=3.5&lt;$$F_{max0.05}$$=10.8,P&gt;0.05，差异不显著，接受虚无假设，拒绝研究假设，说明三个总体方差一致。<br></li>
+</ol>
+<p><strong>F分布–方差分析</strong><br><br>样本容量相等的方差分析，意味着每一种实验处理它们的被重复次数相同，每一种学习方法均重复了6次。方差分析过程与上一节所介绍的方差分析基本方法完全一致。<br><br>样本容量不相同的方差分析，完全随机的方差分析中，常常使各实验处理组的被试数目相等。这本不需要，但能使计算稍微容易些，像独立样本t检验一样，F检验也允许样本容量不等。<br><br><strong>方差分析是比较两个以上平均差异显著性的方法逻辑思想：将总变异分解成组间变异或组内变异，通过比较组间与组内变异率的大小来确定均数差异是来自实验因素或处理，还是源自随机误差。</strong><br><br>引起组间的变异原因主要是实验施加的影响因素和随机误差，组内变异的原因是随机误差（个体变异和实验变异）。根据一次实验因素的个数分为单因素实验和多因素实验，单因素实验方差分析主要有完全随机设计的方差分析和完全随机区组设计的方差分析。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://hcyxy.tech/2018/07/07/overview-of-supervised-learning/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -602,7 +1194,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">62</span>
+                  <span class="site-state-item-count">65</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

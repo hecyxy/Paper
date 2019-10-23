@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="编写高效程序主要有两点；   选择适当的算法和数据结构；    编写出编译器能够有效优化以转换成高校可执行代码的源代码。      针对第二个优化点，就必须对编译器的编译优化有一定的掌握，同一段逻辑代码用不同方式写出来，执行起来可能会有很大差别；为了使程序性能最大化，编译器、开发人员都需要一个目标机器模型，如何处理指令、各个操作时序性，如编译器必须知道时序信息，才能确定用一条乘法指令，还是用移位">
+<meta property="og:type" content="article">
+<meta property="og:title" content="优化程序性能">
+<meta property="og:url" content="http://hcyxy.tech/2019/10/06/优化程序性能/index.html">
+<meta property="og:site_name" content="无病呻吟">
+<meta property="og:description" content="编写高效程序主要有两点；   选择适当的算法和数据结构；    编写出编译器能够有效优化以转换成高校可执行代码的源代码。      针对第二个优化点，就必须对编译器的编译优化有一定的掌握，同一段逻辑代码用不同方式写出来，执行起来可能会有很大差别；为了使程序性能最大化，编译器、开发人员都需要一个目标机器模型，如何处理指令、各个操作时序性，如编译器必须知道时序信息，才能确定用一条乘法指令，还是用移位">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-10-23T15:32:09.507Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="优化程序性能">
+<meta name="twitter:description" content="编写高效程序主要有两点；   选择适当的算法和数据结构；    编写出编译器能够有效优化以转换成高校可执行代码的源代码。      针对第二个优化点，就必须对编译器的编译优化有一定的掌握，同一段逻辑代码用不同方式写出来，执行起来可能会有很大差别；为了使程序性能最大化，编译器、开发人员都需要一个目标机器模型，如何处理指令、各个操作时序性，如编译器必须知道时序信息，才能确定用一条乘法指令，还是用移位">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://hcyxy.tech/2019/10/06/优化程序性能/"/>
+
+
+
+
+
+  <title>优化程序性能 | 无病呻吟</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">无病呻吟</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">hcy && xy</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://hcyxy.tech/2019/10/06/优化程序性能/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="hecy">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="无病呻吟">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">优化程序性能</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-10-06T18:35:21+08:00">
+                2019-10-06
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/计算机系统/" itemprop="url" rel="index">
+                    <span itemprop="name">计算机系统</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>编写高效程序主要有两点；</p>
+<ul>
+<li><ol>
+<li>选择适当的算法和数据结构；</li>
+</ol>
+</li>
+<li><ol start="2">
+<li>编写出编译器能够有效优化以转换成高校可执行代码的源代码。</li>
+</ol>
+</li>
+</ul>
+</blockquote>
+<blockquote>
+<p>针对第二个优化点，就必须对编译器的编译优化有一定的掌握，同一段逻辑代码用不同方式写出来，执行起来可能会有很大差别；<br>为了使程序性能最大化，编译器、开发人员都需要一个目标机器模型，如何处理指令、各个操作时序性，如编译器必须知道时序信息，才能确定用一条乘法指令，还是用移位和加法的某种组合。</p>
+</blockquote>
+<h5 id="1-编译器的局限"><a href="#1-编译器的局限" class="headerlink" title="1. 编译器的局限"></a>1. 编译器的局限</h5><blockquote>
+<p>妨碍编译器优化主要有两个地方：1.内存别名使用(两个指针指向同一内存位置)； 2. 函数调用</p>
+</blockquote>
+<h6 id="1-内存别名"><a href="#1-内存别名" class="headerlink" title="1. 内存别名"></a>1. 内存别名</h6><p>通常使用gcc进行编译时，使用-Og选择优化级别，一般-O1或-O2已经成了被接受的标准。<strong>编译器必须很小心的对程序使用安全的优化，因此为了消除一些不安全隐患，必须花大力气写出有效机器代码的程序</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">void twiddle1(long *xp,long *yp)</span><br><span class="line">&#123;</span><br><span class="line">    *xp += *yp;</span><br><span class="line">    *xp += *yp;</span><br><span class="line">&#125;</span><br><span class="line">void twiddle2(long *xp,long *yp)</span><br><span class="line">&#123;</span><br><span class="line">    *xp += 2* *yp;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>表面看起来这两个方法执行过程是一样的，都是执行<code>$ x=x+2y$</code>，且twiddle2进行了3次内存引用(读xp、yp，写xp)，twiddle1进行了6次内存引用；是否进行这样的编译优化呢？答案是否定的：<br></p>
+<blockquote>
+<p>因为当xp与yp相等，twiddle1的xp会增加4倍，twiddle2的值会增加3倍；编译器不知道twiddle1是怎么调用的，必须假设xp与yp可能相等，因此不会进行twiddle2的优化；</p>
+</blockquote>
+<p>比如有如下代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">x=1000;y=3000;</span><br><span class="line">*q=y;</span><br><span class="line">*p=x;t1=*q</span><br></pre></td></tr></table></figure></p>
+<p>当p和q指向内存同一位置，t1=1000;如果为不同位置，则t1=3000;</p>
+<h6 id="2-函数调用-amp-内联优化"><a href="#2-函数调用-amp-内联优化" class="headerlink" title="2. 函数调用 &amp; 内联优化"></a>2. 函数调用 &amp; 内联优化</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">long f();</span><br><span class="line">long func1()&#123;</span><br><span class="line">    return f()+f()+f()+f()</span><br><span class="line">&#125;</span><br><span class="line">long func2()&#123;</span><br><span class="line">    return 4*f()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>表面看起来这两个方法是一样的，但是考虑如下代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">long counter = 0;</span><br><span class="line">long f()&#123;</span><br><span class="line">    return counter++;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>这个函数副作用就是修改了全局程序状态一部分，改变调用它的次数会改变程序行为，如func1会返回<code>$0+1+2+3=6$</code>,func2调用会返回<code>$4*0=0$</code>;<br></p>
+<blockquote>
+<p>大多数编译器不会试图判断一个函数是否有副作用，编译器会假设最糟的情况，并保持函数调用不变；</p>
+</blockquote>
+<p><strong>使用内联函数替换优化函数调用</strong><br><br>比如可以替换掉函数f四次调用：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">long func1in()&#123;</span><br><span class="line">    long t = counter++;</span><br><span class="line">    t += coutner++;</span><br><span class="line">    t += coutner++;</span><br><span class="line">    t += coutner++;</span><br><span class="line">    return t;</span><br><span class="line">&#125;</span><br><span class="line">//或者</span><br><span class="line">long func1opt()&#123;</span><br><span class="line">    long t = 4*coutner+6;</span><br><span class="line">    counter += 4;</span><br><span class="line">    return t;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>这样既减少了函数调用开销，也允许对展开的代码做进一步优化。<strong>GCC最近的版本会尝试这种形式优化，使用’-finline’或’-O1’或更高等级。GCC只尝试在单个文件中定义的函数进行内联，无法应用于一组库函数在一个文件中定义，被其他文件内函数调用。而且某些情况能阻止进行内联替换；两种情况：</strong></p>
+<ul>
+<li>用符号调试器评估代码，如GBD，如果进行了内联替换优化后，任何对这个调用进行追踪或设置断点的尝试都会失败；</li>
+<li>用代码剖析的方式评估程序性能；</li>
+</ul>
+<h5 id="2-程序性能"><a href="#2-程序性能" class="headerlink" title="2. 程序性能"></a>2. 程序性能</h5><p>既然要提高程序性能，那么性能的好坏也需要一个指标，比如引入度量标准每元素周期数(Cycles per element,CPE)。在更细节的级别上理解迭代程序的循环性能，<strong>这个标准对执行重复计算的程序来说很适当，如处理图像中的像素、计算矩阵乘积中的元素。</strong></p>
+<h5 id="3-消除循环、多余内存引用-减少过程调用"><a href="#3-消除循环、多余内存引用-减少过程调用" class="headerlink" title="3. 消除循环、多余内存引用 减少过程调用"></a>3. 消除循环、多余内存引用 减少过程调用</h5><h6 id="3-1-消除低效循环"><a href="#3-1-消除低效循环" class="headerlink" title="3.1 消除低效循环"></a>3.1 消除低效循环</h6><p>考虑如下代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">typedef struct&#123;</span><br><span class="line">    long len;</span><br><span class="line">    data_t *data;</span><br><span class="line">&#125;vec_rec,*vec_ptr;</span><br><span class="line">#define IDENT 1</span><br><span class="line">#define OP *</span><br><span class="line">void combine1(vec_ptr v,data_t *dest)&#123;</span><br><span class="line">    long i;</span><br><span class="line">    *dest = IDENT;</span><br><span class="line">    for(i = 0;i&lt;vec_lenth(v);i++)&#123;</span><br><span class="line">        data_t val;</span><br><span class="line">        get_vec_element(v,i,&amp;val);</span><br><span class="line">        *dest = *dest OP val;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void combine2(vec_ptr v,data_t *dest)&#123;</span><br><span class="line">    long i;</span><br><span class="line">    long length = vec_length(v);</span><br><span class="line">    for(i=0;i&lt;length;i++)&#123;</span><br><span class="line">        data_t val;</span><br><span class="line">        get_vec_element(v,i,&amp;val);</span><br><span class="line">        *dest = *dest OP val;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><strong>这种优化称为代码移动，识别循环里执行多次但是计算结果不会改变的计算，移到循环外面，比如上面的vec_length的调用。</strong> 编译器会很小心，此时开发人员可以主动进行调优；</p>
+<p>比如下述代码将A-Z范围字符转为a-z:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">void lower1(char *s)&#123;</span><br><span class="line">    long i;</span><br><span class="line">    for(i=0;i&lt;strlen(s);i++)&#123;</span><br><span class="line">        if(s[i]&gt;=&apos;A&apos; &amp;&amp;s[i]&lt;=&apos;Z&apos;)</span><br><span class="line">        s[i] -= (&apos;A&apos;-&apos;Z&apos;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">void lower2(char *s)&#123;</span><br><span class="line">    long i;</span><br><span class="line">    long len = strlen(s);</span><br><span class="line">    for(i=0;i&lt;len;i++)&#123;</span><br><span class="line">        if(s[i]&gt;=&apos;A&apos; &amp;&amp;s[i]&lt;=&apos;Z&apos;)</span><br><span class="line">        s[i] -= (&apos;A&apos;-&apos;Z&apos;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>官方给的测试对于1048576长的字符串，lower2比lower1提升了50W倍。</p>
+<h6 id="3-2-减少过程调用"><a href="#3-2-减少过程调用" class="headerlink" title="3.2 减少过程调用"></a>3.2 减少过程调用</h6><p>比如上面的get_vec_element获取下一个向量元素，对每个向量引用，这个函数要把向量索引i与循环边界比较，很明显会造成低效率;当然在处理任意数组访问时，边界检查是很有用的特性<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">int get_vec_element(vec_ptr v,long index,data_t *dest)&#123;</span><br><span class="line">    if(index&lt;0||index&gt;=v-&gt;len)&#123;</span><br><span class="line">        return 0;</span><br><span class="line">    &#125;</span><br><span class="line">    *dest = v-&gt;data[index];</span><br><span class="line">    return 1;</span><br><span class="line">&#125;</span><br><span class="line">//优化为:</span><br><span class="line">data_t *get_vec_start(vec_ptr v)&#123;</span><br><span class="line">    return v-&gt;data;</span><br><span class="line">&#125;</span><br><span class="line">void combine3(vec_ptr v,data_t *dest)&#123;</span><br><span class="line">    long i;</span><br><span class="line">    long length = vec_length(v);</span><br><span class="line">    data_t *data = get_vec_start(v);</span><br><span class="line">    *dest = IDENT;</span><br><span class="line">    for(i=0;i&lt;length;i++)&#123;</span><br><span class="line">        *dest = *dest OP data[i];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>测试表明没有明显性能提升，整数求和性能略有下降，<strong>显然内循环内形成瓶颈，限制性能超过get_vec_element，为什么combine2中反复边界检查不会让性能更差？</strong></p>
+<h6 id="3-3-消除不必要内存引用"><a href="#3-3-消除不必要内存引用" class="headerlink" title="3.3  消除不必要内存引用"></a>3.3  消除不必要内存引用</h6><blockquote>
+<p>观察发现：<em>dest = </em>dest OP data[i]; 这行代码每次执行都先从内存读，再写到内存，很耗时；</p>
+</blockquote>
+<p>优化为：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">void combine4(vec_ptr v,data_t *dest)&#123;</span><br><span class="line">    long i;</span><br><span class="line">    long length = vec_length(v);</span><br><span class="line">    data_t *data = get_vec_start(v);</span><br><span class="line">    data_t acc = IDENT;</span><br><span class="line">    for(i=0;i&lt;length;i++)&#123;</span><br><span class="line">        acc = acc OP data[i];</span><br><span class="line">    &#125;</span><br><span class="line">    *dest = acc;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>相比combine3，每次迭代的内存操作从两次读、一次写优化为一次读，因为acc是存到寄存器中，读写时间几乎可忽略不计。</p>
+<p><strong>为什么编译器不会自动识别，将那个结果自动放在寄存器中？</strong><br></p>
+<blockquote>
+<p>主要是由于内存别名的使用，两个函数可能有不同的行为，</p>
+</blockquote>
+<h5 id="4-现代处理器"><a href="#4-现代处理器" class="headerlink" title="4. 现代处理器"></a>4. 现代处理器</h5><blockquote>
+<p>上面的优化不依赖于机器任何特性，只是简单降低了过程调用开销，消除了一些妨碍编译优化的因素。现代处理器引入诸如流水线、超长指令字，实现指令并行、数据并行等优点。</p>
+</blockquote>
+<p>有两个地方限制了程序最大性能；当一系列操作必须按照严格顺序执行，会遇到1）<strong>延迟界限。(latency bound)</strong> 限制了处理器利用指令级并行的能力；2）吞吐量限制，刻画了处理器功能单元的原始计算能力，这个界限是程序性能终极限制。</p>
+<h6 id="4-1-整体操作"><a href="#4-1-整体操作" class="headerlink" title="4.1 整体操作"></a>4.1 整体操作</h6><p>现代处理器基本都是超标量，每个时钟周期可执行多个操作，而且是乱序的。整个设计有两部分指令控制单元ICU和指令执行单元EU。<strong>当程序遇到分支，现代处理器采用一种分支预测技术，猜测是否选择分支，预测分支目的地址。使用投机执行技术，处理器会开始取出位于它预测的分支会跳到的地方的指令，对指令译码，甚至在确定分支预测是否正确之前就开始执行这些操作。</strong></p>
+<p>减少分支预测的代码如:<br>原本代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">if(a&lt;b)&#123;</span><br><span class="line">    r=c;</span><br><span class="line">&#125;else&#123;</span><br><span class="line">    r=d;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>优化为:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">//version-1</span><br><span class="line">int mask=(a-b) &gt;&gt; 31;</span><br><span class="line">r = (mask &amp; c) | (~mask &amp; d);</span><br><span class="line">//version-2</span><br><span class="line">int mask = (a-b)&gt;&gt;31;</span><br><span class="line">r=d+mask &amp; (c-d);</span><br><span class="line">//version-3</span><br><span class="line">r=(a&lt;b)?c:d (cmovg指令)</span><br></pre></td></tr></table></figure></p>
+<h5 id="4-2-循环展开"><a href="#4-2-循环展开" class="headerlink" title="4.2 循环展开"></a>4.2 循环展开</h5><p>通过增加每次迭代计算的元素数量，减少循环迭代次数。主要从两个方面改进程序性能；1.减少不影响结果的操作的数量，如循环索引计算和条件分支；2.提供一些方法可进一步变化代码，减少计算中关键路径上操作数量。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">for(i = 0;i&lt;limit;i+=2)&#123;</span><br><span class="line">    acc = (acc op data[i]) op data[i+1]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><strong>编译器很容易执行循环展开，只要优化级别设为3或更高等级。</strong><br></p>
+<h6 id="4-3-提高并行性"><a href="#4-3-提高并行性" class="headerlink" title="4.3 提高并行性"></a>4.3 提高并行性</h6><p>程序的性能是受运算单元的延迟限制的，执行加法和乘法的功能单元是完全流水线化的，可以每个时钟周期开始一个新操作，并且有些操作可以被多个功能单元执行。硬件具有以更高速率执行乘法和加法的潜力，但是代码不能利用这种能力，循环展开也不能，因为上面的代码将累积值放在一个单独变量acc中。在前面计算完成前都不能计算acc值；</p>
+<h6 id="4-3-1-多个累积变量"><a href="#4-3-1-多个累积变量" class="headerlink" title="4.3.1 多个累积变量"></a>4.3.1 多个累积变量</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">for(i=0;i&lt;limit;i+=2)&#123;</span><br><span class="line">    acc0 = acc0 op data[i]</span><br><span class="line">    acc1 = acc1 op data[i+1]</span><br><span class="line">&#125;</span><br><span class="line">//剩余元素</span><br><span class="line">for(;i&lt;length;i++)&#123;</span><br><span class="line">    acc0=acc0 op data[i];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h6 id="4-3-2-重新结合变换"><a href="#4-3-2-重新结合变换" class="headerlink" title="4.3.2 重新结合变换"></a>4.3.2 重新结合变换</h6><p>将代码改为如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">//version-1</span><br><span class="line">acc = (acc op data[i]) op data[i+1]</span><br><span class="line">//version-2</span><br><span class="line">acc = acc op (data[i] op data[i+1])</span><br></pre></td></tr></table></figure></p>
+<p>这种称为重新结合变换，因为先计算data[i] op data[i+1]，不需要等待acc的累积值，最小可能CPE减少了2倍。</p>
+<p><strong>对于整数加法和乘法，这些运算是可以结合的，但是对浮点数，需要评估重新结合是否可能严重影响结果。</strong></p>
+<blockquote>
+<p>总的来说，重新结合变换能减少计算中关键路径上操作的数量，通过更好的利用功能流水线能力得到更好的保证。大多数编译器不会尝试对浮点运算做重新结合。</p>
+</blockquote>
+<h6 id="使用SIMD指令达到更高并行度"><a href="#使用SIMD指令达到更高并行度" class="headerlink" title="使用SIMD指令达到更高并行度"></a>使用SIMD指令达到更高并行度</h6><p>99年引入SSE指令(streaming SIMD Extensions),最新版本为高级向量扩展advanced vector extension或avx。SIMD执行模型是用单条指令对整个向量数据进行操作，这些向量保存在一组特殊的向量寄存器中’%ymm0~%YMM15’，每个都可存放8个32位或4个64位数，既可以是整数也可以是浮点数。（YMM寄存器）</p>
+<h5 id="5-一些限制因素"><a href="#5-一些限制因素" class="headerlink" title="5. 一些限制因素"></a>5. 一些限制因素</h5><p>关键路径指明了执行该程序所需时间的一个基本下界。如果程序中某条数据相关链，这条链上所有延迟之和等于T，那么这个程序至少需要T个周期才能执行完。</p>
+<h6 id="5-1-寄存器溢出"><a href="#5-1-寄存器溢出" class="headerlink" title="5.1 寄存器溢出"></a>5.1 寄存器溢出</h6><p>循环并行性手汇编代码描述计算能力限制，如果并行度p超过可用寄存器数量，那么编译器就会溢出，将某些值放到内存中，通常是在运行时堆栈上分配空间。</p>
+<h6 id="5-2-分支预测和预测错误惩罚"><a href="#5-2-分支预测和预测错误惩罚" class="headerlink" title="5.2 分支预测和预测错误惩罚"></a>5.2 分支预测和预测错误惩罚</h6><p>预测错误一般惩罚是19个时钟周期。</p>
+<ul>
+<li>不用过分关心可预测分支</li>
+<li>书写适合用条件传送实现的代码</li>
+</ul>
+<p><strong>优化小结：性能提高</strong><br></p>
+<ul>
+<li>1）高级设计：适当的算法和数据结构</li>
+<li>2）基本编码原则<br></li>
+</ul>
+<ol>
+<li>消除连续函数调用，可能时将计算移到循环外；</li>
+<li>消除不必要内存引用，引入临时变量保存中间结果，最后的值计算出来，再将结果存放到数组或全局变量</li>
+</ol>
+<ul>
+<li>3）低级优化。<br>a. 展开循环，降低开销；<br><br>b. 使用多个立即变量、重新结合，提高指令级并行；<br><br>c. 用功能性风格重写条件操作，使得编译采用条件数据传送。</li>
+</ul>
+<h5 id="5-确认和消除性能瓶颈"><a href="#5-确认和消除性能瓶颈" class="headerlink" title="5. 确认和消除性能瓶颈"></a>5. 确认和消除性能瓶颈</h5><h6 id="5-1-程序剖析"><a href="#5-1-程序剖析" class="headerlink" title="5.1 程序剖析"></a>5.1 程序剖析</h6><p>Unix提供了剖析程序GPROF，确定程序每个函数花费多少cpu时间，计算每个函数被调用次数。</p>
+<ol>
+<li>gcc -Og -pg prog.c -o prog</li>
+<li>./prog file.txt</li>
+<li>gprof prog</li>
+</ol>
+<p>个人想法：</p>
+<blockquote>
+<p>一直以为优化到这种程度的代码很少，无意间看到阿里的中间件性能挑战赛上竟然深入了解到如此地步，于是就深入了解了一下。上述均来自对c语言的反编译，使用的gcc查看汇编语言十分方便；很多同学用的高级语言，比如java，先将hsdis-amd64.dylib放到jre/lib目录下，使用java -XX:+UnlockDiagnosticVMOptions -XX:+PrintAssembly命令即可，通常产生指令会非常多，难读。</p>
+</blockquote>
+<p>阿里巴巴treelink比赛分享下载链接:<a href="https://download.csdn.net/download/u011730199/11905664" target="_blank" rel="noopener">https://download.csdn.net/download/u011730199/11905664</a><br><br>参考文献:《深入理解计算机系统》</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/10/04/翻转链表/" rel="next" title="翻转链表">
+                <i class="fa fa-chevron-left"></i> 翻转链表
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">hecy</p>
+              <p class="site-description motion-element" itemprop="description">a dreamer</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">65</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">18</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-编译器的局限"><span class="nav-number">1.</span> <span class="nav-text">1. 编译器的局限</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#1-内存别名"><span class="nav-number">1.1.</span> <span class="nav-text">1. 内存别名</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#2-函数调用-amp-内联优化"><span class="nav-number">1.2.</span> <span class="nav-text">2. 函数调用 &amp; 内联优化</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-程序性能"><span class="nav-number">2.</span> <span class="nav-text">2. 程序性能</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-消除循环、多余内存引用-减少过程调用"><span class="nav-number">3.</span> <span class="nav-text">3. 消除循环、多余内存引用 减少过程调用</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#3-1-消除低效循环"><span class="nav-number">3.1.</span> <span class="nav-text">3.1 消除低效循环</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#3-2-减少过程调用"><span class="nav-number">3.2.</span> <span class="nav-text">3.2 减少过程调用</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#3-3-消除不必要内存引用"><span class="nav-number">3.3.</span> <span class="nav-text">3.3  消除不必要内存引用</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-现代处理器"><span class="nav-number">4.</span> <span class="nav-text">4. 现代处理器</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#4-1-整体操作"><span class="nav-number">4.1.</span> <span class="nav-text">4.1 整体操作</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-2-循环展开"><span class="nav-number">5.</span> <span class="nav-text">4.2 循环展开</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#4-3-提高并行性"><span class="nav-number">5.1.</span> <span class="nav-text">4.3 提高并行性</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#4-3-1-多个累积变量"><span class="nav-number">5.2.</span> <span class="nav-text">4.3.1 多个累积变量</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#4-3-2-重新结合变换"><span class="nav-number">5.3.</span> <span class="nav-text">4.3.2 重新结合变换</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#使用SIMD指令达到更高并行度"><span class="nav-number">5.4.</span> <span class="nav-text">使用SIMD指令达到更高并行度</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#5-一些限制因素"><span class="nav-number">6.</span> <span class="nav-text">5. 一些限制因素</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#5-1-寄存器溢出"><span class="nav-number">6.1.</span> <span class="nav-text">5.1 寄存器溢出</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#5-2-分支预测和预测错误惩罚"><span class="nav-number">6.2.</span> <span class="nav-text">5.2 分支预测和预测错误惩罚</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#5-确认和消除性能瓶颈"><span class="nav-number">7.</span> <span class="nav-text">5. 确认和消除性能瓶颈</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#5-1-程序剖析"><span class="nav-number">7.1.</span> <span class="nav-text">5.1 程序剖析</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">hecy</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

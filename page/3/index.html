@@ -232,6 +232,450 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://hcyxy.tech/2019/07/24/leetcode146 LRU缓存机制/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="hecy">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="无病呻吟">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/07/24/leetcode146 LRU缓存机制/" itemprop="url">leetcode146 LRU缓存机制</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-07-24T22:15:16+08:00">
+                2019-07-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/算法与数据结构/" itemprop="url" rel="index">
+                    <span itemprop="name">算法与数据结构</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <blockquote>
+<p>Least Recently Used 设计一个LRU缓存，应该支持以下操作： 获取数据 get 和 写入数据 put 。获取数据 get(key) - 如果密钥 (key) 存在于缓存中，则获取密钥的值（总是正数），否则返回 -1。<br>写入数据 put(key, value) - 如果密钥不存在，则写入其数据值。当缓存容量达到上限时，它应该在写入新数据之前删除最近最少使用的数据值，从而为新的数据值留出空间。</p>
+</blockquote>
+<h5 id="1-最简便的做法封装LinkedHashMap"><a href="#1-最简便的做法封装LinkedHashMap" class="headerlink" title="1. 最简便的做法封装LinkedHashMap:"></a>1. 最简便的做法封装LinkedHashMap:</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">class LRUCache(private val capacity: Int) : LinkedHashMap&lt;Int, Int&gt;(capacity, 0.75f, true) &#123;</span><br><span class="line"></span><br><span class="line">    override fun get(key: Int): Int &#123;</span><br><span class="line">        return getOrDefault(key, -1)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    override fun removeEldestEntry(eldest: Map.Entry&lt;Int, Int&gt;?): Boolean &#123;</span><br><span class="line">        return size &gt; capacity</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="2、使用哈希表-双向链表"><a href="#2、使用哈希表-双向链表" class="headerlink" title="2、使用哈希表 + 双向链表"></a>2、使用哈希表 + 双向链表</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br></pre></td><td class="code"><pre><span class="line">class LRUCache(private var capacity: Int) &#123;</span><br><span class="line"></span><br><span class="line">    data class LinkedNode(</span><br><span class="line">        var key: Int? = null,</span><br><span class="line">        var value: Int? = null,</span><br><span class="line">        var prev: LinkedNode? = null,</span><br><span class="line">        var next: LinkedNode? = null</span><br><span class="line">    ) &#123;</span><br><span class="line">        override fun toString(): String &#123;</span><br><span class="line">            return &quot;key:$key,value:$value&quot;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    private var cache = Hashtable&lt;Int, LinkedNode&gt;()</span><br><span class="line">    private var size: Int = 0</span><br><span class="line">    private var head: LinkedNode</span><br><span class="line">    private var tail: LinkedNode</span><br><span class="line"></span><br><span class="line">    init &#123;</span><br><span class="line"></span><br><span class="line">        head = LinkedNode()</span><br><span class="line">        // head.prev = null</span><br><span class="line"></span><br><span class="line">        tail = LinkedNode()</span><br><span class="line">        // tail.next = null</span><br><span class="line"></span><br><span class="line">        head.next = tail</span><br><span class="line">        tail.prev = head</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    fun addNode(node: LinkedNode) &#123;</span><br><span class="line">        node.prev = head</span><br><span class="line">        node.next = head.next</span><br><span class="line"></span><br><span class="line">        head.next?.prev = node</span><br><span class="line">        head.next = node</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    private fun removeNode(node: LinkedNode) &#123;</span><br><span class="line">        val prev = node.prev</span><br><span class="line">        val next = node.next</span><br><span class="line"></span><br><span class="line">        prev?.next = next</span><br><span class="line">        next?.prev = prev</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    private fun moveToHead(node: LinkedNode) &#123;</span><br><span class="line">        removeNode(node)</span><br><span class="line">        addNode(node)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    private fun popTail(): LinkedNode? &#123;</span><br><span class="line">        val res = tail.prev</span><br><span class="line">        res?.let &#123; removeNode(res) &#125;</span><br><span class="line">        return res</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    fun get(key: Int): Int &#123;</span><br><span class="line">        val node: LinkedNode? = cache[key] ?: return -1</span><br><span class="line"></span><br><span class="line">        // move the accessed node to the head</span><br><span class="line">        node?.let &#123; moveToHead(node) &#125;</span><br><span class="line"></span><br><span class="line">        return node?.value ?: -1</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    fun put(key: Int, value: Int) &#123;</span><br><span class="line">        val node = cache[key]</span><br><span class="line"></span><br><span class="line">        if (node == null) &#123;</span><br><span class="line">            val newNode = LinkedNode()</span><br><span class="line">            newNode.key = key</span><br><span class="line">            newNode.value = value</span><br><span class="line"></span><br><span class="line">            cache[key] = newNode</span><br><span class="line">            addNode(newNode)</span><br><span class="line"></span><br><span class="line">            ++size</span><br><span class="line"></span><br><span class="line">            if (size &gt; capacity) &#123;</span><br><span class="line">                // pop the tail</span><br><span class="line">                val tail = popTail()</span><br><span class="line">                if (tail?.key != null) &#123;</span><br><span class="line">                    cache.remove(tail.key)</span><br><span class="line">                    --size</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            // update the value.</span><br><span class="line">            node.value = value</span><br><span class="line">            moveToHead(node)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://hcyxy.tech/2019/07/23/leetcode42接雨水/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="hecy">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="无病呻吟">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/07/23/leetcode42接雨水/" itemprop="url">leetcode42 接雨水</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-07-23T22:10:15+08:00">
+                2019-07-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/算法与数据结构/" itemprop="url" rel="index">
+                    <span itemprop="name">算法与数据结构</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <blockquote>
+<p>给一个数组，排成柱状，求能盛多少水</p>
+</blockquote>
+<p>动态规划：<br><br>时间复杂度O(n),空间复杂度O(n)；最后一种双指针方法，时间O(N)，空间O(1)</p>
+<p><strong>找到好的解法的前提，对题目解法有清晰的认识</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line">fun trap(height: IntArray): Int &#123;</span><br><span class="line">        if (height.isEmpty()) return 0</span><br><span class="line">        val size = height.size</span><br><span class="line">        var ans = 0</span><br><span class="line">        val leftMax = IntArray(size)</span><br><span class="line">        val rightMax = IntArray(size)</span><br><span class="line">        leftMax[0] = height[0]</span><br><span class="line">        for (i in 1 until size) &#123;</span><br><span class="line">            leftMax[i] = max(height[i], leftMax[i - 1])</span><br><span class="line">        &#125;</span><br><span class="line">        rightMax[size - 1] = height[size - 1]</span><br><span class="line">        for (i in size - 2 downTo 0) &#123;</span><br><span class="line">            rightMax[i] = max(height[i], rightMax[i + 1])</span><br><span class="line">        &#125;</span><br><span class="line">        for (i in 1 until size - 1) &#123;</span><br><span class="line">            ans += min(leftMax[i], rightMax[i]) - height[i]</span><br><span class="line">        &#125;</span><br><span class="line">        return ans</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    fun trap2(height: IntArray): Int &#123;</span><br><span class="line">        var ans = 0</span><br><span class="line">        var current = 0</span><br><span class="line">        val st = Stack&lt;Int&gt;()</span><br><span class="line">        while (current &lt; height.size) &#123;</span><br><span class="line">            while (st.isNotEmpty() &amp;&amp; height[current] &gt; height[st.peek()]) &#123;</span><br><span class="line">                val top = st.peek()</span><br><span class="line">                st.pop()</span><br><span class="line">                if (st.isEmpty()) &#123;</span><br><span class="line">                    break</span><br><span class="line">                &#125;</span><br><span class="line">                val distance = current - st.peek() - 1</span><br><span class="line">                val boundedHeight = min(height[current], height[st.peek()]) - height[top]</span><br><span class="line">                ans += distance * boundedHeight</span><br><span class="line">            &#125;</span><br><span class="line">            st.push(current++)</span><br><span class="line">        &#125;</span><br><span class="line">        return ans</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    fun trap3(height: IntArray): Int &#123;</span><br><span class="line">        var ans = 0</span><br><span class="line">        var left = 0</span><br><span class="line">        var right = height.size - 1</span><br><span class="line">        var leftMax = 0</span><br><span class="line">        var rightMax = 0</span><br><span class="line">        while (left &lt; right) &#123;</span><br><span class="line">            if (height[left] &lt; height[right]) &#123;</span><br><span class="line">                if (height[left] &gt;= leftMax) &#123;</span><br><span class="line">                    leftMax = height[left]</span><br><span class="line">                &#125; else &#123;</span><br><span class="line">                    ans += (leftMax - height[left])</span><br><span class="line">                &#125;</span><br><span class="line">                left++</span><br><span class="line"></span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                if (height[right] &gt;= rightMax) &#123;</span><br><span class="line">                    rightMax = height[right]</span><br><span class="line">                &#125; else &#123;</span><br><span class="line">                    ans += (rightMax - height[right])</span><br><span class="line">                &#125;</span><br><span class="line">                --right</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return ans</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://hcyxy.tech/2019/07/22/多线程问题/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="hecy">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="无病呻吟">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/07/22/多线程问题/" itemprop="url">多线程问题</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-07-22T20:35:26+08:00">
+                2019-07-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/算法与数据结构/" itemprop="url" rel="index">
+                    <span itemprop="name">算法与数据结构</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="1、交替打印"><a href="#1、交替打印" class="headerlink" title="1、交替打印"></a>1、交替打印</h4><blockquote>
+<p>两个线程共用FooBar实例，其中一个调用foo()、另外一个调用bar()方法，确保foobar被输出n次。</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line">class FooBar &#123;</span><br><span class="line">    private int n;</span><br><span class="line">    private AtomicInteger ac = new AtomicInteger(0);</span><br><span class="line"></span><br><span class="line">    public FooBar(int n) &#123;</span><br><span class="line">        this.n = n;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void foo(Runnable printFoo) throws InterruptedException &#123;</span><br><span class="line"></span><br><span class="line">        for (int i = 0; i &lt; 2 * n; i += 2) &#123;</span><br><span class="line">            // printFoo.run() outputs &quot;foo&quot;. Do not change or remove this line.</span><br><span class="line">            while (ac.get() != i) &#123;</span><br><span class="line">            &#125;</span><br><span class="line">            printFoo.run();</span><br><span class="line">            ac.getAndIncrement();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void bar(Runnable printBar) throws InterruptedException &#123;</span><br><span class="line"></span><br><span class="line">        for (int i = 1; i &lt; 2 * n + 2; i += 2) &#123;</span><br><span class="line">            while (ac.get() != i) &#123;</span><br><span class="line">            &#125;</span><br><span class="line">            // printBar.run() outputs &quot;bar&quot;. Do not change or remove this line.</span><br><span class="line">            printBar.run();</span><br><span class="line">            ac.getAndIncrement();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class TestFooBar &#123;</span><br><span class="line">    public static void main(String[] args)&#123;</span><br><span class="line">        FooBar fooBar = new FooBar(10);</span><br><span class="line">        new Thread(() -&gt; &#123;</span><br><span class="line">            try &#123;</span><br><span class="line">                fooBar.foo(() -&gt; System.out.print(&quot;foo&quot;));</span><br><span class="line">            &#125; catch (InterruptedException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;).start();</span><br><span class="line">        new Thread(() -&gt; &#123;</span><br><span class="line">            try &#123;</span><br><span class="line">                fooBar.bar(() -&gt; System.out.print(&quot;bar&quot;));</span><br><span class="line">            &#125; catch (InterruptedException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;).start();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="2、信号量"><a href="#2、信号量" class="headerlink" title="2、信号量"></a>2、信号量</h4><blockquote>
+<p>现在有两种线程，氢 oxygen 和氧 hydrogen，你的目标是组织这两种线程来产生水分子。</p>
+</blockquote>
+<p>存在一个屏障（barrier）使得每个线程必须等候直到一个完整水分子能够被产生出来。</p>
+<p>氢和氧线程会被分别给予 releaseHydrogen 和 releaseOxygen 方法来允许它们突破屏障。</p>
+<p>这些线程应该三三成组突破屏障并能立即组合产生一个水分子。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line">import java.util.concurrent.*;</span><br><span class="line"></span><br><span class="line">class H2O &#123;</span><br><span class="line"></span><br><span class="line">    private Semaphore s1,s2,s3,s4;</span><br><span class="line"></span><br><span class="line">    public H2O() &#123;</span><br><span class="line">        s1 = new Semaphore(2); // H线程信号量</span><br><span class="line">        s2 = new Semaphore(1); // O线程信号量</span><br><span class="line"></span><br><span class="line">        s3 = new Semaphore(0); // 反应条件信号量</span><br><span class="line">        s4 = new Semaphore(0); // 反应条件信号量</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void hydrogen(Runnable releaseHydrogen) throws InterruptedException &#123;</span><br><span class="line">        s1.acquire(); // 保证只有2个H线程进入执行</span><br><span class="line">        s3.release(); // 释放H原子到达信号</span><br><span class="line">        s4.acquire(); // 等待O原子到达</span><br><span class="line">        releaseHydrogen.run();</span><br><span class="line">        s1.release(); // 相当于唤醒1个H线程</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void oxygen(Runnable releaseOxygen) throws InterruptedException &#123;</span><br><span class="line">        s2.acquire(); // 保证只有1个O线程进入执行</span><br><span class="line">        s4.release(2); // 释放O原子到达信号，因为有2个H线程等待所以释放2个</span><br><span class="line">        s3.acquire(2); // 等待H原子到达，2个原因同上</span><br><span class="line">        releaseOxygen.run();</span><br><span class="line">        s2.release(); // 相当于唤醒1个O线程</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">H2O h = new H2O();</span><br><span class="line">        String str = &quot;OHOOHOHHHHOHHOHHHH&quot;;</span><br><span class="line">        for (int i = 0; i &lt; str.length(); i++) &#123;</span><br><span class="line">            if (str.charAt(i) == &apos;H&apos;) &#123;</span><br><span class="line">                new Thread(() -&gt; &#123;</span><br><span class="line">                    try &#123;</span><br><span class="line">                        h.hydrogen(() -&gt; System.out.print(&quot;H&quot;));</span><br><span class="line">                    &#125; catch (InterruptedException e) &#123;</span><br><span class="line">                        e.printStackTrace();</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;).start();</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                new Thread(() -&gt; &#123;</span><br><span class="line">                    try &#123;</span><br><span class="line">                        h.oxygen(() -&gt; System.out.print(&quot;O&quot;));</span><br><span class="line">                    &#125; catch (InterruptedException e) &#123;</span><br><span class="line">                        e.printStackTrace();</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;).start();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://hcyxy.tech/2019/07/21/约瑟夫环问题/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1373,474 +1817,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://hcyxy.tech/2019/04/13/选方格算法/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="hecy">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="无病呻吟">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/04/13/选方格算法/" itemprop="url">选算法</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-13T14:15:13+08:00">
-                2019-04-13
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/算法与数据结构/" itemprop="url" rel="index">
-                    <span itemprop="name">算法与数据结构</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h5 id="在方阵中选取若干个格子使得任意两个不相邻。"><a href="#在方阵中选取若干个格子使得任意两个不相邻。" class="headerlink" title="在方阵中选取若干个格子使得任意两个不相邻。"></a>在方阵中选取若干个格子使得任意两个不相邻。</h5><p>比如有一行数据，3个格子，有多少种方案<br>|编号|状态|二进制|<br>|—|—|—|<br>|1|0 0 0|0|<br>|2|0 0 1|1|<br>|3|0 1 0|2|<br>|4|1 0 0|4|<br>|5|1 0 1|5|</p>
-<p><strong>用一个数表示一组数，降低表示状态所需要的维数，就叫状态压缩</strong></p>
-<p>考虑了第一行以后，考虑第二行。当第二行和第一行数据一样时：</p>
-<ul>
-<li>假如第二行三个格子都不放，则就是第一行的方案；</li>
-<li>当第二行放格子时，可得到4中可行方案；</li>
-</ul>
-<p>可以得到状态关系：<br><strong>dp[i][state[j)]来表示对于前i行，第i行第j种状态时可以得到的可行方案总数。</strong></p>
-<p>比如：dp[2][1]代表第二行使用(0 1 0)可得的方案数。</p>
-<p>可以得到状态转移方程：<br><strong>dp[i][state(j)]=dp[i-1][state(k1)]+dp[i-1][state(k2)]+……+dp[i-1][state(kn)](kn即为上一行可行状态的编号，上一行共有n种可行状态）</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line">//行数</span><br><span class="line">val m = 2</span><br><span class="line">//列数</span><br><span class="line">val n = 2</span><br><span class="line">//共有多少种可行的状态</span><br><span class="line">var top = 0</span><br><span class="line">//state存放每行所有的可行状态（即没有相邻的状态</span><br><span class="line">val state = IntArray(600)</span><br><span class="line">//dp[i][j]:对于前i行数据，每行有前j种可能状态时的解</span><br><span class="line">val dp = Array(20) &#123;</span><br><span class="line">    IntArray(600)</span><br><span class="line">&#125;</span><br><span class="line">//cur[i]表示的是第i行整行的情况</span><br><span class="line">val cur = IntArray(20)</span><br><span class="line"></span><br><span class="line">fun ok(x: Int): Boolean &#123;</span><br><span class="line">    val temp = x and (x shl 1)</span><br><span class="line">    //如果有相邻说明这个状态不行</span><br><span class="line">    if (temp &gt; 0) return false</span><br><span class="line">    return true</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">fun init() &#123;</span><br><span class="line">    top = 0</span><br><span class="line">    val total = 1 shl n //遍历状态上界</span><br><span class="line">    for (i in 0 until total) &#123;</span><br><span class="line">        if (ok(i)) &#123;</span><br><span class="line">            state[++top] = i</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">fun main() &#123;</span><br><span class="line">    init()</span><br><span class="line">    for (i in 1..top) &#123;</span><br><span class="line">        dp[1][i] = 1</span><br><span class="line">    &#125;</span><br><span class="line">    for (i in 2..m) &#123;</span><br><span class="line">        for (k in 1..top) &#123;</span><br><span class="line">            for (j in 1..top) &#123;</span><br><span class="line">                if ((state[k] and state[j]) &gt; 0) continue</span><br><span class="line">                dp[i][k] = (dp[i][k] + dp[i - 1][j])</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    var ans = 0</span><br><span class="line">    for (i in 1..top) &#123;</span><br><span class="line">        ans += dp[m][i]</span><br><span class="line">    &#125;</span><br><span class="line">    println(&quot;sum $ans&quot;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>如果方格中有部分位置不能选呢，只需要做少量改动即可。</p>
-</blockquote>
-<p>增加一个curr数组，和fit函数，判断当前状态是否符合。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line">package test.base</span><br><span class="line">//行数</span><br><span class="line">val m = 2</span><br><span class="line">//列数</span><br><span class="line">val n = 2</span><br><span class="line">//共有多少种可行的状态</span><br><span class="line">var top = 0</span><br><span class="line">//state存放每行所有的可行状态（即没有相邻的状态</span><br><span class="line">val state = IntArray(600)</span><br><span class="line">//dp[i][j]:对于前i行数据，每行有前j种可能状态时的解</span><br><span class="line">val dp = Array(20) &#123;</span><br><span class="line">    IntArray(600)</span><br><span class="line">&#125;</span><br><span class="line">//cur[i]表示的是第i行整行的情况</span><br><span class="line">val cur = IntArray(20)</span><br><span class="line"></span><br><span class="line">fun ok(x: Int): Boolean &#123;</span><br><span class="line">    val temp = x and (x shl 1)</span><br><span class="line">    //如果有相邻说明这个状态不行</span><br><span class="line">    if (temp &gt; 0) return false</span><br><span class="line">    return true</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">fun init() &#123;</span><br><span class="line">    top = 0</span><br><span class="line">    val total = 1 shl n //遍历状态上界</span><br><span class="line">    for (i in 0 until total) &#123;</span><br><span class="line">        if (ok(i)) &#123;</span><br><span class="line">            state[++top] = i</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">fun fit(x: Int, k: Int): Boolean &#123;  //判断状态x 与第k行的实际状态的逆是否有‘重合’</span><br><span class="line">    if ((x and (cur[k]) &gt; 0)) return false //若有重合 x不符合要求</span><br><span class="line">    return true</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">fun main() &#123;</span><br><span class="line">    init()</span><br><span class="line">    for (i in 1..top) &#123;</span><br><span class="line">        if (fit(state[i],1)) &#123;</span><br><span class="line">            dp[1][i] = 1</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    for(i in 2..m)&#123;</span><br><span class="line">        for(k in 1..top)&#123;</span><br><span class="line">            if(!fit(state[k],i)) continue</span><br><span class="line">            for(j in 1..top)&#123;</span><br><span class="line">                if(!fit(state[j],i-1)) continue</span><br><span class="line">                if((state[k] and state[j])&gt;0) continue</span><br><span class="line">                dp[i][k] = (dp[i][k]+dp[i-1][j])</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    var ans = 0</span><br><span class="line">    for(i in 1..top)&#123;</span><br><span class="line">        ans += dp[m][i]</span><br><span class="line">    &#125;</span><br><span class="line">    println(&quot;sum $ans&quot;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<blockquote>
-<p>来自 <a href="https://blog.csdn.net/harrypoirot/article/details/23163485" target="_blank" rel="noopener">https://blog.csdn.net/harrypoirot/article/details/23163485</a></p>
-</blockquote>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://hcyxy.tech/2019/03/25/骑士拨号器/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="hecy">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="无病呻吟">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/03/25/骑士拨号器/" itemprop="url">骑士拨号器算法</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-25T22:49:02+08:00">
-                2019-03-25
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/算法与数据结构/" itemprop="url" rel="index">
-                    <span itemprop="name">算法与数据结构</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h5 id="题目，一个拨打电话的面板，每次只能按照“L”形状移动，水平两步-gt-垂直一步-或水平一步-gt-垂直两步，方向不限制。那么在N跳范围内，能够拨打多少种不同的号码？"><a href="#题目，一个拨打电话的面板，每次只能按照“L”形状移动，水平两步-gt-垂直一步-或水平一步-gt-垂直两步，方向不限制。那么在N跳范围内，能够拨打多少种不同的号码？" class="headerlink" title="题目，一个拨打电话的面板，每次只能按照“L”形状移动，水平两步-&gt;垂直一步,或水平一步-&gt;垂直两步，方向不限制。那么在N跳范围内，能够拨打多少种不同的号码？"></a>题目，一个拨打电话的面板，每次只能按照“L”形状移动，水平两步-&gt;垂直一步,或水平一步-&gt;垂直两步，方向不限制。那么在N跳范围内，能够拨打多少种不同的号码？</h5><p><code>$\begin{matrix} 1 &amp; 2 &amp; 3\\ 4 &amp; 5 &amp; 6 \\ 7 &amp; 8 &amp; 9 &amp;\\  &amp; 0 &amp;  \end{matrix}$</code></p>
-<h5 id="第一种，递归"><a href="#第一种，递归" class="headerlink" title="第一种，递归"></a>第一种，递归</h5><p>用map存储跳数<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">val map = mapOf(1 to listOf(6, 8),</span><br><span class="line">        2 to listOf(7, 9),</span><br><span class="line">        3 to listOf(4, 8),</span><br><span class="line">        4 to listOf(3, 9, 0),</span><br><span class="line">        5 to emptyList(),</span><br><span class="line">        6 to listOf(1,7,0),</span><br><span class="line">        7 to listOf(2,6),</span><br><span class="line">        8 to listOf(1,3),</span><br><span class="line">        9 to listOf(2,4),</span><br><span class="line">        0 to listOf(4,6)</span><br><span class="line">        )</span><br></pre></td></tr></table></figure></p>
-<p>算法如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">private val map = mapOf(1 to listOf(6, 8),</span><br><span class="line">        2 to listOf(7, 9),</span><br><span class="line">        3 to listOf(4, 8),</span><br><span class="line">        4 to listOf(3, 9, 0),</span><br><span class="line">        5 to emptyList(),</span><br><span class="line">        6 to listOf(1, 7, 0),</span><br><span class="line">        7 to listOf(2, 6),</span><br><span class="line">        8 to listOf(1, 3),</span><br><span class="line">        9 to listOf(2, 4),</span><br><span class="line">        0 to listOf(4, 6)</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">fun getSequence(start: Int, count: Int, sequence: String?, list: ArrayList&lt;String&gt;) &#123;</span><br><span class="line">    var temp = count</span><br><span class="line">    var result = sequence</span><br><span class="line">    if (result == null) result = &quot;$start&quot;</span><br><span class="line">    if (count == 0) &#123;</span><br><span class="line">        list.add(result)</span><br><span class="line">        return</span><br><span class="line">    &#125;</span><br><span class="line">    val neighbors = map[start] ?: return</span><br><span class="line">    temp--</span><br><span class="line">    for (neighbor in neighbors) &#123;</span><br><span class="line">        getSequence(neighbor, temp, result + neighbor, list)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">fun main(args: Array&lt;String&gt;) &#123;</span><br><span class="line">    val list = arrayListOf&lt;String&gt;()</span><br><span class="line">    getSequence(6,2,null,list)</span><br><span class="line">    list.forEach &#123;</span><br><span class="line">        println(it)</span><br><span class="line">    &#125;</span><br><span class="line">    println(list.size)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h5 id="第二种-不通过计算得到号码个数"><a href="#第二种-不通过计算得到号码个数" class="headerlink" title="第二种 不通过计算得到号码个数"></a>第二种 不通过计算得到号码个数</h5><p>其实完全不需要统计这些不同的电话号码，可以节省部分空间复杂度：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">fun getSequence(start: Int, count: Int, sequence: String?): Int &#123;</span><br><span class="line">    var total = 0</span><br><span class="line">    var temp = count</span><br><span class="line">    var result = sequence</span><br><span class="line">    if (result == null) result = &quot;$start&quot;</span><br><span class="line">    if (count == 0) &#123;</span><br><span class="line">        return 1</span><br><span class="line">    &#125;</span><br><span class="line">    val neighbors = map[start] ?: return 0</span><br><span class="line">    temp--</span><br><span class="line">    for (neighbor in neighbors) &#123;</span><br><span class="line">        total += getSequence(neighbor, temp, result + neighbor)</span><br><span class="line">    &#125;</span><br><span class="line">    return total</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">fun main(args: Array&lt;String&gt;) &#123;</span><br><span class="line">    println(getSequence(6, 2, null))</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h5 id="第三种-记忆化"><a href="#第三种-记忆化" class="headerlink" title="第三种 记忆化"></a>第三种 记忆化</h5><p>当时间复杂度很高，考虑以空间换时间<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">fun getSequence(start: Int, count: Int, cache: HashMap&lt;Pair&lt;Int,Int&gt;, Long&gt;): Long &#123;</span><br><span class="line">    var total = 0L</span><br><span class="line">    var temp = count</span><br><span class="line">    if (count == 0) &#123;</span><br><span class="line">        return 1</span><br><span class="line">    &#125;</span><br><span class="line">    val neighbors = map[start] ?: return 0</span><br><span class="line">    temp--</span><br><span class="line">    for (neighbor in neighbors) &#123;</span><br><span class="line">        val meta = cache[Pair(neighbor,temp)]</span><br><span class="line">        if (meta == null) &#123;</span><br><span class="line">            val number = getSequence(neighbor, temp, cache)</span><br><span class="line">            cache[Pair(neighbor,temp)] = number</span><br><span class="line">            total += number</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            total += meta</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return total</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">fun main(args: Array&lt;String&gt;) &#123;</span><br><span class="line">    val cache = HashMap&lt;Pair&lt;Int,Int&gt;, Long&gt;()</span><br><span class="line">    println(getSequence(6, 25, cache))</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h5 id="第四种-动态规划"><a href="#第四种-动态规划" class="headerlink" title="第四种 动态规划"></a>第四种 动态规划</h5><p>记忆化搜索，内存空间会线性增长，仍然不是最高效的，可以换一种新方法，先计算N-1，再计算N挑，从后往前算：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">fun getSequence(start: Int, count: Int): Long &#123;</span><br><span class="line">    var current = 1</span><br><span class="line">    var currentCase = Array(10) &#123;</span><br><span class="line">        0L</span><br><span class="line">    &#125;</span><br><span class="line">    var priorCase = Array(10) &#123; 1L &#125;</span><br><span class="line">    while (current &lt;= count) &#123;</span><br><span class="line">        currentCase = Array(10) &#123; 0L &#125;</span><br><span class="line">        current++</span><br><span class="line">        for (position in 0..9) &#123;</span><br><span class="line">            val meta = map[position]</span><br><span class="line">            if (meta != null) &#123;</span><br><span class="line">                for (neighbor in meta)</span><br><span class="line">                    currentCase[position] += priorCase[neighbor]</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        priorCase = currentCase</span><br><span class="line">    &#125;</span><br><span class="line">    return currentCase[start]</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">fun main(args: Array&lt;String&gt;) &#123;</span><br><span class="line">    val begin = System.nanoTime()</span><br><span class="line">    println(getSequence(6, 55))</span><br><span class="line">    val end = System.nanoTime()</span><br><span class="line">    println((end - begin) / (1000 * 1000))</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>相比上一种方案时间复杂度是差不多的，但是也有优点：非递归，可以运行非常大跳数，不会崩溃；使用固定内存，缓存不会增长。</p>
-<p>在面试中设计和实现线性时间、恒定空间的解决方案是一个非常好的结果。总是会给那些能够提供动态规划解决方案的候选人一个很好的评价。</p>
-<h5 id="第五种-矩阵快速幂"><a href="#第五种-矩阵快速幂" class="headerlink" title="第五种 矩阵快速幂"></a>第五种 矩阵快速幂</h5><p>这种计算幂指数的，可以利用快速幂来计算，矩阵的幂表示无向图中的步数。</p>
-<blockquote>
-<p><code>$B^m$</code>(2≤m≤n)中位于 i 行 j 列(0≤i，j≤n-1)的非零元素的含义是:图中从顶点 i 到顶点 j 长度为 m 的路径条数</p>
-</blockquote>
-<p>python写的函数如下（来自<a href="https://leetcode.com/problems/knight-dialer/discuss/189252/O" target="_blank" rel="noopener">https://leetcode.com/problems/knight-dialer/discuss/189252/O</a>(logN）：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">def knightDialer(self, N):</span><br><span class="line">        mod = 10**9 + 7</span><br><span class="line">        if N == 1: return 10</span><br><span class="line">        M = np.matrix([[0, 0, 0, 0, 1, 0, 1, 0, 0, 0],</span><br><span class="line">                       [0, 0, 0, 0, 0, 0, 1, 0, 1, 0],</span><br><span class="line">                       [0, 0, 0, 0, 0, 0, 0, 1, 0, 1],</span><br><span class="line">                       [0, 0, 0, 0, 1, 0, 0, 0, 1, 0],</span><br><span class="line">                       [1, 0, 0, 1, 0, 0, 0, 0, 0, 1],</span><br><span class="line">                       [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],</span><br><span class="line">                       [1, 1, 0, 0, 0, 0, 0, 1, 0, 0],</span><br><span class="line">                       [0, 0, 1, 0, 0, 0, 1, 0, 0, 0],</span><br><span class="line">                       [0, 1, 0, 1, 0, 0, 0, 0, 0, 0],</span><br><span class="line">                       [0, 0, 1, 0, 1, 0, 0, 0, 0, 0]])</span><br><span class="line">        res, N = 1, N - 1</span><br><span class="line">        while N:</span><br><span class="line">            if N % 2: res = res * M % mod</span><br><span class="line">            M = M * M % mod</span><br><span class="line">            N /= 2</span><br><span class="line">        return int(np.sum(res)) % mod</span><br></pre></td></tr></table></figure></p>
-<p>节选自：知乎用户tom pareto<br>这道题，挺有意思的，正好说明计算机算法和设计计算机算法是怎么一回事：</p>
-<p>（1）讨论：解决小规模问题，找到模式和边界情况。这是什么意思，要怎么做？数字序列又是什么？——数量化。如果不进行数量化，就没有办法使计算机工作，计算机只能进行数量的计算。</p>
-<p>（2）下一跳：占位符、空函数、函数桩、map等等，为什么要这样做？计算机擅长于有明显规律的重复性的工作。在我们还没找到重复性规律之前，不妨先假设存在这么一种重复性规律好了。然后，我们再进行观察、猜测、归纳这种重复性规律。显然：</p>
-<p>（3）编程实现与优化。这就很“常规”了。</p>
-<p>算法设计与实现，没有什么神秘的。一切在于数字电子计算机的最基本的物理器件——基于布尔代数的加法器。只要计算机的物理基础还是线性运算的加法器，那么计算机的基本计算方式方法就只能是反复地进行重复性工作。而我们人类，就是先从问题中抽取数量，或者量化问题，然后观察、猜测、归纳这些数量之间的递推关系（就是高中学过的数学归纳法）。然后再编程实现。在编程实现中，进一步优化。而要优化，那么就会利用计算机的器件特性。只要经过大量的科学训练，一个高中数学学得还可以的人，就能够进入算法的殿堂。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://hcyxy.tech/2019/03/24/矩阵快速幂/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="hecy">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="无病呻吟">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/03/24/矩阵快速幂/" itemprop="url">矩阵快速幂</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-24T21:33:13+08:00">
-                2019-03-24
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/算法与数据结构/" itemprop="url" rel="index">
-                    <span itemprop="name">算法与数据结构</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h5 id="1、如何有效提高指数幂的时间复杂度？比如计算-2-100-，有人肯定会说时间复杂度是O-N-，但是最好的快速幂算法是O-logN-，运用到矩阵中就是矩阵快速幂算法。"><a href="#1、如何有效提高指数幂的时间复杂度？比如计算-2-100-，有人肯定会说时间复杂度是O-N-，但是最好的快速幂算法是O-logN-，运用到矩阵中就是矩阵快速幂算法。" class="headerlink" title="1、如何有效提高指数幂的时间复杂度？比如计算$2^{100}$，有人肯定会说时间复杂度是O(N)，但是最好的快速幂算法是O(logN)，运用到矩阵中就是矩阵快速幂算法。"></a>1、如何有效提高指数幂的时间复杂度？比如计算<code>$2^{100}$</code>，有人肯定会说时间复杂度是O(N)，但是最好的快速幂算法是O(logN)，运用到矩阵中就是矩阵快速幂算法。</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">fun quickPow(a: Int, b: Int): Long &#123;</span><br><span class="line">    var ans = 1L</span><br><span class="line">    var temp = a</span><br><span class="line">    var base = b</span><br><span class="line">    while (base != 0) &#123;</span><br><span class="line">        if (base and 1 != 0) &#123;</span><br><span class="line">            ans *= temp</span><br><span class="line">        &#125;</span><br><span class="line">        temp *= temp</span><br><span class="line">        base = base shr 1</span><br><span class="line">    &#125;</span><br><span class="line">    return ans</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">fun main(args: Array&lt;String&gt;) &#123;</span><br><span class="line">    println(quickPow(2, 10))</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>比如之前计算<code>$2^{10}$</code>，要计算10次，现在首先计算<code>$2*2=2^2$</code>,第二次<code>$2^2*2^2=2^4$</code>，第三次<code>$2^4*2^4=2^8$</code>，这样就大大减少了时间复杂度。</p>
-</blockquote>
-<h5 id="2、从快速幂到矩阵快速幂"><a href="#2、从快速幂到矩阵快速幂" class="headerlink" title="2、从快速幂到矩阵快速幂"></a>2、从快速幂到矩阵快速幂</h5><p>本质上就是讲算式转化为矩阵形式，比如下题：</p>
-<p><code>$F(i)=F(i-1)+F(i-2)+i^3+i^2+i+1,i&gt;1,F(0)=0,F(1)=1$</code></p>
-<p>我们就需要找到一个矩阵A，使<code>$A^{n-1}F(1)=F(n)$</code>,其实矩阵A为：</p>
-<p><code>$\left[ \begin{matrix} 1 &amp; 1 &amp; 1 &amp; 1 &amp; 1 &amp; 1\\ 1 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 \\ 0 &amp; 0 &amp; 1 &amp; 3 &amp; 3 &amp; 1 \\ 0 &amp; 0 &amp; 0 &amp; 1 &amp; 2 &amp; 1 \\ 0 &amp; 0 &amp; 0 &amp; 0 &amp; 1 &amp; 1 \\ 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 1 \end{matrix} \right]$</code></p>
-<p>当指数为0时，初始化一个单位矩阵，任何矩阵乘以单位矩阵都是其本身。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1891,7 +1867,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">62</span>
+                  <span class="site-state-item-count">65</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

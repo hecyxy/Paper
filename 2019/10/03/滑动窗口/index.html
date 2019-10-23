@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="leetcode76 最小覆盖子串 给你一个字符串 S、一个字符串 T，请在字符串 S 里面找出：包含 T 所有字母的最小子串。  示例： 输入: S = “ADOBECODEBANC”, T = “ABC”输出: “BANC” 1234567891011121314151617181920212223242526272829303132333435363738394041424344454647">
+<meta property="og:type" content="article">
+<meta property="og:title" content="滑动窗口">
+<meta property="og:url" content="http://hcyxy.tech/2019/10/03/滑动窗口/index.html">
+<meta property="og:site_name" content="无病呻吟">
+<meta property="og:description" content="leetcode76 最小覆盖子串 给你一个字符串 S、一个字符串 T，请在字符串 S 里面找出：包含 T 所有字母的最小子串。  示例： 输入: S = “ADOBECODEBANC”, T = “ABC”输出: “BANC” 1234567891011121314151617181920212223242526272829303132333435363738394041424344454647">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-10-23T15:34:12.541Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="滑动窗口">
+<meta name="twitter:description" content="leetcode76 最小覆盖子串 给你一个字符串 S、一个字符串 T，请在字符串 S 里面找出：包含 T 所有字母的最小子串。  示例： 输入: S = “ADOBECODEBANC”, T = “ABC”输出: “BANC” 1234567891011121314151617181920212223242526272829303132333435363738394041424344454647">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://hcyxy.tech/2019/10/03/滑动窗口/"/>
+
+
+
+
+
+  <title>滑动窗口 | 无病呻吟</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">无病呻吟</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">hcy && xy</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://hcyxy.tech/2019/10/03/滑动窗口/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="hecy">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="无病呻吟">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">滑动窗口</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-10-03T22:31:11+08:00">
+                2019-10-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/算法与数据结构/" itemprop="url" rel="index">
+                    <span itemprop="name">算法与数据结构</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h5 id="leetcode76-最小覆盖子串"><a href="#leetcode76-最小覆盖子串" class="headerlink" title="leetcode76 最小覆盖子串"></a>leetcode76 最小覆盖子串</h5><blockquote>
+<p>给你一个字符串 S、一个字符串 T，请在字符串 S 里面找出：包含 T 所有字母的最小子串。</p>
+</blockquote>
+<p>示例：</p>
+<p>输入: S = “ADOBECODEBANC”, T = “ABC”<br>输出: “BANC”</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br></pre></td><td class="code"><pre><span class="line">fun minWindow(s: String, t: String): String &#123;</span><br><span class="line">        if (s.isBlank() || t.isBlank()) &#123;</span><br><span class="line">            return &quot;&quot;</span><br><span class="line">        &#125;</span><br><span class="line">        val dict = HashMap&lt;Char, Int&gt;()</span><br><span class="line">        for (i in 0 until t.length) &#123;</span><br><span class="line">            dict[t[i]] = dict.getOrDefault(t[i], 0) + 1</span><br><span class="line">        &#125;</span><br><span class="line">        val required = dict.size</span><br><span class="line">        var l = 0</span><br><span class="line">        var r = 0</span><br><span class="line">        var formed = 0</span><br><span class="line">        val windowCounts = HashMap&lt;Char, Int&gt;()</span><br><span class="line">        val ans = intArrayOf(-1, 0, 0)</span><br><span class="line">        while (r &lt; s.length) &#123;</span><br><span class="line">            var c = s[r]</span><br><span class="line">            windowCounts[c] = windowCounts.getOrDefault(c, 0) + 1</span><br><span class="line">            if (dict.containsKey(c) &amp;&amp; windowCounts[c] == dict[c]) &#123;</span><br><span class="line">                formed++</span><br><span class="line">            &#125;</span><br><span class="line">            while (l &lt;= r &amp;&amp; formed == required) &#123;</span><br><span class="line">                c = s[l]</span><br><span class="line">                if (ans[0] == -1 || r - l + 1 &lt; ans[0]) &#123;</span><br><span class="line">                    ans[0] = r - l + 1</span><br><span class="line">                    ans[1] = l</span><br><span class="line">                    ans[2] = r</span><br><span class="line">                &#125;</span><br><span class="line">                windowCounts[c] = windowCounts[c]!! - 1</span><br><span class="line">                if (dict.containsKey(c) &amp;&amp; windowCounts[c]!! &lt; dict[c]!!) &#123;</span><br><span class="line">                    formed--</span><br><span class="line">                &#125;</span><br><span class="line">                l++</span><br><span class="line">            &#125;</span><br><span class="line">            r++</span><br><span class="line">        &#125;</span><br><span class="line">        return if (ans[0] == -1) &quot;&quot; else s.substring(ans[1], ans[2] + 1)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    fun minWindow2(s: String, t: String): String &#123;</span><br><span class="line"></span><br><span class="line">        if (s.isEmpty() || t.isEmpty()) &#123;</span><br><span class="line">            return &quot;&quot;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        val dictT = HashMap&lt;Char, Int&gt;()</span><br><span class="line"></span><br><span class="line">        for (i in 0 until t.length) &#123;</span><br><span class="line">            dictT[t[i]] = dictT.getOrDefault(t[i], 0) + 1</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        val required = dictT.size</span><br><span class="line"></span><br><span class="line">        // Filter all the characters from s into a new list along with their index.</span><br><span class="line">        // The filtering criteria is that the character should be present in t.</span><br><span class="line">        val filteredS = ArrayList&lt;Pair&lt;Int, Char&gt;&gt;()</span><br><span class="line">        for (i in 0 until s.length) &#123;</span><br><span class="line">            val c = s[i]</span><br><span class="line">            if (dictT.containsKey(c)) &#123;</span><br><span class="line">                filteredS.add(Pair(i, c))</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        var l = 0</span><br><span class="line">        var r = 0</span><br><span class="line">        var formed = 0</span><br><span class="line">        val windowCounts = HashMap&lt;Char, Int&gt;()</span><br><span class="line">        val ans = intArrayOf(-1, 0, 0)</span><br><span class="line"></span><br><span class="line">        // Look for the characters only in the filtered list instead of entire s.</span><br><span class="line">        // This helps to reduce our search.</span><br><span class="line">        // Hence, we follow the sliding window approach on as small list.</span><br><span class="line">        while (r &lt; filteredS.size) &#123;</span><br><span class="line">            var c = filteredS[r].second</span><br><span class="line">            windowCounts[c] = windowCounts.getOrDefault(c, 0) + 1</span><br><span class="line"></span><br><span class="line">            if (dictT.containsKey(c) &amp;&amp; windowCounts[c] == dictT[c]) &#123;</span><br><span class="line">                formed++</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            // Try and co***act the window till the point where it ceases to be &apos;desirable&apos;.</span><br><span class="line">            while (l &lt;= r &amp;&amp; formed == required) &#123;</span><br><span class="line">                c = filteredS[l].second</span><br><span class="line"></span><br><span class="line">                // Save the smallest window until now.</span><br><span class="line">                val end = filteredS[r].first</span><br><span class="line">                val start = filteredS[l].first</span><br><span class="line">                if (ans[0] == -1 || end - start + 1 &lt; ans[0]) &#123;</span><br><span class="line">                    ans[0] = end - start + 1</span><br><span class="line">                    ans[1] = start</span><br><span class="line">                    ans[2] = end</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">                windowCounts[c] = windowCounts[c]!! - 1</span><br><span class="line">                if (dictT.containsKey(c) &amp;&amp; windowCounts[c]!! &lt; dictT[c]!!) &#123;</span><br><span class="line">                    formed--</span><br><span class="line">                &#125;</span><br><span class="line">                l++</span><br><span class="line">            &#125;</span><br><span class="line">            r++</span><br><span class="line">        &#125;</span><br><span class="line">        return if (ans[0] == -1) &quot;&quot; else s.substring(ans[1], ans[2] + 1)</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>滑动窗口本质上是一种高级双指针技巧的算法框架。</p>
+</blockquote>
+<ul>
+<li>leetcode76 最小覆盖子串(上题)</li>
+<li>leetcode438 找到字符串中所有字母异位词</li>
+<li>leetocde3无重复最长子串</li>
+</ul>
+<p>滑动窗口算法的思路是这样：</p>
+<ol>
+<li><p>我们在字符串 S 中使用双指针中的左右指针技巧，初始化 left = right = 0，把索引闭区间 [left, right] 称为一个「窗口」。</p>
+</li>
+<li><p>我们先不断地增加 right 指针扩大窗口 [left, right]，直到窗口中的字符串符合要求（包含了 T 中的所有字符）。</p>
+</li>
+<li><p>此时，我们停止增加 right，转而不断增加 left 指针缩小窗口 [left, right]，直到窗口中的字符串不再符合要求（不包含 T 中的所有字符了）。同时，每次增加 left，我们都要更新一轮结果。</p>
+</li>
+<li><p>重复第 2 和第 3 步，直到 right 到达字符串 S 的尽头。</p>
+</li>
+</ol>
+<p>这个思路其实也不难，第 2 步相当于在寻找一个「可行解」，然后第 3 步在优化这个「可行解」，最终找到最优解。左右指针轮流前进，窗口大小增增减减，窗口不断向右滑动。</p>
+<h5 id="leetcode438-找到字符串中所有字母异位词"><a href="#leetcode438-找到字符串中所有字母异位词" class="headerlink" title="leetcode438 找到字符串中所有字母异位词"></a>leetcode438 找到字符串中所有字母异位词</h5><p>给定一个字符串 s 和一个非空字符串 p ，找到 s 中所有是 p 的字母异位词的子串，返回这些子串的起始索引。</p>
+<p>字符串只包含小写英文字母，并且字符串 s 和 p 的长度都不超过 20100。</p>
+<p>说明：</p>
+<p>字母异位词指字母相同，但排列不同的字符串。<br>不考虑答案输出的顺序。<br>示例 1:</p>
+<p>输入:<br>s: “cbaebabacd” p: “abc”</p>
+<p>输出:<br>[0, 6]</p>
+<p>解释:<br>起始索引等于 0 的子串是 “cba”, 它是 “abc” 的字母异位词。<br>起始索引等于 6 的子串是 “bac”, 它是 “abc” 的字母异位词。</p>
+<p>示例 2:</p>
+<p>输入:<br>s: “abab” p: “ab”</p>
+<p>输出:<br>[0, 1, 2]</p>
+<p>解释:<br>起始索引等于 0 的子串是 “ab”, 它是 “ab” 的字母异位词。<br>起始索引等于 1 的子串是 “ba”, 它是 “ab” 的字母异位词。<br>起始索引等于 2 的子串是 “ab”, 它是 “ab” 的字母异位词</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">fun findAnagrams(s: String, p: String): List&lt;Int&gt; &#123;</span><br><span class="line">       val result = arrayListOf&lt;Int&gt;()</span><br><span class="line">       var left = 0</span><br><span class="line">       var right = 0</span><br><span class="line">       val dict = HashMap&lt;Char, Int&gt;()</span><br><span class="line">       val window = HashMap&lt;Char, Int&gt;()</span><br><span class="line">       p.forEach &#123; c -&gt;</span><br><span class="line">           dict[c] = dict.getOrDefault(c, 0) + 1</span><br><span class="line">       &#125;</span><br><span class="line">       var match = 0</span><br><span class="line">       while (right &lt; s.length) &#123;</span><br><span class="line">           val c = s[right]</span><br><span class="line">           if (dict.containsKey(c)) &#123;</span><br><span class="line">               window[c] = window.getOrDefault(c, 0) + 1</span><br><span class="line">               if (window[c] == dict[c]) &#123;</span><br><span class="line">                   match++</span><br><span class="line">               &#125;</span><br><span class="line">           &#125;</span><br><span class="line">           right++</span><br><span class="line">           while (match == dict.size) &#123;</span><br><span class="line">               if (right - left == p.length) &#123;</span><br><span class="line">                   result.add(left)</span><br><span class="line">               &#125;</span><br><span class="line">               val c2 = s[left]</span><br><span class="line">               if (dict.containsKey(c2)) &#123;</span><br><span class="line">                   window[c2] = window[c2]!! - 1</span><br><span class="line">                   if (window[c2]!! &lt; dict[c2]!!) &#123;</span><br><span class="line">                       match--</span><br><span class="line">                   &#125;</span><br><span class="line">               &#125;</span><br><span class="line">               left++</span><br><span class="line">           &#125;</span><br><span class="line">       &#125;</span><br><span class="line"></span><br><span class="line">       return result</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<h5 id="leetocde3无重复最长子串"><a href="#leetocde3无重复最长子串" class="headerlink" title="leetocde3无重复最长子串"></a>leetocde3无重复最长子串</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">fun lengthOfLongestSubstring(s: String): Int &#123;</span><br><span class="line">        var left = 0</span><br><span class="line">        var right = 0</span><br><span class="line">        var len = 0</span><br><span class="line">        var window = HashMap&lt;Char, Int&gt;()</span><br><span class="line">        while (right &lt; s.length) &#123;</span><br><span class="line">            val c = s[right]</span><br><span class="line">            window[c] = window.getOrDefault(c, 0) + 1</span><br><span class="line">            right++</span><br><span class="line">            while (window[c]!! &gt; 1) &#123;</span><br><span class="line">                val c2 = s[left]</span><br><span class="line">                window[c2] = window[c2]!! - 1</span><br><span class="line">                left++</span><br><span class="line">            &#125;</span><br><span class="line">            len = Math.max(len, right - left)</span><br><span class="line">        &#125;</span><br><span class="line">        return len</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>通过上面三道题，我们可以总结出滑动窗口算法的抽象思想：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">int left = 0, right = 0;</span><br><span class="line"></span><br><span class="line">while (right &lt; s.size()) &#123;</span><br><span class="line">    window.add(s[right]);</span><br><span class="line">    right++;</span><br><span class="line">    </span><br><span class="line">    while (valid) &#123;</span><br><span class="line">        window.remove(s[left]);</span><br><span class="line">        left++;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/09/04/leetcode684 685冗余连接/" rel="next" title="leetcode684 685冗余连接">
+                <i class="fa fa-chevron-left"></i> leetcode684 685冗余连接
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/10/04/翻转链表/" rel="prev" title="翻转链表">
+                翻转链表 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">hecy</p>
+              <p class="site-description motion-element" itemprop="description">a dreamer</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">65</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">18</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#leetcode76-最小覆盖子串"><span class="nav-number">1.</span> <span class="nav-text">leetcode76 最小覆盖子串</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#leetcode438-找到字符串中所有字母异位词"><span class="nav-number">2.</span> <span class="nav-text">leetcode438 找到字符串中所有字母异位词</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#leetocde3无重复最长子串"><span class="nav-number">3.</span> <span class="nav-text">leetocde3无重复最长子串</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">hecy</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

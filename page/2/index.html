@@ -232,6 +232,479 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://hcyxy.tech/2019/08/27/leetcode322 零钱兑换/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="hecy">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="无病呻吟">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/08/27/leetcode322 零钱兑换/" itemprop="url">leetcode322 零钱兑换</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-08-27T21:13:20+08:00">
+                2019-08-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/算法与数据结构/" itemprop="url" rel="index">
+                    <span itemprop="name">算法与数据结构</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <blockquote>
+<p>给定不同面额的硬币 coins 和一个总金额 amount。编写一个函数来计算可以凑成总金额所需的最少的硬币个数。如果没有任何一种硬币组合能组成总金额，返回-1。</p>
+</blockquote>
+<h5 id="动态规划自上而下-自下而上"><a href="#动态规划自上而下-自下而上" class="headerlink" title="动态规划自上而下  自下而上"></a>动态规划自上而下  自下而上</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">fun coinChange(coins: IntArray, amount: Int): Int &#123;</span><br><span class="line">        return dp1(coins, amount, IntArray(amount))</span><br><span class="line">    &#125;</span><br><span class="line">    /**</span><br><span class="line">     * 自上而下</span><br><span class="line">     */</span><br><span class="line">    fun dp1(coins: IntArray, rem: Int, count: IntArray): Int &#123;</span><br><span class="line">        if (rem &lt; 0) return -1</span><br><span class="line">        if (rem == 0) return 0</span><br><span class="line">        if (count[rem - 1] != 0) return count[rem - 1]</span><br><span class="line">        var min = Integer.MAX_VALUE</span><br><span class="line">        for (coin in coins) &#123;</span><br><span class="line">            val res = dp1(coins, rem - coin, count)</span><br><span class="line">            if (res in 0 until min)</span><br><span class="line">                min = 1 + res</span><br><span class="line">        &#125;</span><br><span class="line">        count[rem - 1] = if (min == Integer.MAX_VALUE) -1 else min</span><br><span class="line">        return count[rem - 1]</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 自下而上</span><br><span class="line">     */</span><br><span class="line">    fun dp2(coins: IntArray, amount: Int): Int &#123;</span><br><span class="line">        val max = amount + 1</span><br><span class="line">        val dp = IntArray(amount + 1)</span><br><span class="line">        Arrays.fill(dp, max)</span><br><span class="line">        dp[0] = 0</span><br><span class="line">        for (i in 1..amount) &#123;</span><br><span class="line">            for (j in 0 until coins.size) &#123;</span><br><span class="line">                if (coins[j] &lt;= i) &#123;</span><br><span class="line">                    dp[i] = Math.min(dp[i], dp[i - coins[j]] + 1)</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return if (dp[amount] &gt; amount) -1 else dp[amount]</span><br><span class="line"></span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://hcyxy.tech/2019/08/26/leetcode351 安卓手势解锁/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="hecy">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="无病呻吟">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/08/26/leetcode351 安卓手势解锁/" itemprop="url">leetcode351 安卓手势解锁</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-08-26T22:08:01+08:00">
+                2019-08-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/算法与数据结构/" itemprop="url" rel="index">
+                    <span itemprop="name">算法与数据结构</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <blockquote>
+<p>一个3x3的格子，给两个整数m、n，求出所有的解锁手势，要求key的范围[m,n]</p>
+</blockquote>
+<p>要求：</p>
+<ul>
+<li>每个模式包含[m,n]个key</li>
+<li>所有关键字必须独一无二</li>
+<li>如果连接两个key，经过了另一个key，那么穿过的key必须已经被连接过</li>
+<li>key的顺序不同就是不同的结果</li>
+</ul>
+<p>因为是对称的，只需要求1、4、5三个数字即可，再利用DFS求解。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">private var visited: BooleanArray = BooleanArray(10)</span><br><span class="line">    private var hash = Array(10) &#123;</span><br><span class="line">        IntArray(10)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    fun dfs(m: Int, n: Int, len: Int, num: Int): Int &#123;</span><br><span class="line">        var cLen = len</span><br><span class="line">        var cnt = 0</span><br><span class="line">        if (len &gt;= m) cnt++</span><br><span class="line">        if (++cLen &gt; n) return cnt</span><br><span class="line">        visited[num] = true</span><br><span class="line">        for (i in 1..9) &#123;</span><br><span class="line">            if (!visited[i] &amp;&amp; visited[hash[num][i]])</span><br><span class="line">                cnt += dfs(m, n, cLen, i)</span><br><span class="line">        &#125;</span><br><span class="line">        visited[num] = false</span><br><span class="line">        return cnt</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    fun numberOfPatterns(m: Int, n: Int): Int &#123;</span><br><span class="line"></span><br><span class="line">        if (m &lt; 1 || n &lt; 1) return 0</span><br><span class="line">        visited[0] = true</span><br><span class="line">        hash[3][1] = 2</span><br><span class="line">        hash[1][3] = hash[3][1]</span><br><span class="line">        hash[7][1] = 4</span><br><span class="line">        hash[1][7] = hash[7][1]</span><br><span class="line">        hash[9][3] = 6</span><br><span class="line">        hash[3][9] = hash[9][3]</span><br><span class="line">        hash[9][7] = 8</span><br><span class="line">        hash[7][9] = hash[9][7]</span><br><span class="line">        hash[6][4] = 5</span><br><span class="line">        hash[2][8] = 5</span><br><span class="line">        hash[8][2] = 5</span><br><span class="line">        hash[4][6] = 5</span><br><span class="line">        hash[6][4] = 5</span><br><span class="line">        hash[7][3] = 5</span><br><span class="line">        hash[1][9] = 5</span><br><span class="line">        hash[9][1] = 5</span><br><span class="line">        hash[3][7] = 5</span><br><span class="line">        return dfs(m, n, 1, 1) * 4 + dfs(m, n, 1, 2) * 4 + dfs(m, n, 1, 5)</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://hcyxy.tech/2019/08/25/leetcode121 122 123 188股票交易/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="hecy">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="无病呻吟">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/08/25/leetcode121 122 123 188股票交易/" itemprop="url">leetcode121 122 123 188股票交易</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-08-25T23:10:13+08:00">
+                2019-08-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/算法与数据结构/" itemprop="url" rel="index">
+                    <span itemprop="name">算法与数据结构</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h5 id="1、121买卖股票最佳时机"><a href="#1、121买卖股票最佳时机" class="headerlink" title="1、121买卖股票最佳时机"></a>1、121买卖股票最佳时机</h5><blockquote>
+<p>给定一个数组，它的第i 个元素是一支给定股票第 i 天的价格。</p>
+</blockquote>
+<p>如果你最多只允许完成一笔交易（即买入和卖出一支股票），设计一个算法来计算你所能获取的最大利润。</p>
+<p>注意你不能在买入股票前卖出股票。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">fun maxProfit(prices: IntArray): Int &#123;</span><br><span class="line">        var result = 0</span><br><span class="line">        if (prices.isEmpty()) return result</span><br><span class="line"></span><br><span class="line">        var min = prices[0]</span><br><span class="line">        prices.forEach &#123;</span><br><span class="line">            if (it &lt; min) &#123;</span><br><span class="line">                min = it</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                result = max(it - min, result)</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return result</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+<h5 id="2、122买卖股票最佳时机"><a href="#2、122买卖股票最佳时机" class="headerlink" title="2、122买卖股票最佳时机"></a>2、122买卖股票最佳时机</h5><blockquote>
+<p>设计一个算法来计算你所能获取的最大利润。你可以尽可能地完成更多的交易（多次买卖一支股票）。</p>
+</blockquote>
+<p>注意：你不能同时参与多笔交易（你必须在再次购买前出售掉之前的股票）。</p>
+<p><strong>针对这种题画个图会使该题更加容易被解决</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">fun maxProfit(prices: IntArray): Int &#123;</span><br><span class="line">        var sum = 0</span><br><span class="line">        var i = 1</span><br><span class="line">        while (i &lt; prices.size) &#123;</span><br><span class="line">            if (prices[i] &gt; prices[i - 1]) &#123;</span><br><span class="line">                sum += prices[i] - prices[i - 1]</span><br><span class="line">            &#125;</span><br><span class="line">            i++</span><br><span class="line">        &#125;</span><br><span class="line">        return sum</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h5 id="3、123买卖股票最佳时机"><a href="#3、123买卖股票最佳时机" class="headerlink" title="3、123买卖股票最佳时机"></a>3、123买卖股票最佳时机</h5><blockquote>
+<p>给定一个数组，它的第 i 个元素是一支给定的股票在第 i 天的价格。</p>
+</blockquote>
+<p>设计一个算法来计算你所能获取的最大利润。你最多可以完成两笔交易。</p>
+<p>注意:你不能同时参与多笔交易（你必须在再次购买前出售掉之前的股票）。</p>
+<p>初步思路：暴力解法：遍历获取所有盈利区间，获取两个最大的盈利区间</p>
+<blockquote>
+<p>188 给定一个数组，它的第 i 个元素是一支给定的股票在第 i 天的价格。设计一个算法来计算你所能获取的最大利润。你最多可以完成 k 笔交易。</p>
+</blockquote>
+<blockquote>
+<p>309 加入冷冻期 设计一个算法计算出最大利润。在满足以下约束条件下，你可以尽可能地完成更多的交易（多次买卖一支股票）:</p>
+</blockquote>
+<p>你不能同时参与多笔交易（你必须在再次购买前出售掉之前的股票）。<br>卖出股票后，你无法在第二天买入股票 (即冷冻期为 1 天)。</p>
+<blockquote>
+<p>714 加入手续费</p>
+</blockquote>
+<p>六道leetcode题，是有共性的，第四道是最泛化的一个形式，第一道相当于k=1，第二道k=+infinity，第三题k=2,剩下两道也是不限次数，加了交易冷冻期、手续费。</p>
+<p>在这里考虑最泛化的形式。考虑其所有的状态，每天都有三种选择：<strong>买入、卖出、无操作。</strong> 并不是每天都可以任意选择三种选择，sell必须在buy之后，buy必须在sell之后，rest操作分为两种状态：buy之后rest(持有)；sell之后rest(没有持有)，还要在k&gt;0前提下操作。</p>
+<p><strong>定义dp方程:dp[i][k][0 or 1]</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">0 &lt;= i &lt;= n-1, 1 &lt;= k &lt;= K</span><br><span class="line">n 为天数，大 K 为最多交易数</span><br><span class="line">此问题共 n × K × 2 种状态，全部穷举就能搞定。</span><br><span class="line"></span><br><span class="line">for 0 &lt;= i &lt; n:</span><br><span class="line">    for 1 &lt;= k &lt;= K:</span><br><span class="line">        for s in &#123;0, 1&#125;:</span><br><span class="line">            dp[i][k][s] = max(buy, sell, rest)</span><br></pre></td></tr></table></figure>
+<p>状态转移方程描述：<br><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">dp[i][k][0] = max(dp[i-1][k][0], dp[i-1][k][1] + prices[i])</span><br><span class="line">              max(   选择 rest  ,           选择 sell      )</span><br><span class="line"></span><br><span class="line">解释：今天我没有持有股票，有两种可能：</span><br><span class="line">要么是我昨天就没有持有，然后今天选择 rest，所以我今天还是没有持有；</span><br><span class="line">要么是我昨天持有股票，但是今天我 sell 了，所以我今天没有持有股票了。</span><br><span class="line"></span><br><span class="line">dp[i][k][1] = max(dp[i-1][k][1], dp[i-1][k-1][0] - prices[i])</span><br><span class="line">              max(   选择 rest  ,           选择 buy         )</span><br></pre></td></tr></table></figure></p>
+<p>base case:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">base case：</span><br><span class="line">dp[-1][k][0] = dp[i][0][0] = 0</span><br><span class="line">dp[-1][k][1] = dp[i][0][1] = -infinity</span><br><span class="line"></span><br><span class="line">状态转移方程：</span><br><span class="line">dp[i][k][0] = max(dp[i-1][k][0], dp[i-1][k][1] + prices[i])</span><br><span class="line">dp[i][k][1] = max(dp[i-1][k][1], dp[i-1][k-1][0] - prices[i])</span><br></pre></td></tr></table></figure></p>
+<p>本题解决方法如下:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">fun maxProfit_k_inf(prices: IntArray): Int &#123;</span><br><span class="line">        val n = prices.size</span><br><span class="line">        var dp_i_0 = 0</span><br><span class="line">        var dp_i_1 = Integer.MIN_VALUE</span><br><span class="line">        for (i in 0 until n) &#123;</span><br><span class="line">            val temp = dp_i_0</span><br><span class="line">            dp_i_0 = Math.max(dp_i_0, dp_i_1 + prices[i])</span><br><span class="line">            dp_i_1 = Math.max(dp_i_1, temp - prices[i])</span><br><span class="line">        &#125;</span><br><span class="line">        return dp_i_0</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    fun maxProfit_k_any(max_k: Int, prices: IntArray): Int &#123;</span><br><span class="line">        val n = prices.size</span><br><span class="line">        if (max_k &gt; n / 2)</span><br><span class="line">            return maxProfit_k_inf(prices)</span><br><span class="line"></span><br><span class="line">        val dp = Array(n) &#123; Array(max_k + 1) &#123; IntArray(2) &#125; &#125;</span><br><span class="line">        for (i in 0 until n)</span><br><span class="line">            for (k in max_k downTo 1) &#123;</span><br><span class="line">                if (i - 1 == -1) &#123; /* 处理 base case */</span><br><span class="line">                    dp[0][k][0] = 0</span><br><span class="line">                    dp[0][k][1] = -prices[i]</span><br><span class="line">                &#125; else &#123;</span><br><span class="line">                    dp[i][k][0] = max(dp[i - 1][k][0], dp[i - 1][k][1] + prices[i])</span><br><span class="line">                    dp[i][k][1] = max(dp[i - 1][k][1], dp[i - 1][k - 1][0] - prices[i])</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        return dp[n - 1][max_k][0]</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+<p>参考文档：<a href="https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock-iii/solution/yi-ge-tong-yong-fang-fa-tuan-mie-6-dao-gu-piao-wen/" target="_blank" rel="noopener">https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock-iii/solution/yi-ge-tong-yong-fang-fa-tuan-mie-6-dao-gu-piao-wen/</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://hcyxy.tech/2019/08/24/leetcode582 杀死进程/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1394,450 +1867,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://hcyxy.tech/2019/07/24/leetcode146 LRU缓存机制/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="hecy">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="无病呻吟">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/07/24/leetcode146 LRU缓存机制/" itemprop="url">leetcode146 LRU缓存机制</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-07-24T22:15:16+08:00">
-                2019-07-24
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/算法与数据结构/" itemprop="url" rel="index">
-                    <span itemprop="name">算法与数据结构</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <blockquote>
-<p>Least Recently Used 设计一个LRU缓存，应该支持以下操作： 获取数据 get 和 写入数据 put 。获取数据 get(key) - 如果密钥 (key) 存在于缓存中，则获取密钥的值（总是正数），否则返回 -1。<br>写入数据 put(key, value) - 如果密钥不存在，则写入其数据值。当缓存容量达到上限时，它应该在写入新数据之前删除最近最少使用的数据值，从而为新的数据值留出空间。</p>
-</blockquote>
-<h5 id="1-最简便的做法封装LinkedHashMap"><a href="#1-最简便的做法封装LinkedHashMap" class="headerlink" title="1. 最简便的做法封装LinkedHashMap:"></a>1. 最简便的做法封装LinkedHashMap:</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">class LRUCache(private val capacity: Int) : LinkedHashMap&lt;Int, Int&gt;(capacity, 0.75f, true) &#123;</span><br><span class="line"></span><br><span class="line">    override fun get(key: Int): Int &#123;</span><br><span class="line">        return getOrDefault(key, -1)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    override fun removeEldestEntry(eldest: Map.Entry&lt;Int, Int&gt;?): Boolean &#123;</span><br><span class="line">        return size &gt; capacity</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h5 id="2、使用哈希表-双向链表"><a href="#2、使用哈希表-双向链表" class="headerlink" title="2、使用哈希表 + 双向链表"></a>2、使用哈希表 + 双向链表</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br></pre></td><td class="code"><pre><span class="line">class LRUCache(private var capacity: Int) &#123;</span><br><span class="line"></span><br><span class="line">    data class LinkedNode(</span><br><span class="line">        var key: Int? = null,</span><br><span class="line">        var value: Int? = null,</span><br><span class="line">        var prev: LinkedNode? = null,</span><br><span class="line">        var next: LinkedNode? = null</span><br><span class="line">    ) &#123;</span><br><span class="line">        override fun toString(): String &#123;</span><br><span class="line">            return &quot;key:$key,value:$value&quot;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    private var cache = Hashtable&lt;Int, LinkedNode&gt;()</span><br><span class="line">    private var size: Int = 0</span><br><span class="line">    private var head: LinkedNode</span><br><span class="line">    private var tail: LinkedNode</span><br><span class="line"></span><br><span class="line">    init &#123;</span><br><span class="line"></span><br><span class="line">        head = LinkedNode()</span><br><span class="line">        // head.prev = null</span><br><span class="line"></span><br><span class="line">        tail = LinkedNode()</span><br><span class="line">        // tail.next = null</span><br><span class="line"></span><br><span class="line">        head.next = tail</span><br><span class="line">        tail.prev = head</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    fun addNode(node: LinkedNode) &#123;</span><br><span class="line">        node.prev = head</span><br><span class="line">        node.next = head.next</span><br><span class="line"></span><br><span class="line">        head.next?.prev = node</span><br><span class="line">        head.next = node</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    private fun removeNode(node: LinkedNode) &#123;</span><br><span class="line">        val prev = node.prev</span><br><span class="line">        val next = node.next</span><br><span class="line"></span><br><span class="line">        prev?.next = next</span><br><span class="line">        next?.prev = prev</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    private fun moveToHead(node: LinkedNode) &#123;</span><br><span class="line">        removeNode(node)</span><br><span class="line">        addNode(node)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    private fun popTail(): LinkedNode? &#123;</span><br><span class="line">        val res = tail.prev</span><br><span class="line">        res?.let &#123; removeNode(res) &#125;</span><br><span class="line">        return res</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    fun get(key: Int): Int &#123;</span><br><span class="line">        val node: LinkedNode? = cache[key] ?: return -1</span><br><span class="line"></span><br><span class="line">        // move the accessed node to the head</span><br><span class="line">        node?.let &#123; moveToHead(node) &#125;</span><br><span class="line"></span><br><span class="line">        return node?.value ?: -1</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    fun put(key: Int, value: Int) &#123;</span><br><span class="line">        val node = cache[key]</span><br><span class="line"></span><br><span class="line">        if (node == null) &#123;</span><br><span class="line">            val newNode = LinkedNode()</span><br><span class="line">            newNode.key = key</span><br><span class="line">            newNode.value = value</span><br><span class="line"></span><br><span class="line">            cache[key] = newNode</span><br><span class="line">            addNode(newNode)</span><br><span class="line"></span><br><span class="line">            ++size</span><br><span class="line"></span><br><span class="line">            if (size &gt; capacity) &#123;</span><br><span class="line">                // pop the tail</span><br><span class="line">                val tail = popTail()</span><br><span class="line">                if (tail?.key != null) &#123;</span><br><span class="line">                    cache.remove(tail.key)</span><br><span class="line">                    --size</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            // update the value.</span><br><span class="line">            node.value = value</span><br><span class="line">            moveToHead(node)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://hcyxy.tech/2019/07/23/leetcode42接雨水/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="hecy">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="无病呻吟">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/07/23/leetcode42接雨水/" itemprop="url">leetcode42 接雨水</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-07-23T22:10:15+08:00">
-                2019-07-23
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/算法与数据结构/" itemprop="url" rel="index">
-                    <span itemprop="name">算法与数据结构</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <blockquote>
-<p>给一个数组，排成柱状，求能盛多少水</p>
-</blockquote>
-<p>动态规划：<br><br>时间复杂度O(n),空间复杂度O(n)；最后一种双指针方法，时间O(N)，空间O(1)</p>
-<p><strong>找到好的解法的前提，对题目解法有清晰的认识</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line">fun trap(height: IntArray): Int &#123;</span><br><span class="line">        if (height.isEmpty()) return 0</span><br><span class="line">        val size = height.size</span><br><span class="line">        var ans = 0</span><br><span class="line">        val leftMax = IntArray(size)</span><br><span class="line">        val rightMax = IntArray(size)</span><br><span class="line">        leftMax[0] = height[0]</span><br><span class="line">        for (i in 1 until size) &#123;</span><br><span class="line">            leftMax[i] = max(height[i], leftMax[i - 1])</span><br><span class="line">        &#125;</span><br><span class="line">        rightMax[size - 1] = height[size - 1]</span><br><span class="line">        for (i in size - 2 downTo 0) &#123;</span><br><span class="line">            rightMax[i] = max(height[i], rightMax[i + 1])</span><br><span class="line">        &#125;</span><br><span class="line">        for (i in 1 until size - 1) &#123;</span><br><span class="line">            ans += min(leftMax[i], rightMax[i]) - height[i]</span><br><span class="line">        &#125;</span><br><span class="line">        return ans</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    fun trap2(height: IntArray): Int &#123;</span><br><span class="line">        var ans = 0</span><br><span class="line">        var current = 0</span><br><span class="line">        val st = Stack&lt;Int&gt;()</span><br><span class="line">        while (current &lt; height.size) &#123;</span><br><span class="line">            while (st.isNotEmpty() &amp;&amp; height[current] &gt; height[st.peek()]) &#123;</span><br><span class="line">                val top = st.peek()</span><br><span class="line">                st.pop()</span><br><span class="line">                if (st.isEmpty()) &#123;</span><br><span class="line">                    break</span><br><span class="line">                &#125;</span><br><span class="line">                val distance = current - st.peek() - 1</span><br><span class="line">                val boundedHeight = min(height[current], height[st.peek()]) - height[top]</span><br><span class="line">                ans += distance * boundedHeight</span><br><span class="line">            &#125;</span><br><span class="line">            st.push(current++)</span><br><span class="line">        &#125;</span><br><span class="line">        return ans</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    fun trap3(height: IntArray): Int &#123;</span><br><span class="line">        var ans = 0</span><br><span class="line">        var left = 0</span><br><span class="line">        var right = height.size - 1</span><br><span class="line">        var leftMax = 0</span><br><span class="line">        var rightMax = 0</span><br><span class="line">        while (left &lt; right) &#123;</span><br><span class="line">            if (height[left] &lt; height[right]) &#123;</span><br><span class="line">                if (height[left] &gt;= leftMax) &#123;</span><br><span class="line">                    leftMax = height[left]</span><br><span class="line">                &#125; else &#123;</span><br><span class="line">                    ans += (leftMax - height[left])</span><br><span class="line">                &#125;</span><br><span class="line">                left++</span><br><span class="line"></span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                if (height[right] &gt;= rightMax) &#123;</span><br><span class="line">                    rightMax = height[right]</span><br><span class="line">                &#125; else &#123;</span><br><span class="line">                    ans += (rightMax - height[right])</span><br><span class="line">                &#125;</span><br><span class="line">                --right</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return ans</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://hcyxy.tech/2019/07/22/多线程问题/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="hecy">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="无病呻吟">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/07/22/多线程问题/" itemprop="url">多线程问题</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-07-22T20:35:26+08:00">
-                2019-07-22
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/算法与数据结构/" itemprop="url" rel="index">
-                    <span itemprop="name">算法与数据结构</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="1、交替打印"><a href="#1、交替打印" class="headerlink" title="1、交替打印"></a>1、交替打印</h4><blockquote>
-<p>两个线程共用FooBar实例，其中一个调用foo()、另外一个调用bar()方法，确保foobar被输出n次。</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line">class FooBar &#123;</span><br><span class="line">    private int n;</span><br><span class="line">    private AtomicInteger ac = new AtomicInteger(0);</span><br><span class="line"></span><br><span class="line">    public FooBar(int n) &#123;</span><br><span class="line">        this.n = n;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void foo(Runnable printFoo) throws InterruptedException &#123;</span><br><span class="line"></span><br><span class="line">        for (int i = 0; i &lt; 2 * n; i += 2) &#123;</span><br><span class="line">            // printFoo.run() outputs &quot;foo&quot;. Do not change or remove this line.</span><br><span class="line">            while (ac.get() != i) &#123;</span><br><span class="line">            &#125;</span><br><span class="line">            printFoo.run();</span><br><span class="line">            ac.getAndIncrement();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void bar(Runnable printBar) throws InterruptedException &#123;</span><br><span class="line"></span><br><span class="line">        for (int i = 1; i &lt; 2 * n + 2; i += 2) &#123;</span><br><span class="line">            while (ac.get() != i) &#123;</span><br><span class="line">            &#125;</span><br><span class="line">            // printBar.run() outputs &quot;bar&quot;. Do not change or remove this line.</span><br><span class="line">            printBar.run();</span><br><span class="line">            ac.getAndIncrement();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class TestFooBar &#123;</span><br><span class="line">    public static void main(String[] args)&#123;</span><br><span class="line">        FooBar fooBar = new FooBar(10);</span><br><span class="line">        new Thread(() -&gt; &#123;</span><br><span class="line">            try &#123;</span><br><span class="line">                fooBar.foo(() -&gt; System.out.print(&quot;foo&quot;));</span><br><span class="line">            &#125; catch (InterruptedException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;).start();</span><br><span class="line">        new Thread(() -&gt; &#123;</span><br><span class="line">            try &#123;</span><br><span class="line">                fooBar.bar(() -&gt; System.out.print(&quot;bar&quot;));</span><br><span class="line">            &#125; catch (InterruptedException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;).start();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h4 id="2、信号量"><a href="#2、信号量" class="headerlink" title="2、信号量"></a>2、信号量</h4><blockquote>
-<p>现在有两种线程，氢 oxygen 和氧 hydrogen，你的目标是组织这两种线程来产生水分子。</p>
-</blockquote>
-<p>存在一个屏障（barrier）使得每个线程必须等候直到一个完整水分子能够被产生出来。</p>
-<p>氢和氧线程会被分别给予 releaseHydrogen 和 releaseOxygen 方法来允许它们突破屏障。</p>
-<p>这些线程应该三三成组突破屏障并能立即组合产生一个水分子。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line">import java.util.concurrent.*;</span><br><span class="line"></span><br><span class="line">class H2O &#123;</span><br><span class="line"></span><br><span class="line">    private Semaphore s1,s2,s3,s4;</span><br><span class="line"></span><br><span class="line">    public H2O() &#123;</span><br><span class="line">        s1 = new Semaphore(2); // H线程信号量</span><br><span class="line">        s2 = new Semaphore(1); // O线程信号量</span><br><span class="line"></span><br><span class="line">        s3 = new Semaphore(0); // 反应条件信号量</span><br><span class="line">        s4 = new Semaphore(0); // 反应条件信号量</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void hydrogen(Runnable releaseHydrogen) throws InterruptedException &#123;</span><br><span class="line">        s1.acquire(); // 保证只有2个H线程进入执行</span><br><span class="line">        s3.release(); // 释放H原子到达信号</span><br><span class="line">        s4.acquire(); // 等待O原子到达</span><br><span class="line">        releaseHydrogen.run();</span><br><span class="line">        s1.release(); // 相当于唤醒1个H线程</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void oxygen(Runnable releaseOxygen) throws InterruptedException &#123;</span><br><span class="line">        s2.acquire(); // 保证只有1个O线程进入执行</span><br><span class="line">        s4.release(2); // 释放O原子到达信号，因为有2个H线程等待所以释放2个</span><br><span class="line">        s3.acquire(2); // 等待H原子到达，2个原因同上</span><br><span class="line">        releaseOxygen.run();</span><br><span class="line">        s2.release(); // 相当于唤醒1个O线程</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">H2O h = new H2O();</span><br><span class="line">        String str = &quot;OHOOHOHHHHOHHOHHHH&quot;;</span><br><span class="line">        for (int i = 0; i &lt; str.length(); i++) &#123;</span><br><span class="line">            if (str.charAt(i) == &apos;H&apos;) &#123;</span><br><span class="line">                new Thread(() -&gt; &#123;</span><br><span class="line">                    try &#123;</span><br><span class="line">                        h.hydrogen(() -&gt; System.out.print(&quot;H&quot;));</span><br><span class="line">                    &#125; catch (InterruptedException e) &#123;</span><br><span class="line">                        e.printStackTrace();</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;).start();</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                new Thread(() -&gt; &#123;</span><br><span class="line">                    try &#123;</span><br><span class="line">                        h.oxygen(() -&gt; System.out.print(&quot;O&quot;));</span><br><span class="line">                    &#125; catch (InterruptedException e) &#123;</span><br><span class="line">                        e.printStackTrace();</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;).start();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1888,7 +1917,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">62</span>
+                  <span class="site-state-item-count">65</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
