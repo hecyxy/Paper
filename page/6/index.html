@@ -232,6 +232,306 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://hcyxy.tech/2018/10/18/混合排序/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="hecy">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="万水千山">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/10/18/混合排序/" itemprop="url">混合排序</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-18T22:10:08+08:00">
+                2018-10-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/算法与数据结构/" itemprop="url" rel="index">
+                    <span itemprop="name">算法与数据结构</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h4><p>题目：一个数组中只有0,1,2三种元素，要求对这样的数组进行排序</p>
+<h4 id="方法一"><a href="#方法一" class="headerlink" title="方法一"></a>方法一</h4><p>如果不能统计每个数字的个数，遍历一遍统计各个数字的个数即可。</p>
+<h4 id="方法二"><a href="#方法二" class="headerlink" title="方法二"></a>方法二</h4><p>如果只能进行一次遍历，使用多指针。很明显使用3个指针。<br>p0 p1从前往后扫描，p2从后往前扫描。<br>初始化时：<br>p0指向第一个非0元素，那么arry[p0]=1||2</p>
+<p>p1指向第一个非1元素，那么arry[p1]=0||2</p>
+<p>p2指向第一个非2元素，那么arry[p2]=0||1</p>
+<p>假如：</p>
+<p>arry[p0]==2，arry[p2]==0，交换两个元素</p>
+<p>arry[p1]==2，arry[p2]==1，交换两个元素</p>
+<p>arry[p0]==1，arry[p1]==0，交换两个元素</p>
+<p>否则的话只可能是p0，p1，p2指向的三个数各不相同，那么进行如下赋值</p>
+<p>arry[p0]==0，arry[p1]==1，arry[p2]==2。</p>
+<p><strong>假如经过上述swap以后出现i&gt;k的情况，将k=i</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">fun <span class="title">sort</span><span class="params">(arr: ArrayList&lt;Int&gt;)</span> </span>&#123;</span><br><span class="line">    var i = <span class="number">0</span><span class="comment">//头指针指向非0</span></span><br><span class="line">    var j = arr.size - <span class="number">1</span><span class="comment">//尾指针指向非2</span></span><br><span class="line">    var k: Int</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> (arr[i] == <span class="number">0</span>)</span><br><span class="line">        i++</span><br><span class="line">    k = i + <span class="number">1</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> (arr[j] == <span class="number">2</span>)</span><br><span class="line">        j--</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> (k &lt; j) &#123;</span><br><span class="line">        when &#123;</span><br><span class="line">            arr[k] == <span class="number">1</span> -&gt; k++</span><br><span class="line">            arr[k] == <span class="number">0</span> -&gt; &#123;</span><br><span class="line">                swap(arr, i, k)</span><br><span class="line">                <span class="keyword">while</span> (arr[i] == <span class="number">0</span>)</span><br><span class="line">                    i++</span><br><span class="line">            &#125;</span><br><span class="line">            arr[k] == <span class="number">2</span> -&gt; &#123;</span><br><span class="line">                swap(arr, k, j)</span><br><span class="line">                <span class="keyword">while</span> (arr[j] == <span class="number">2</span>)</span><br><span class="line">                    j--</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="基于快排划分的思路"><a href="#基于快排划分的思路" class="headerlink" title="基于快排划分的思路"></a>基于快排划分的思路</h4><p>如果有更多的数，该如何处理？给定key，将数据划分为两部分&lt;=key,&gt;key。<br>再利用第二部分数据进行判断。<br>kotlin代码如下：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">fun <span class="title">main</span><span class="params">(vararg args: String)</span> </span>&#123;</span><br><span class="line">    val arr = arrayListOf(<span class="number">5</span>, <span class="number">6</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">4</span>, <span class="number">4</span>, <span class="number">1</span>, <span class="number">0</span>, <span class="number">2</span>, <span class="number">2</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">3</span>, <span class="number">3</span>,<span class="number">7</span>,<span class="number">7</span>,<span class="number">8</span>,<span class="number">8</span>,<span class="number">9</span>,<span class="number">9</span>,<span class="number">10</span>)</span><br><span class="line">    val b = arr.distinct().sortedBy &#123; it &#125;</span><br><span class="line">    quicksort(arr, <span class="number">0</span>, arr.size - <span class="number">1</span>, b, <span class="number">0</span>)</span><br><span class="line">    println(arr.joinToString(<span class="string">" "</span>))</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">fun <span class="title">quicksort</span><span class="params">(arr: ArrayList&lt;Int&gt;, start: Int, end: Int, com: List&lt;Int&gt;, index: Int)</span> </span>&#123;</span><br><span class="line">    var left = start</span><br><span class="line">    var right = end</span><br><span class="line">    val key = com[index]</span><br><span class="line">    <span class="keyword">while</span> (left &lt; right) &#123;</span><br><span class="line">        <span class="keyword">while</span> (left &lt; right &amp;&amp; arr[right] &gt; key)</span><br><span class="line">            right--</span><br><span class="line">        <span class="keyword">while</span> (left &lt; right &amp;&amp; arr[left] &lt; key)</span><br><span class="line">            left++</span><br><span class="line">        swap(arr, left, right)</span><br><span class="line">        left++</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (right &lt; end) &#123;</span><br><span class="line">        val temp = index + <span class="number">1</span></span><br><span class="line">        quicksort(arr, right, end, com, temp)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://hcyxy.tech/2018/10/14/摆动排序/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="hecy">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="万水千山">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/10/14/摆动排序/" itemprop="url">摆动排序</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-14T21:39:28+08:00">
+                2018-10-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/算法与数据结构/" itemprop="url" rel="index">
+                    <span itemprop="name">算法与数据结构</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h5 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h5><p>给出一个整数数组nums，重新排列nums使得nums[0] &lt; nums[1] &gt; nums[2] &lt; nums[3]…</p>
+<p>Example:</p>
+<p>nums = [1, 5, 1, 1, 6, 4], 一个可能的答案是[1, 4, 1, 5, 1, 6]<br>数据保证必定有解。</p>
+<h5 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h5><p>本题有一种简单的做法，先快速排序，然后把最小的一半依次放在奇数位上，最大的一半依次放在偶数位上。算法复杂度是快速排序的复杂度O(NlogN)。仔细思考后发现快速排序不是必要的，只需要找到中位数即可。利用快速排序的思想找中位数的期望时间复杂度是O(N)。为了防止相等的数放在一起，需要注意放置的顺序。笔者采用的方法是依nums长度分两种情况：若长度为奇数，把比中位数小的依次放在0,2,4,…位置，比中位数大的依次放在length-2,length-4,…位置；若长度为偶数，把比中位数小的依次放在length-2,length-4,…位置，比中位数大的依次放在1,3,5,…位置。其余位置填充中位数。</p>
+<h5 id="附上kotlin代码"><a href="#附上kotlin代码" class="headerlink" title="附上kotlin代码"></a>附上kotlin代码</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">fun <span class="title">main</span><span class="params">(vararg args: String)</span> </span>&#123;</span><br><span class="line">    val array = arrayListOf(<span class="number">1</span>, <span class="number">5</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">6</span>, <span class="number">4</span>)</span><br><span class="line">    val mid = wiggleSort(array, <span class="number">0</span>, array.size - <span class="number">1</span>, array.size / <span class="number">2</span>)</span><br><span class="line">    var l: Int</span><br><span class="line">    var r: Int</span><br><span class="line">    val ans = IntArray(array.size)</span><br><span class="line">    <span class="keyword">if</span> (array.size % <span class="number">2</span> == <span class="number">0</span>) &#123;</span><br><span class="line">        l = array.size - <span class="number">2</span></span><br><span class="line">        r = <span class="number">1</span></span><br><span class="line">        <span class="keyword">for</span> (i in <span class="number">0</span> until array.size) &#123;</span><br><span class="line">            <span class="keyword">if</span> (array[i] &lt; mid) &#123;</span><br><span class="line">                ans[l] = array[i]</span><br><span class="line">                l -= <span class="number">2</span></span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                ans[r] = array[i]</span><br><span class="line">                r += <span class="number">2</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        l = <span class="number">0</span></span><br><span class="line">        r = array.size - <span class="number">2</span></span><br><span class="line">        <span class="keyword">for</span> (i in <span class="number">0</span> until array.size) &#123;</span><br><span class="line">            <span class="keyword">if</span> (array[i] &lt; mid) &#123;</span><br><span class="line">                ans[l] = array[i]</span><br><span class="line">                l += <span class="number">2</span></span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                ans[r] = array[i]</span><br><span class="line">                r -= <span class="number">2</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    println(ans.joinToString(<span class="string">" "</span>))</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">fun <span class="title">wiggleSort</span><span class="params">(list: ArrayList&lt;Int&gt;, start: Int, end: Int, rank: Int)</span>: Int </span>&#123;</span><br><span class="line">    var left = start</span><br><span class="line">    var right = end</span><br><span class="line">    val now = list[end]</span><br><span class="line">    <span class="keyword">while</span> (left &lt; right) &#123;</span><br><span class="line">        <span class="keyword">while</span> (left &lt; right &amp;&amp; list[right] &gt; now) &#123;</span><br><span class="line">            right--</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (list[right] &lt; now) &#123;</span><br><span class="line">            val temp = list[left]</span><br><span class="line">            list[left] = list[right]</span><br><span class="line">            list[right] = temp</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">while</span> (left &lt; right &amp;&amp; list[left] &lt; now) &#123;</span><br><span class="line">            left++</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (list[left] &gt; now) &#123;</span><br><span class="line">            val temp = list[left]</span><br><span class="line">            list[left] = list[right]</span><br><span class="line">            list[right] = temp</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> when &#123;</span><br><span class="line">        left - start == rank -&gt; now</span><br><span class="line">        left - start &lt; rank -&gt; wiggleSort(list, left + <span class="number">1</span>, end, rank - (left - start + <span class="number">1</span>))</span><br><span class="line">        <span class="keyword">else</span> -&gt; wiggleSort(list, start, right - <span class="number">1</span>, rank)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://hcyxy.tech/2018/10/12/多个数组最小范围/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1652,522 +1952,6 @@ SynchronousQueue内部会维护一个线程等待队列。等待队列中会保�
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://hcyxy.tech/2018/07/08/动态加载Jar/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="hecy">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="万水千山">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/07/08/动态加载Jar/" itemprop="url">动态加载Jar</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-08T10:24:29+08:00">
-                2018-07-08
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/JAVA/" itemprop="url" rel="index">
-                    <span itemprop="name">JAVA</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>应用场景，程序中使用不同的jdbc包，来连接数据库。</p>
-<p>动态加载jdbc驱动：<br>//URL u = new URL(“file:C:\working\eclipse\Testsb\lib\“+mysqlJdbcFile);<br>URL u = new URL(“jar:file:lib/“ + mysqlJdbcFile + “!/“);<br>        String classname = jdbcVersionMap.get(mysqlJdbcFile);<br>        URLClassLoader ucl = new URLClassLoader(new URL[] { u });<br>        Driver d = (Driver)Class.forName(classname, true, ucl).newInstance();<br>        DriverShim driver = new DriverShim(d);<br>        DriverManager.registerDriver(driver);<br>使用完之后卸载这个driver：<br>DriverManager.deregisterDriver()</p>
-<p>为什么Driver要用DriverShim包装一下呢？<br>因为DriverManager拒绝使用不是由SystemClassLoader加载的驱动程序。<br>解决方法就是创建一个shim类实现Driver的接口。因为DriverShim是由系统加载器加载的，所以它可以实现注册；<br>因为Class.forName不一定使用的是系统类加载器，而是使用调用者的类加载器，比如使用了自定义类加载器；<br>public static Class&lt;?&gt; forName(String className)<br>           throws ClassNotFoundException {<br>return forName0(className, true, ClassLoader.getCallerClassLoader());<br>   }<br>通过 ClassLoader.getCallerClassLoader()获取类加载器：<br>// Returns the invoker’s class loader, or null if none.<br>   // NOTE: This must always be invoked when there is exactly one intervening<br>   // frame from the core libraries on the stack between this method’s<br>   // invocation and the desired invoker.<br>   static ClassLoader getCallerClassLoader() {<br>       // NOTE use of more generic Reflection.getCallerClass()<br>       Class caller = Reflection.getCallerClass(3);<br>       // This can be null if the VM is requesting it<br>       if (caller == null) {<br>           return null;<br>       }<br>       // Circumvent security check since this is package-private<br>       return caller.getClassLoader0();  </p>
-<h1 id=""><a href="#" class="headerlink" title="   }  "></a>   }  </h1><p>扩展，不仅仅是加载jdbc驱动，更广泛一些加载一些其他的实现包<br>URL url = new URL(“file:D:/test.jar”);<br>URLClassLoader myclassLoader1 = new URLClassLoader(new URL[]                        {},Thread.currentThread.getContextClassLoader());<br>Class&lt;?&gt; myclass1 = myClassLoader1.loadClass(“com.antmq.dynamic.TestAction”);//后面加载的为其实现类<br>Abstraction action1 = (AbstactAction)myClass1.newInstance();//AbstractionAction是一个接口<br>String str1 =action1.action();</p>
-<p>HDFS上的jar包，不能直接用，因为url不支持hdfs协议。<br>URL.setURLStreamHandlerFactory(new FsUrlStreamHandlerFactory());<br>这样就支持hdfs协议了，path就可以转url了，当然，得加载下hdfs相关配置文件，获取FileSystem实例<br>Path path = fs.getFileStatus(new Path(jarPath)).getPath();<br>URL url = path.toUri().toURL();<br>classLoader.addJar(url);  </p>
-<h1 id="如果加载的是mapreduce程序的jar包，只能是本地路径，不能使用hdfs路径，在setJarByClass方法中，是需要寻找到jar包绝对路径的"><a href="#如果加载的是mapreduce程序的jar包，只能是本地路径，不能使用hdfs路径，在setJarByClass方法中，是需要寻找到jar包绝对路径的" class="headerlink" title="如果加载的是mapreduce程序的jar包，只能是本地路径，不能使用hdfs路径，在setJarByClass方法中，是需要寻找到jar包绝对路径的"></a>如果加载的是mapreduce程序的jar包，只能是本地路径，不能使用hdfs路径，在setJarByClass方法中，是需要寻找到jar包绝对路径的</h1><p>使用一段时间后发现，进程是不停的，需要加载的jar包是可能需要修改的，所以导致多次加载不同版本的jar包之后，程序会有bug，读不到最新的jar包，不太可能更新jar包就重启下程序<br>于是，又研究了下classloarder，在当前线程加载jar包比较保险，线程结束会释放掉，保证每次加载都是最新的，而且也不占内存<br>(URLClassLoader)ClassLoader.getSystemClassLoader();    </p>
-<p>改为当前线程类加载器<br>(URLClassLoader)Thread.currentThread().getContextClassLoader(); </p>
-<p>====================================================================<br>java.lang.ClassLoader几个重要方法<br>//加载指定名称（包括包名）的二进制类型，供用户调用的接口<br>public Class&lt;?&gt; loadClass(String name) throws ClassNotFoundException{ … }  </p>
-<p>//加载指定名称（包括包名）的二进制类型，同时指定是否解析（但是这里的resolve参数不一定真正能达到解析的效果），供继承用<br>protected synchronized Class&lt;?&gt; loadClass(String name, boolean resolve) throws ClassNotFoundException{ … }  </p>
-<p>//findClass方法一般被loadClass方法调用去加载指定名称类，供继承用<br>protected Class&lt;?&gt; findClass(String name) throws ClassNotFoundException { … }  </p>
-<p>//定义类型，一般在findClass方法中读取到对应字节码后调用，可以看出不可继承<br>//（说明：JVM已经实现了对应的具体功能，解析对应的字节码，产生对应的内部数据结构放置到方法区，所以无需覆写，直接调用就可以了）<br>protected final Class&lt;?&gt; defineClass(String name, byte[] b, int off, int len) throws ClassFormatError{ … }  </p>
-<p>自底向上判断是否装载，自顶向下尝试装载；<br>Class.forName(String name)默认会使用调用类的类加载器来进行类加载<br>在不指定父类加载器的情况下，默认采用系统类加载器</p>
-<p>java程序动态扩展方式：<br>调用Class.forName<br>用户自定义加载器<br>1、首先检查请求的类型是否已经被这个类装载器装载到命名空间中了，如果已经装载，直接返回；否则转入步骤2；<br>　　2、委派类加载请求给父类加载器（更准确的说应该是双亲类加载器，真实虚拟机中各种类加载器最终会呈现树状结构），如果父类加载器能够完成，则返回父类加载器加载的Class实例；否则转入步骤3；<br>　　3、调用本类加载器的findClass（…）方法，试图获取对应的字节码，如果获取的到，则调用defineClass（…）导入类型到方法区；如果获取不到对应的字节码或者其他原因失败，返回异常给loadClass（…）， loadClass（…）转而抛异常，终止加载过程（注意：这里的异常种类不止一种）。<br>标准扩展类加载器和系统类加载器及其父类（java.net.URLClassLoader和java.security.SecureClassLoader）都没有覆写java.lang.ClassLoader中默认的加载委派规则—loadClass（…）方法。有关java.lang.ClassLoader中默认的加载委派规则前面已经分析过，如果父加载器为null，则会调用本地方法进行启动类加载尝试。</p>
-<p>线程上下文类加载器 解决SPI（service provider interface）<br>SPI 的接口是 Java 核心库的一部分，是由引导类加载器来加载的；SPI 实现的 Java 类一般是由系统类加载器来加载的。引导类加载器是无法找到 SPI 的实现类的，因为它只加载 Java 的核心库。它也不能代理给系统类加载器，因为它是系统类加载器的祖先类加载器。也就是说，类加载器的代理模式无法解决这个问题</p>
-<p>线程上下文类加载器正好解决了这个问题。如果不做任何的设置，Java 应用的线程的上下文类加载器默认就是系统上下文类加载器。在 SPI 接口的代码中使用线程上下文类加载器，就可以成功的加载到 SPI 实现的类。线程上下文类加载器在很多 SPI 的实现中都会用到。<br>使用线程上下文类加载器，可以在执行线程中抛弃双亲委派加载链模式，使用线程上下文里的类加载器加载类<br>Web容器、hot swap都使用了线程上下文加载器</p>
-<h2 id="一般来说，上下文类加载器要比当前类加载器更适合于框架编程，而当前类加载器则更适合于业务逻辑编程"><a href="#一般来说，上下文类加载器要比当前类加载器更适合于框架编程，而当前类加载器则更适合于业务逻辑编程" class="headerlink" title="一般来说，上下文类加载器要比当前类加载器更适合于框架编程，而当前类加载器则更适合于业务逻辑编程"></a>一般来说，上下文类加载器要比当前类加载器更适合于框架编程，而当前类加载器则更适合于业务逻辑编程</h2><p>Tomcat 来说，每个 Web 应用都有一个对应的类加载器实例。该类加载器也使用代理模式，所不同的是它是首先尝试去加载某个类，如果找不到再代理给父类加载器。这与一般类加载器的顺序是相反的。这是 Java Servlet 规范中的推荐做法，其目的是使得 Web 应用自己的类的优先级高于 Web 容器提供的类。</p>
-<p>OSGi是 Java 上的动态模块系统。它为开发人员提供了面向服务和基于组件的运行环境，并提供标准的方式用来管理软件的生命周期。OSGi 已经被实现和部署在很多产品上，在开源社区也得到了广泛的支持。Eclipse就是基于OSGi 技术来构建的<br>OSGi 中的每个模块都有对应的一个类加载器。它负责加载模块自己包含的 Java 包和类。当它需要加载 Java 核心库的类时（以 java开头的包和类），它会代理给父类加载器（通常是启动类加载器）来完成。当它需要加载所导入的 Java 类时，它会代理给导出此 Java 类的模块来完成加载。<br>　OSGi 模块的这种类加载器结构，使得一个类的不同版本可以共存在 Java 虚拟机中，带来了很大的灵活性。</p>
-<ol>
-<li>当高层提供了统一接口让低层去实现，同时又要是在高层加载（或实例化）低层的类时，必须通过线程上下文类加载器来帮助高层的ClassLoader找到并加载该类。 </li>
-<li>当使用本类托管类加载，然而加载本类的ClassLoader未知时，为了隔离不同的调用者，可以取调用者各自的线程上下文类加载器代为托管。<br>简而言之就是ContextClassLoader默认存放了AppClassLoader的引用，由于它是在运行时被放在了线程中，所以不管当前程序处于何处（BootstrapClassLoader或是ExtClassLoader等），在任何需要的时候都可以用Thread.currentThread().getContextClassLoader()取出应用程序类加载器来完成需要的操作。</li>
-</ol>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://hcyxy.tech/2018/07/08/Java线上问题排查/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="hecy">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="万水千山">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/07/08/Java线上问题排查/" itemprop="url">Java线上问题排查</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-08T10:22:06+08:00">
-                2018-07-08
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/JAVA/" itemprop="url" rel="index">
-                    <span itemprop="name">JAVA</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>线上问题调查常用命令<br>linux性能检测工具<br>     CPU<br>          基本概念:<br>               1.上下文切换<br>               2.运行队列<br>                    每个处理器运行队列应该不超过1-3个线程<br>               3.load<br>                    一段时间内cpu正在处理以及等待cpu处理的进程数之和的统计信息</p>
-<pre><code>               安全load值:一般是cpu个数
-                --------------------------------------------------------------
-               uptime/w
-               uptime命令可以显示系统运行多久、当前有多少的用户登录、在过去的1，5，15分钟里平均负载时多少
-          4.CPU利用率
-               User Time           65-70%(经验值:正常的均衡比例)
-               System Time         30-35%(经验值:正常的均衡比例)
-               Wait IO             
-               Idel                0-5%(经验值:正常的均衡比例)
-               --------------------------------------------------------------
-               cpu信息:
-                    cat /proc/cpuinfo
-                    grep &apos;processor&apos; /proc/cpuinfo | wc -l
-               --------------------------------------------------------------
-               vmstat 1 100
-                    procs（进程）：
-                         r: 运行队列中进程数量
-                         b: 等待IO的进程数量
-                    memory（内存）：
-                         swpd: 使用虚拟内存大小
-                         free: 可用内存大小
-                         buff: 用作缓冲的内存大小
-                         cache: 用作缓存的内存大小
-                    swap：
-                         si: 每秒从交换区写到内存的大小
-                         so: 每秒写入交换区的内存大小
-                    io：（现在的Linux版本块的大小为1024bytes）
-                         bi: 每秒读取的块数
-                         bo: 每秒写入的块数
-                    system：
-                         in: 每秒中断数，包括时钟中断。
-                         cs: 每秒上下文切换数。
-                    cpu（以百分比表示）：
-                         us: 用户进程执行时间(user time)
-                         sy: 系统进程执行时间(system time)
-                         id: 空闲时间(包括IO等待时间)
-                         wa: 等待IO时间
-                    例子:
-                    procs -----------memory---------- ---swap-- -----io---- --system-- -----cpu-----
-                     r  b   swpd   free   buff  cache   si   so    bi    bo   in   cs us sy id wa st
-                     0  0      0 3780980  45064 1387444    0    0    55     3   41   67  1  0 99  1  0
-               --------------------------------------------------------------
-               top
-                    H show all thread by process
-                    P 按cpu占用排序
-                    M 按内存占用排序
-                    1 显示cpu个数
-               --------------------------------------------------------------
-               mpstat -P ALL 1 (Multiprocessor Statistics)
-               --------------------------------------------------------------
-               sar 能够查看历史数据, 也能查看实时数据
-               sar -q 查看load情况
-               sar -u 查看cpu使用率
-               sar -q -f /var/log/sa/saXX 查看之前某一天的历史记录
-
-          5.中断
-
-Memory
-     Virtual Memory
-     kswapd
-          kswapd进程确保内存空间总是在被释放中
-     pdflush
-          负责将内存中的内容和文件系统进行同步操作, 即写操作返回的时候数据并没有真正写到磁盘上, 而是先写到了系统的cache中, 随后又pdflush内核线程将系统中的脏页写到磁盘上
-     内存信息
-          cat /proc/meminfo
-     --------------------------------------------------------------
-     ps aux (RSS:实际占用的物理内存)
-     ps -p javaProcessId -o rss 查看java进程内存使用情况
-     --------------------------------------------------------------
-     sar -r 内存和交换分区的使用率
-
-磁盘IO
-     df -ha 检查磁盘占用情况
-     du -ha /XX(目录) 查看目录内档案占用磁盘大小
-     iostat -x -d 1
-     sar -b
-
-Network
-     ifconfig 网路配置信息
-     ping
-          TTL:IP数据包经过一个路由ttl减1
-     netstat
-          -a或-all: 显示所有连线的socket
-          -n或-numeric: 直接使用IP, 不通过域名服务器
-          -p或programs: 显示正在使用socket的程序识别码和程序名称
-          -t或-tcp: 显示tcp连线状况
-          netstat -anpt
-     sar -n SOCK 查看网络链接资源
-          totsck: Total number of sockets
-          tcpsck: Number of tcp sockets cureently in use
-     sar -n DEV 查看网络流量
-     lsof 列出被进程打开的文件信息(比如调查too many open file 错误)
-               lsof -p                     进程id
-               lsof +D [目录]      目录下文件是否被某进程打开
-
-其他:
-     端口相连接的机器数:
-          ss -nao | grep 18090 | wc -l
-          netstat -anpt | grep 18090 | wc -l
-     查看java线程:
-          ps -eLf | grep java | wc -l
-</code></pre><hr>
-<p>jvm性能相关:<br>     java堆的经验值:<br>          Space                                Option                             Occupancy Factor<br>          Java heap                           -Xmx                               3x or 4x old generation space occupancy after full garbage collection<br>          Perm Generation                -MaxPermSize                1.2 or 1.5x perm generation space occupancy after full garbage collection<br>          Young Generation              -Xmn                               1x or 1.5x young generation space occupancy after full garbage collection<br>          Old Generation                                                           2x or 3x old generation space occupancy after full garbage collection</p>
-<pre><code>jps（JVM Process Status Tools）
-     jps [option] [hostid]
-     其中hostid默认为本机，而option选项包含以下选项
-          --------------------------------------------------------------
-          Option    Function
-          -q   只输出LVMID
-          -m   输出JVM启动时传给主类的方法
-          -l   输出主类的全名，如果是Jar则输出jar的路径
-          -v   输出JVM的启动参数
-
-jstat（JVM Statistics Monitoring Tools）
-     jstat主要用于监控虚拟机的各种运行状态信息，如类的装载、内存、垃圾回收、JIT编译器等
-     jstat [option vmid [interval [s|ms] [vount] ] ]
-     参数interval和count分别表示查询间隔和查询次数，如每1毫秒查询一次进程20445的垃圾回收情况，监控20次，命令如下所示：
-          jstat –gc 20445 1 20
-          --------------------------------------------------------------
-          Option    Function
-          -class    监视类的装载、卸载数量以及类的装载总空间和耗费时间等
-          -gc  监视Java堆，包含eden、2个survivor区、old区和永久带区域的容量、已用空间、GC时间合计等信息
-          -gccapcity     监视内容与-gc相同，但输出主要关注Java区域用到的最大和最小空间
-          -gcutil   监视内容与-gc相同，但输出主要关注已使用空间占总空间的百分比
-          -gccause  与-gcutil输出信息相同，额外输出导致上次GC产生的原因
-          -gcnew    监控新生代的GC情况
-          -gcnewcapacity 与-gcnew监控信息相同，输出主要关注使用到的最大和最小空间
-          -gcold    监控老生代的GC情况
-          -gcoldcapacity 与-gcold监控信息相同，输出主要关注使用到的最大和最小空间
-          -gcpermcapacity     输出永久带用到的最大和最小空间
-          -compiler 输出JIT编译器编译过的方法、耗时信息
-          -printcompilation   输出已经被JIT编译的方法
-
-jinfo（JVM configuration Info for Java）
-     Jinfo的作用是实时查看虚拟机的各项参数信息
-     Jinfo [option] pid
-          如 jinfo –sysprops {pid}
-
-jmap（JVM Memory Map for Java）
-     jmap用于生成堆快照（heapdump）。当然我们有很多方法可以取到对应的dump信息，如我们通过JVM启动时加入启动参数 –XX:HeapDumpOnOutOfMemoryError参数，可以让JVM在出现内存溢出错误的时候自动生成dump文件，亦可以通过-XX:HeapDumpOnCtrlBreak参数，在运行时使用ctrl+break按键生成dump文件，当然我们也可以使用kill -3 pid的方式去恐吓JVM生成dump文件。jmap的作用不仅仅是为了获取dump文件，还可以用于查询finalize执行队列、Java堆和永久带的详细信息，如空间使用率、垃圾回收器等。
-     jmap [option] vmip
-          --------------------------------------------------------------
-          Option    Function
-          -dump     生成对应的dump信息，用法为-dump:[live,]format=b,file={fileName}
-          -finalizerinfo 显示在F-Queue中等待的Finalizer方法的对象（只在linux下生效）
-          -heap     显示堆的详细信息、垃圾回收器信息、参数配置、分代详情等
-          -histo    显示堆栈中的对象的统计信息，包含类、实例数量和合计容量
-          -permstat 以ClassLoder为统计口径显示永久带的内存状态
-          -F   当虚拟机对-dump无响应时可使用这个选项强制生成dump快照
-          示例：jmap -dump:format=b,file=heap.dump 20445
-
-jhat（JVM Heap Analysis Tool）
-     jhat是用来分析dump文件的一个微型的HTTP/HTML服务器，它能将生成的dump文件生成在线的HTML文件，让我们可以通过浏览器进行查阅，然而实际中我们很少使用这个工具，因为一般服务器上设置的堆、栈内存都比较大，生成的dump也比较大，直接用jhat容易造成内存溢出，而是我们大部分会将对应的文件拷贝下来，通过其他可视化的工具进行分析
-          jhat {dump_file}
-               执行命令后，我们看到系统开始读取这段dump信息，当系统提示Server is ready的时候，用户可以通过在浏览器键入http://ip:7000进行查询。
-
-jstack（JVM Stack Trace for java）
-     jstack用于JVM当前时刻的线程快照，又称threaddump文件，它是JVM当前每一条线程正在执行的堆栈信息的集合。生成线程快照的主要目的是为了定位线程出现长时间停顿的原因，如线程死锁、死循环、请求外部时长过长导致线程停顿的原因。通过jstack我们就可以知道哪些进程在后台做些什么？在等待什么资源等！
-     jstack [option] vmid
-          --------------------------------------------------------------
-          Option    Function
-          -F   当正常输出的请求不响应时强制输出线程堆栈
-          -l   除堆栈信息外，显示关于锁的附加信息
-          -m   显示native方法的堆栈信息
-          示例：jstack -l 20445
-
-查找占用cpu高的java线程:
-     top -H -p javaId                        // 找出java thread id
-     printf &apos;0x%x\n&apos; java thread id          // 转16进制
-     jstack
-</code></pre><hr>
-<pre><code>S0C：年轻代中第一个survivor（幸存区）的容量 (字节) 
-     S1C：年轻代中第二个survivor（幸存区）的容量 (字节) 
-     S0U：年轻代中第一个survivor（幸存区）目前已使用空间 (字节) 
-     S1U：年轻代中第二个survivor（幸存区）目前已使用空间 (字节) 
-     EC：年轻代中Eden（伊甸园）的容量 (字节) 
-     EU：年轻代中Eden（伊甸园）目前已使用空间 (字节) 
-     OC：Old代的容量 (字节) 
-     OU：Old代目前已使用空间 (字节) 
-     PC：Perm(持久代)的容量 (字节) 
-     PU：Perm(持久代)目前已使用空间 (字节) 
-     YGC：从应用程序启动到采样时年轻代中gc次数 
-     YGCT：从应用程序启动到采样时年轻代中gc所用时间(s) 
-     FGC：从应用程序启动到采样时old代(全gc)gc次数 
-     FGCT：从应用程序启动到采样时old代(全gc)gc所用时间(s) 
-     GCT：从应用程序启动到采样时gc用的总时间(s) 
-     NGCMN：年轻代(young)中初始化(最小)的大小 (字节) 
-     NGCMX：年轻代(young)的最大容量 (字节) 
-     NGC：年轻代(young)中当前的容量 (字节) 
-     OGCMN：old代中初始化(最小)的大小 (字节) 
-     OGCMX：old代的最大容量 (字节) 
-     OGC：old代当前新生成的容量 (字节) 
-     PGCMN：perm代中初始化(最小)的大小 (字节) 
-     PGCMX：perm代的最大容量 (字节)   
-     PGC：perm代当前新生成的容量 (字节) 
-     S0：年轻代中第一个survivor（幸存区）已使用的占当前容量百分比 
-     S1：年轻代中第二个survivor（幸存区）已使用的占当前容量百分比 
-     E：年轻代中Eden（伊甸园）已使用的占当前容量百分比 
-     O：old代已使用的占当前容量百分比 
-     P：perm代已使用的占当前容量百分比 
-     S0CMX：年轻代中第一个survivor（幸存区）的最大容量 (字节) 
-     S1CMX ：年轻代中第二个survivor（幸存区）的最大容量 (字节) 
-     ECMX：年轻代中Eden（伊甸园）的最大容量 (字节) 
-     DSS：当前需要survivor（幸存区）的容量 (字节)（Eden区已满） 
-     TT： 持有次数限制 
-     MTT ： 最大持有次数限制 
-</code></pre><hr>
-<p>其他</p>
-<p>sudo -u admin /opt/taobao/java/bin/jstat -gcold <code>ps aux | grep tomcat | awk &#39;{ if($1==&quot;admin&quot;) print $2}&#39;</code> 1000 –&gt;gc</p>
-<p>sudo -u admin /opt/taobao/java/bin/jstack -l <code>ps aux | grep tomcat | awk &#39;{ if($1==&quot;admin&quot;) print $2}&#39;</code> &gt; /tmp/js5.log –&gt;jvm_stack</p>
-<p>sudo -u admin /opt/taobao/java/bin/jstat -gcutil <code>ps aux | grep tomcat | awk &#39;{ if($1==&quot;admin&quot;) print $2}&#39;</code> 1000 –&gt;gc老年代</p>
-<p>top -Hp pid<br>printf ‘%x\n’ pid<br>jstack 10765 | grep ‘0x2a34’ -C5 –color</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2218,7 +2002,7 @@ jstack（JVM Stack Trace for java）
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">66</span>
+                  <span class="site-state-item-count">68</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

@@ -232,6 +232,301 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://hcyxy.tech/2019/08/30/leetcode133 克隆图/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="hecy">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="万水千山">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/08/30/leetcode133 克隆图/" itemprop="url">leetcode133 克隆图</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-08-30T21:46:33+08:00">
+                2019-08-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/算法与数据结构/" itemprop="url" rel="index">
+                    <span itemprop="name">算法与数据结构</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <blockquote>
+<p>给定无向连通图中一个节点的引用，返回该图的深拷贝（克隆）。图中的每个节点都包含它的值 val（Int） 和其邻居的列表（list[Node]）</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">class Node &#123;</span><br><span class="line">    public int val;</span><br><span class="line">    public List&lt;Node&gt; neighbors;</span><br><span class="line"></span><br><span class="line">    public Node() &#123;&#125;</span><br><span class="line"></span><br><span class="line">    public Node(int _val,List&lt;Node&gt; _neighbors) &#123;</span><br><span class="line">        val = _val;</span><br><span class="line">        neighbors = _neighbors;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">class Solution &#123;</span><br><span class="line">    private Map&lt;Node, Node&gt; map = new HashMap&lt;&gt;();</span><br><span class="line"></span><br><span class="line">    public Node cloneGraph(Node node) &#123;</span><br><span class="line">        return dfs(node);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public Node dfs(Node node) &#123;</span><br><span class="line">        if (!map.containsKey(node)) &#123;</span><br><span class="line">            Node copy = new Node(node.val, new ArrayList&lt;&gt;());</span><br><span class="line">            map.put(node,copy);</span><br><span class="line">            for(Node nei:node.neighbors)&#123;</span><br><span class="line">                copy.neighbors.add(dfs(nei));</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return map.get(node);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://hcyxy.tech/2019/08/29/leetcode 639解码方法/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="hecy">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="万水千山">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/08/29/leetcode 639解码方法/" itemprop="url">leetcode 639解码方法</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-08-29T22:32:11+08:00">
+                2019-08-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/算法与数据结构/" itemprop="url" rel="index">
+                    <span itemprop="name">算法与数据结构</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h5 id="91-解码方法"><a href="#91-解码方法" class="headerlink" title="91 解码方法"></a>91 解码方法</h5><blockquote>
+<p>一条包含字母A-Z 的消息通过以下方式进行了编码：</p>
+</blockquote>
+<p>‘A’ -&gt; 1<br>‘B’ -&gt; 2<br>…<br>‘Z’ -&gt; 26<br>给定一个只包含数字的非空字符串，请计算解码方法的总数。</p>
+<p>示例 1:</p>
+<p>输入: “12”<br>输出: 2<br>解释:它可以解码为 “AB”（1 2）或者 “L”（12）。<br>示例2:</p>
+<p>输入: “226”<br>输出: 3<br>解释:它可以解码为 “BZ” (2 26), “VF” (22 6), 或者 “BBF” (2 2 6) 。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">fun numDecodings(s: String): Int &#123;</span><br><span class="line">        val dp = IntArray(s.length)</span><br><span class="line">        if (s.isBlank()) &#123;</span><br><span class="line">            return 0</span><br><span class="line">        &#125;</span><br><span class="line">        if (s[0] == &apos;0&apos;) return 0</span><br><span class="line">        if (s.length == 1) return 1</span><br><span class="line">        if (s.length == 2) return get2(s)</span><br><span class="line">        dp[0] = 1</span><br><span class="line">        dp[1] = get2(s.substring(0, 2))</span><br><span class="line">        for (i in 2 until s.length) &#123;</span><br><span class="line"></span><br><span class="line">            if (s[i] == &apos;0&apos;) &#123;</span><br><span class="line">                if (s[i - 1] == &apos;0&apos; || s[i - 1] &gt; &apos;2&apos;) return 0</span><br><span class="line">                else &#123;</span><br><span class="line">                    dp[i] = dp[i - 2]</span><br><span class="line">                &#125;</span><br><span class="line">            &#125; else if (s[i - 1] == &apos;0&apos;) &#123;</span><br><span class="line">                dp[i] = dp[i - 1]</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                val num = s.substring(</span><br><span class="line">                    i - 1,</span><br><span class="line">                    i + 1</span><br><span class="line">                ).toInt()</span><br><span class="line">                if (num in 1..26) &#123;</span><br><span class="line">                    dp[i] = dp[i - 2] + dp[i - 1]</span><br><span class="line">                &#125; else &#123;</span><br><span class="line">                    dp[i] = dp[i - 1]</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">//        println(&quot;dp $&#123;dp[0]&#125; $&#123;dp[1]&#125; $&#123;dp[2]&#125;&quot;)</span><br><span class="line">        return dp[s.length - 1]</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    fun get2(s: String): Int &#123;</span><br><span class="line">        val s1 = s[0].toString().toInt()</span><br><span class="line">        val two = s.toInt()</span><br><span class="line">        if (s[1] == &apos;0&apos;) return if (s1 in 1..2) 1 else 0</span><br><span class="line">        return 1 + if (two in 1..26) 1 else 0</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>简洁的做法：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">fun numDecodings(s: String): Int &#123;</span><br><span class="line">        if (s[0] == &apos;0&apos;) return 0</span><br><span class="line"></span><br><span class="line">        val dp = IntArray(s.length + 1)</span><br><span class="line">        dp[1] = 1</span><br><span class="line">        dp[0] = dp[1]</span><br><span class="line"></span><br><span class="line">        for (i in 2..s.length) &#123;</span><br><span class="line">            //如果该位不为&apos;0&apos;，说明该位单独成字母合法</span><br><span class="line">            if (s[i - 1] != &apos;0&apos;) &#123;</span><br><span class="line">                dp[i] += dp[i - 1]</span><br><span class="line">            &#125;</span><br><span class="line">            //如果后两位能组成&quot;1x&quot;（x为任意数字）或者&quot;2x&quot;（x小于7），说明最后两位组成字母合法</span><br><span class="line">            if (s[i - 2] == &apos;1&apos; || s[i - 2] == &apos;2&apos; &amp;&amp; s[i - 1] &lt;= &apos;6&apos;) &#123;</span><br><span class="line">                dp[i] += dp[i - 2]</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return dp[s.length]</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+<h5 id="639-增加-号"><a href="#639-增加-号" class="headerlink" title="639 增加*号"></a>639 增加*号</h5><p>状态转移方程不难，主要得穷举所有可能的情形</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">    /**</span><br><span class="line">     * 10^9 + 7</span><br><span class="line">     */</span><br><span class="line">    fun numDecodings(s: String): Int &#123;</span><br><span class="line">        /* initial conditions */</span><br><span class="line">        val dp = LongArray(s.length + 1)</span><br><span class="line">        dp[0] = 1</span><br><span class="line">        if (s[0] == &apos;0&apos;) &#123;</span><br><span class="line">            return 0</span><br><span class="line">        &#125;</span><br><span class="line">        dp[1] = (if (s[0] == &apos;*&apos;) 9 else 1).toLong()</span><br><span class="line"></span><br><span class="line">        /* bottom up method */</span><br><span class="line">        for (i in 2..s.length) &#123;</span><br><span class="line">            val first = s[i - 2]</span><br><span class="line">            val second = s[i - 1]</span><br><span class="line"></span><br><span class="line">            // For dp[i-1]</span><br><span class="line">            if (second == &apos;*&apos;) &#123;</span><br><span class="line">                dp[i] += 9 * dp[i - 1]</span><br><span class="line">            &#125; else if (second &gt; &apos;0&apos;) &#123;</span><br><span class="line">                dp[i] += dp[i - 1]</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            // For dp[i-2]</span><br><span class="line">            if (first == &apos;*&apos;) &#123;</span><br><span class="line">                if (second == &apos;*&apos;) &#123;</span><br><span class="line">                    dp[i] += 15 * dp[i - 2]</span><br><span class="line">                &#125; else if (second &lt;= &apos;6&apos;) &#123;</span><br><span class="line">                    dp[i] += 2 * dp[i - 2]</span><br><span class="line">                &#125; else &#123;</span><br><span class="line">                    dp[i] += dp[i - 2]</span><br><span class="line">                &#125;</span><br><span class="line">            &#125; else if (first == &apos;1&apos; || first == &apos;2&apos;) &#123;</span><br><span class="line">                if (second == &apos;*&apos;) &#123;</span><br><span class="line">                    if (first == &apos;1&apos;) &#123;</span><br><span class="line">                        dp[i] += 9 * dp[i - 2]</span><br><span class="line">                    &#125; else &#123; // first == &apos;2&apos;</span><br><span class="line">                        dp[i] += 6 * dp[i - 2]</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125; else if ((first - &apos;0&apos;) * 10 + (second - &apos;0&apos;) &lt;= 26) &#123;</span><br><span class="line">                    dp[i] += dp[i - 2]</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            dp[i] = dp[i] % 1000000007</span><br><span class="line">        &#125;</span><br><span class="line">        /* Return */</span><br><span class="line">        return dp[s.length].toInt()</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://hcyxy.tech/2019/08/28/leetcode198 213打家劫舍/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1578,298 +1873,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://hcyxy.tech/2019/07/29/leetcode642 搜索自动补全系统/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="hecy">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="万水千山">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/07/29/leetcode642 搜索自动补全系统/" itemprop="url">leetcode642 搜索自动补全系统.md</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-07-29T20:30:21+08:00">
-                2019-07-29
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/算法与数据结构/" itemprop="url" rel="index">
-                    <span itemprop="name">算法与数据结构</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <blockquote>
-<p>前缀匹配返回，并返回热度最高的三个词，如果匹配度相同，按ascii码降序输出</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br></pre></td><td class="code"><pre><span class="line">class AutocompleteSystem(private val sentences: List&lt;String&gt;, val times: List&lt;Int&gt;) &#123;</span><br><span class="line"></span><br><span class="line">    data class Trie(var children: Array&lt;Trie?&gt; = Array(27) &#123; null &#125;, var times: Int = 0)</span><br><span class="line"></span><br><span class="line">    private var data = &quot;&quot;</span><br><span class="line"></span><br><span class="line">    private var root: Trie</span><br><span class="line">    private var curr: Trie</span><br><span class="line"></span><br><span class="line">    init &#123;</span><br><span class="line">        root = Trie()</span><br><span class="line">        for (i in 0 until sentences.size) &#123;</span><br><span class="line">            insert(root, sentences[i], times[i])</span><br><span class="line">        &#125;</span><br><span class="line">        data = &quot;&quot;</span><br><span class="line">        curr = root</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    fun insert(root: Trie, s: String, times: Int) &#123;</span><br><span class="line">        var cRoot: Trie? = root</span><br><span class="line">        s.forEach &#123;</span><br><span class="line">            val j = getIndex(it)</span><br><span class="line">            if (cRoot?.children?.get(j) == null) &#123;</span><br><span class="line">                cRoot?.children!![j] = Trie()</span><br><span class="line">            &#125;</span><br><span class="line">            cRoot = cRoot?.children?.get(j)</span><br><span class="line">        &#125;</span><br><span class="line">        cRoot?.times = (cRoot?.times ?: 0) + times</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    private fun getIndex(c: Char): Int &#123;</span><br><span class="line">        return if (c == &apos; &apos;) 26 else c - &apos;a&apos;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    fun input(c: Char): List&lt;String&gt; &#123;</span><br><span class="line">        if (c == &apos;#&apos;) &#123;</span><br><span class="line">            insert(root, data, 1)</span><br><span class="line">            curr = root</span><br><span class="line">            data = &quot;&quot;</span><br><span class="line">            return emptyList()</span><br><span class="line">        &#125;</span><br><span class="line">        val i = getIndex(c)</span><br><span class="line">        if (curr.children[i] == null) &#123;</span><br><span class="line">            curr.children[i] = Trie()</span><br><span class="line">        &#125;</span><br><span class="line">        data += c</span><br><span class="line">        curr = curr.children[i]!!</span><br><span class="line">        return getKHot(curr, data, 3)</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    fun getKHot(root: Trie, str: String, k: Int): List&lt;String&gt; &#123;</span><br><span class="line">        val list = arrayListOf&lt;Pair&lt;String, Int&gt;&gt;()</span><br><span class="line">        dfs(root, str, list)</span><br><span class="line">        list.sortWith(Comparator &#123; a, b -&gt;</span><br><span class="line">            if (b.second != a.second)</span><br><span class="line">                b.second - a.second</span><br><span class="line">            else</span><br><span class="line">                a.first.compareTo(b.first)</span><br><span class="line">        &#125;)</span><br><span class="line">        val res = ArrayList&lt;String&gt;()</span><br><span class="line"></span><br><span class="line">        for (i in 0 until Math.min(k, list.size)) &#123;</span><br><span class="line">            res.add(list[i].first)</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        return res</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    fun dfs(root: Trie, s: String, list: ArrayList&lt;Pair&lt;String, Int&gt;&gt;) &#123;</span><br><span class="line">        if (root.times &gt; 0) &#123;</span><br><span class="line">            list.add(Pair(s, root.times))</span><br><span class="line">        &#125;</span><br><span class="line">        var c = &apos;a&apos;</span><br><span class="line">        while (c &lt;= &apos;z&apos;) &#123;</span><br><span class="line">            val i = getIndex(c)</span><br><span class="line">            if (root.children[i] != null) &#123;</span><br><span class="line">                dfs(root.children[i]!!, s + c, list)</span><br><span class="line">            &#125;</span><br><span class="line">            ++c</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        if (root.children[26] != null) &#123;</span><br><span class="line">            dfs(root.children[26]!!, &quot;$s &quot;, list)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://hcyxy.tech/2019/07/28/leetcode460 LFU缓存/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="hecy">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="万水千山">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/07/28/leetcode460 LFU缓存/" itemprop="url">leetcode460 LFU缓存</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-07-28T23:11:20+08:00">
-                2019-07-28
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/算法与数据结构/" itemprop="url" rel="index">
-                    <span itemprop="name">算法与数据结构</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <blockquote>
-<p>设计实现最不经常使用LFU缓存数据结构，get(key)</p>
-<ul>
-<li>如果键存在于缓存中，则获取键的值（总是正数），否则返回 -1。<br>put(key, value)</li>
-<li>如果键不存在，请设置或插入值。当缓存达到其容量时，它应该在插入新项目之前，使最不经常使用的项目无效。在此问题中，当存在平局（即两个或更多个键具有相同使用频率）时，最近最少使用的键将被去除</li>
-</ul>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line">class LFUCache(private val capacity: Int) &#123;</span><br><span class="line"></span><br><span class="line">    data class LFUNode(var value: Int, var count: Int)</span><br><span class="line"></span><br><span class="line">    private val map = HashMap&lt;Int, LFUNode&gt;()</span><br><span class="line"></span><br><span class="line">    private val valueMap = HashMap&lt;Int, LinkedHashSet&lt;Int&gt;&gt;()</span><br><span class="line"></span><br><span class="line">    private var min = 1</span><br><span class="line"></span><br><span class="line">    init &#123;</span><br><span class="line">        valueMap[1] = LinkedHashSet()</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    fun get(key: Int): Int &#123;</span><br><span class="line">        if (capacity == 0) return -1</span><br><span class="line">        val cNode = map[key] ?: return -1</span><br><span class="line">        cNode.count++</span><br><span class="line">        valueMap[cNode.count - 1]?.remove(key)</span><br><span class="line">        if (!valueMap.containsKey(cNode.count)) &#123;</span><br><span class="line">            valueMap[cNode.count] = LinkedHashSet()</span><br><span class="line">        &#125;</span><br><span class="line">        valueMap[cNode.count]?.add(key)</span><br><span class="line">        if (min == cNode.count - 1 &amp;&amp; valueMap[min].isNullOrEmpty()) &#123;</span><br><span class="line">            min = cNode.count</span><br><span class="line">        &#125;</span><br><span class="line">        return cNode.value</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    fun put(key: Int, value: Int) &#123;</span><br><span class="line">        if (get(key) != -1) &#123;</span><br><span class="line">            val node = map[key]</span><br><span class="line">            node!!.value = value</span><br><span class="line">            return</span><br><span class="line">        &#125;</span><br><span class="line">        if (capacity == map.size) &#123;</span><br><span class="line">            val iterator = valueMap[min]?.iterator()</span><br><span class="line">            if (iterator?.hasNext() == true) &#123;</span><br><span class="line">                val evict = iterator.next()</span><br><span class="line">                map.remove(evict)</span><br><span class="line">                valueMap[min]?.remove(evict)</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">        // 添加新节点时更新min</span><br><span class="line">        min = 1</span><br><span class="line">        val newNode = LFUNode(value, 1)</span><br><span class="line">        map[key] = newNode</span><br><span class="line">        valueMap[1]?.add(key)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1920,7 +1923,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">66</span>
+                  <span class="site-state-item-count">68</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

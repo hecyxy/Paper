@@ -232,6 +232,298 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://hcyxy.tech/2019/07/29/leetcode642 搜索自动补全系统/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="hecy">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="万水千山">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/07/29/leetcode642 搜索自动补全系统/" itemprop="url">leetcode642 搜索自动补全系统.md</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-07-29T20:30:21+08:00">
+                2019-07-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/算法与数据结构/" itemprop="url" rel="index">
+                    <span itemprop="name">算法与数据结构</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <blockquote>
+<p>前缀匹配返回，并返回热度最高的三个词，如果匹配度相同，按ascii码降序输出</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br></pre></td><td class="code"><pre><span class="line">class AutocompleteSystem(private val sentences: List&lt;String&gt;, val times: List&lt;Int&gt;) &#123;</span><br><span class="line"></span><br><span class="line">    data class Trie(var children: Array&lt;Trie?&gt; = Array(27) &#123; null &#125;, var times: Int = 0)</span><br><span class="line"></span><br><span class="line">    private var data = &quot;&quot;</span><br><span class="line"></span><br><span class="line">    private var root: Trie</span><br><span class="line">    private var curr: Trie</span><br><span class="line"></span><br><span class="line">    init &#123;</span><br><span class="line">        root = Trie()</span><br><span class="line">        for (i in 0 until sentences.size) &#123;</span><br><span class="line">            insert(root, sentences[i], times[i])</span><br><span class="line">        &#125;</span><br><span class="line">        data = &quot;&quot;</span><br><span class="line">        curr = root</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    fun insert(root: Trie, s: String, times: Int) &#123;</span><br><span class="line">        var cRoot: Trie? = root</span><br><span class="line">        s.forEach &#123;</span><br><span class="line">            val j = getIndex(it)</span><br><span class="line">            if (cRoot?.children?.get(j) == null) &#123;</span><br><span class="line">                cRoot?.children!![j] = Trie()</span><br><span class="line">            &#125;</span><br><span class="line">            cRoot = cRoot?.children?.get(j)</span><br><span class="line">        &#125;</span><br><span class="line">        cRoot?.times = (cRoot?.times ?: 0) + times</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    private fun getIndex(c: Char): Int &#123;</span><br><span class="line">        return if (c == &apos; &apos;) 26 else c - &apos;a&apos;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    fun input(c: Char): List&lt;String&gt; &#123;</span><br><span class="line">        if (c == &apos;#&apos;) &#123;</span><br><span class="line">            insert(root, data, 1)</span><br><span class="line">            curr = root</span><br><span class="line">            data = &quot;&quot;</span><br><span class="line">            return emptyList()</span><br><span class="line">        &#125;</span><br><span class="line">        val i = getIndex(c)</span><br><span class="line">        if (curr.children[i] == null) &#123;</span><br><span class="line">            curr.children[i] = Trie()</span><br><span class="line">        &#125;</span><br><span class="line">        data += c</span><br><span class="line">        curr = curr.children[i]!!</span><br><span class="line">        return getKHot(curr, data, 3)</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    fun getKHot(root: Trie, str: String, k: Int): List&lt;String&gt; &#123;</span><br><span class="line">        val list = arrayListOf&lt;Pair&lt;String, Int&gt;&gt;()</span><br><span class="line">        dfs(root, str, list)</span><br><span class="line">        list.sortWith(Comparator &#123; a, b -&gt;</span><br><span class="line">            if (b.second != a.second)</span><br><span class="line">                b.second - a.second</span><br><span class="line">            else</span><br><span class="line">                a.first.compareTo(b.first)</span><br><span class="line">        &#125;)</span><br><span class="line">        val res = ArrayList&lt;String&gt;()</span><br><span class="line"></span><br><span class="line">        for (i in 0 until Math.min(k, list.size)) &#123;</span><br><span class="line">            res.add(list[i].first)</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        return res</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    fun dfs(root: Trie, s: String, list: ArrayList&lt;Pair&lt;String, Int&gt;&gt;) &#123;</span><br><span class="line">        if (root.times &gt; 0) &#123;</span><br><span class="line">            list.add(Pair(s, root.times))</span><br><span class="line">        &#125;</span><br><span class="line">        var c = &apos;a&apos;</span><br><span class="line">        while (c &lt;= &apos;z&apos;) &#123;</span><br><span class="line">            val i = getIndex(c)</span><br><span class="line">            if (root.children[i] != null) &#123;</span><br><span class="line">                dfs(root.children[i]!!, s + c, list)</span><br><span class="line">            &#125;</span><br><span class="line">            ++c</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        if (root.children[26] != null) &#123;</span><br><span class="line">            dfs(root.children[26]!!, &quot;$s &quot;, list)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://hcyxy.tech/2019/07/28/leetcode460 LFU缓存/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="hecy">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="万水千山">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/07/28/leetcode460 LFU缓存/" itemprop="url">leetcode460 LFU缓存</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-07-28T23:11:20+08:00">
+                2019-07-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/算法与数据结构/" itemprop="url" rel="index">
+                    <span itemprop="name">算法与数据结构</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <blockquote>
+<p>设计实现最不经常使用LFU缓存数据结构，get(key)</p>
+<ul>
+<li>如果键存在于缓存中，则获取键的值（总是正数），否则返回 -1。<br>put(key, value)</li>
+<li>如果键不存在，请设置或插入值。当缓存达到其容量时，它应该在插入新项目之前，使最不经常使用的项目无效。在此问题中，当存在平局（即两个或更多个键具有相同使用频率）时，最近最少使用的键将被去除</li>
+</ul>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line">class LFUCache(private val capacity: Int) &#123;</span><br><span class="line"></span><br><span class="line">    data class LFUNode(var value: Int, var count: Int)</span><br><span class="line"></span><br><span class="line">    private val map = HashMap&lt;Int, LFUNode&gt;()</span><br><span class="line"></span><br><span class="line">    private val valueMap = HashMap&lt;Int, LinkedHashSet&lt;Int&gt;&gt;()</span><br><span class="line"></span><br><span class="line">    private var min = 1</span><br><span class="line"></span><br><span class="line">    init &#123;</span><br><span class="line">        valueMap[1] = LinkedHashSet()</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    fun get(key: Int): Int &#123;</span><br><span class="line">        if (capacity == 0) return -1</span><br><span class="line">        val cNode = map[key] ?: return -1</span><br><span class="line">        cNode.count++</span><br><span class="line">        valueMap[cNode.count - 1]?.remove(key)</span><br><span class="line">        if (!valueMap.containsKey(cNode.count)) &#123;</span><br><span class="line">            valueMap[cNode.count] = LinkedHashSet()</span><br><span class="line">        &#125;</span><br><span class="line">        valueMap[cNode.count]?.add(key)</span><br><span class="line">        if (min == cNode.count - 1 &amp;&amp; valueMap[min].isNullOrEmpty()) &#123;</span><br><span class="line">            min = cNode.count</span><br><span class="line">        &#125;</span><br><span class="line">        return cNode.value</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    fun put(key: Int, value: Int) &#123;</span><br><span class="line">        if (get(key) != -1) &#123;</span><br><span class="line">            val node = map[key]</span><br><span class="line">            node!!.value = value</span><br><span class="line">            return</span><br><span class="line">        &#125;</span><br><span class="line">        if (capacity == map.size) &#123;</span><br><span class="line">            val iterator = valueMap[min]?.iterator()</span><br><span class="line">            if (iterator?.hasNext() == true) &#123;</span><br><span class="line">                val evict = iterator.next()</span><br><span class="line">                map.remove(evict)</span><br><span class="line">                valueMap[min]?.remove(evict)</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">        // 添加新节点时更新min</span><br><span class="line">        min = 1</span><br><span class="line">        val newNode = LFUNode(value, 1)</span><br><span class="line">        map[key] = newNode</span><br><span class="line">        valueMap[1]?.add(key)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://hcyxy.tech/2019/07/27/leetcode432 全O(1)数据结构/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1512,312 +1804,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://hcyxy.tech/2019/06/24/乘飞机概率题/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="hecy">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="万水千山">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/06/24/乘飞机概率题/" itemprop="url">乘飞机概率题</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-06-24T21:34:01+08:00">
-                2019-06-24
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/算法与数据结构/" itemprop="url" rel="index">
-                    <span itemprop="name">算法与数据结构</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="丢失的机票"><a href="#丢失的机票" class="headerlink" title="丢失的机票"></a>丢失的机票</h4><blockquote>
-<p>一架客机上有100个座位，100个人排队依次登机。第一个乘客把机票搞丢了，但他仍被允许登机。由于他不知道他的座位在哪儿，他就随机选了一个座位坐下。以后每一个乘客登机时，如果他的座位是空着的，那么就在他的座位坐下；否则，他就随机选一个仍然空着的座位坐下。请问，最后一个人登机时发现唯一剩下的空位正好就是他的，其概率是多少？</p>
-</blockquote>
-<p>当最后一个乘客登机时，最后一个空位要么就是他的，要么就是第一个乘客的。由于所有人选择座位时都是随机选择的，这两个位置的“地位”相等，它们所面对的“命运”是相同的，不存在哪个概率大哪个概率小的问题。因此，它们成为最后一个空位的概率是均等的。也就是说，最后一个人发现剩下的空位正好是他的，其概率为50%</p>
-<h4 id="2、重复排列"><a href="#2、重复排列" class="headerlink" title="2、重复排列"></a>2、重复排列</h4><p>从各不相同的m个元素中选n个（可以重复）进行组合，有多少种？公式是：C(n,m+n-1)</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://hcyxy.tech/2019/06/22/有趣概率题/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="hecy">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="万水千山">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/06/22/有趣概率题/" itemprop="url">几道有趣的数学题</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-06-22T21:48:29+08:00">
-                2019-06-22
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/算法与数据结构/" itemprop="url" rel="index">
-                    <span itemprop="name">算法与数据结构</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="1、十个人赛跑第一名和一百人赛跑的第十名谁厉害？"><a href="#1、十个人赛跑第一名和一百人赛跑的第十名谁厉害？" class="headerlink" title="1、十个人赛跑第一名和一百人赛跑的第十名谁厉害？"></a>1、十个人赛跑第一名和一百人赛跑的第十名谁厉害？</h4><blockquote>
-<p>等价于：从(0,1)区间上随机抽10个样本，最大值为a，再从(0,100)随机抽100个样本，其中排名第10的样本值为a，在从(0,100)随机抽取100个样本，排名第10的样本为b，在数学期望意义下，a与b大小关系；</p>
-</blockquote>
-<ul>
-<li><p>从(0,1)随机抽10个样本，10个点将线段分为11段，每一条线段长度数学期望为1/11，最长那个点长度数学期望为11/10。</p>
-</li>
-<li><p>同样从(0,100)取100个样本，每条期望1/101，那么从大到小第10名数学期望91/101，很明显11/10大于91/101.</p>
-</li>
-</ul>
-<h5 id="10人中第一名，相当于100人中第几名？"><a href="#10人中第一名，相当于100人中第几名？" class="headerlink" title="10人中第一名，相当于100人中第几名？"></a>10人中第一名，相当于100人中第几名？</h5><p>10/11 = x/1001,得x=91.818，101-91.818=9.182.</p>
-<h4 id="2、抛硬币直到出现连续N次正面为止的期望"><a href="#2、抛硬币直到出现连续N次正面为止的期望" class="headerlink" title="2、抛硬币直到出现连续N次正面为止的期望"></a>2、抛硬币直到出现连续N次正面为止的期望</h4><blockquote>
-<p>抛一个硬币，抛出正面/背面概率都是0.5，连续抛硬币知道连续出现三次正面为止，平均要抛多少次才能结束游戏？</p>
-</blockquote>
-<p>假设已经连续抛出n-1次正面，需要<code>$T_{n-1}$</code>次，想要得到n次正面，再进行一次投掷，则可得到:<br><code>$T_n=T_{n-1}+1+0.5*0+0.5*T_n$</code></p>
-<p>通项公式为：<br><code>$T_n=2^{n+1}-2$</code></p>
-<h4 id="3、圆上任选三点组成三角形，这个三角形是锐角、钝角和直角三角形的概率分别是多少？"><a href="#3、圆上任选三点组成三角形，这个三角形是锐角、钝角和直角三角形的概率分别是多少？" class="headerlink" title="3、圆上任选三点组成三角形，这个三角形是锐角、钝角和直角三角形的概率分别是多少？"></a>3、圆上任选三点组成三角形，这个三角形是锐角、钝角和直角三角形的概率分别是多少？</h4><p>锐角三角形的概率是1/4，钝角三角形的概率是3/4，直角三角形的概率是0。</p>
-<p>一个锐角三角形对应三个钝角三角形：<br><img src="https://note.youdao.com/yws/public/resource/4f22a1ce6c5d0743fdab37b6e4d32094/xmlnote/DA67508B978D47C5A1CEC293A1DFE99F/32596" alt="image"></p>
-<p>也可以用积分来运算：<br><code>$\int_0^{\pi}\frac{\alpha}{2\pi}\frac{1}{\pi} =1/4$</code></p>
-<p>参考文档：<a href="https://zhuanlan.zhihu.com/p/69530841" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/69530841</a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1868,7 +1854,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">66</span>
+                  <span class="site-state-item-count">68</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
