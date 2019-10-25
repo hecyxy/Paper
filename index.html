@@ -469,7 +469,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://hcyxy.tech/2019/10/09/task_design/">
+    <link itemprop="mainEntityOfPage" href="http://hcyxy.tech/2019/10/09/taskdesign/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="hecy">
@@ -488,7 +488,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/10/09/task_design/" itemprop="url">业务架构组件设计</a></h1>
+                <a class="post-title-link" href="/2019/10/09/taskdesign/" itemprop="url">业务架构组件设计</a></h1>
         
 
         <div class="post-meta">
@@ -590,8 +590,8 @@
 <h5 id="3-分布式追踪"><a href="#3-分布式追踪" class="headerlink" title="3. 分布式追踪"></a>3. 分布式追踪</h5><blockquote>
 <p>微服务中，调用链很长，为了排查某个错误仅靠日志就变得很困难。于是采用了开源组件zipkin，对不同的架构体系zipkin均做了支持，如dubbo、sprint mvc等。下面介绍的是针对gRpc做的处理。</p>
 </blockquote>
-<p>ziplin主要是四个组件:collector、storage、api、web，zipkin架构如下:<br><img src="//hcyxy.tech/2019/10/09/task_design/ziplin.png" alt="image"></p>
-<p>追踪流程如下:<br><img src="//hcyxy.tech/2019/10/09/task_design/zipservice.png" alt="image"></p>
+<p>ziplin主要是四个组件:collector、storage、api、web，zipkin架构如下:<br><img src="//hcyxy.tech/2019/10/09/taskdesign/ziplin.png" alt="image"></p>
+<p>追踪流程如下:<br><img src="//hcyxy.tech/2019/10/09/taskdesign/zipservice.png" alt="image"></p>
 <p>在追踪日志中，存在几个基础元素spanId（标明服务）、traceId（唯一标识）、parentId（父子关系），通过这些元素构造追踪链路树。</p>
 <ul>
 <li>前端在发送每个请求时，通过zipkin提供的组件，在header里加入基本几个元素；</li>
