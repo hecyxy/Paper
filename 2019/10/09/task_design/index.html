@@ -79,23 +79,20 @@
 
 
 
-<meta name="description" content="转来自知乎ID：Heinrich 链接：https://www.zhihu.com/question/23234701/answer/26017000 复数（虚数）赋予了旋转的意义。比如 4*i*i=-4 代表在数轴上旋转了180度 来看一个函数$e^t$ 再加上一个参数i: 变成了一个螺旋线，和电磁场非常像 更重要的意义在于保留了二维信息如果分解一个实数8，可以有无数种分解方法，但是计算3+5i">
+<meta name="description" content="在创业型公司，为了使迭代开发快速进行，提高开发、测试人员的效率，同时为了节省成本，在设计架构的时候，主要采取大部分组件选择开源，部分组件自研的方式。  1.  整体架构模式 整体服务的模式用的是微服务架构，至于一些最时髦的架构，如service mesh、serverless、faas等，做了简单的调研，优点缺点并存，由于现在业务量没有上去，考虑未来等架构更加成熟后，一步步迭代升级。  整体技术">
 <meta property="og:type" content="article">
-<meta property="og:title" content="复数的意义">
-<meta property="og:url" content="http://hcyxy.tech/2018/10/28/复数的意义/index.html">
+<meta property="og:title" content="业务架构组件设计">
+<meta property="og:url" content="http://hcyxy.tech/2019/10/09/task_design/index.html">
 <meta property="og:site_name" content="万水千山">
-<meta property="og:description" content="转来自知乎ID：Heinrich 链接：https://www.zhihu.com/question/23234701/answer/26017000 复数（虚数）赋予了旋转的意义。比如 4*i*i=-4 代表在数轴上旋转了180度 来看一个函数$e^t$ 再加上一个参数i: 变成了一个螺旋线，和电磁场非常像 更重要的意义在于保留了二维信息如果分解一个实数8，可以有无数种分解方法，但是计算3+5i">
+<meta property="og:description" content="在创业型公司，为了使迭代开发快速进行，提高开发、测试人员的效率，同时为了节省成本，在设计架构的时候，主要采取大部分组件选择开源，部分组件自研的方式。  1.  整体架构模式 整体服务的模式用的是微服务架构，至于一些最时髦的架构，如service mesh、serverless、faas等，做了简单的调研，优点缺点并存，由于现在业务量没有上去，考虑未来等架构更加成熟后，一步步迭代升级。  整体技术">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://note.youdao.com/yws/public/resource/083b6154a87fc9b36abce052e7369c8d/xmlnote/WEBRESOURCEd388d4d126fe37eddf38f5e45bc0147c/23237">
-<meta property="og:image" content="https://note.youdao.com/yws/public/resource/083b6154a87fc9b36abce052e7369c8d/xmlnote/WEBRESOURCE9ad10deb44c13b2cc6a2dbad96df5354/23233">
-<meta property="og:image" content="https://note.youdao.com/yws/public/resource/083b6154a87fc9b36abce052e7369c8d/xmlnote/WEBRESOURCE0a6d646b45aa3e096a20b3f0c1b77510/23231">
-<meta property="og:image" content="https://note.youdao.com/yws/public/resource/083b6154a87fc9b36abce052e7369c8d/xmlnote/WEBRESOURCE4ba1f885390bb0b2025491366e1b6b74/23235">
-<meta property="og:image" content="https://note.youdao.com/yws/public/resource/083b6154a87fc9b36abce052e7369c8d/xmlnote/WEBRESOURCE74c87b124fe4f6a37e7db3ac6a086c94/23278">
-<meta property="og:updated_time" content="2018-11-29T13:37:07.156Z">
+<meta property="og:image" content="http://hcyxy.tech/2019/10/09/task_design/ziplin.png">
+<meta property="og:image" content="http://hcyxy.tech/2019/10/09/task_design/zipservice.png">
+<meta property="og:updated_time" content="2019-10-25T15:32:16.679Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="复数的意义">
-<meta name="twitter:description" content="转来自知乎ID：Heinrich 链接：https://www.zhihu.com/question/23234701/answer/26017000 复数（虚数）赋予了旋转的意义。比如 4*i*i=-4 代表在数轴上旋转了180度 来看一个函数$e^t$ 再加上一个参数i: 变成了一个螺旋线，和电磁场非常像 更重要的意义在于保留了二维信息如果分解一个实数8，可以有无数种分解方法，但是计算3+5i">
-<meta name="twitter:image" content="https://note.youdao.com/yws/public/resource/083b6154a87fc9b36abce052e7369c8d/xmlnote/WEBRESOURCEd388d4d126fe37eddf38f5e45bc0147c/23237">
+<meta name="twitter:title" content="业务架构组件设计">
+<meta name="twitter:description" content="在创业型公司，为了使迭代开发快速进行，提高开发、测试人员的效率，同时为了节省成本，在设计架构的时候，主要采取大部分组件选择开源，部分组件自研的方式。  1.  整体架构模式 整体服务的模式用的是微服务架构，至于一些最时髦的架构，如service mesh、serverless、faas等，做了简单的调研，优点缺点并存，由于现在业务量没有上去，考虑未来等架构更加成熟后，一步步迭代升级。  整体技术">
+<meta name="twitter:image" content="http://hcyxy.tech/2019/10/09/task_design/ziplin.png">
 
 
 
@@ -125,13 +122,13 @@
 
 
 
-  <link rel="canonical" href="http://hcyxy.tech/2018/10/28/复数的意义/"/>
+  <link rel="canonical" href="http://hcyxy.tech/2019/10/09/task_design/"/>
 
 
 
 
 
-  <title>复数的意义 | 万水千山</title>
+  <title>业务架构组件设计 | 万水千山</title>
   
 
 
@@ -238,7 +235,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://hcyxy.tech/2018/10/28/复数的意义/">
+    <link itemprop="mainEntityOfPage" href="http://hcyxy.tech/2019/10/09/task_design/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="hecy">
@@ -255,7 +252,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">复数的意义</h1>
+          <h1 class="post-title" itemprop="name headline">业务架构组件设计</h1>
         
 
         <div class="post-meta">
@@ -267,8 +264,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-28T23:00:19+08:00">
-                2018-10-28
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-10-09T20:43:08+08:00">
+                2019-10-09
               </time>
             
 
@@ -290,8 +287,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/数学/" itemprop="url" rel="index">
-                    <span itemprop="name">数学</span>
+                  <a href="/categories/JAVA/" itemprop="url" rel="index">
+                    <span itemprop="name">JAVA</span>
                   </a>
                 </span>
 
@@ -327,17 +324,51 @@
       
 
       
-        <p>转来自知乎ID：Heinrich</p>
-<p>链接：<a href="https://www.zhihu.com/question/23234701/answer/26017000" target="_blank" rel="noopener">https://www.zhihu.com/question/23234701/answer/26017000</a></p>
-<h5 id="复数（虚数）赋予了旋转的意义。"><a href="#复数（虚数）赋予了旋转的意义。" class="headerlink" title="复数（虚数）赋予了旋转的意义。"></a>复数（虚数）赋予了旋转的意义。</h5><h5 id="比如-4-i-i-4-代表在数轴上旋转了180度"><a href="#比如-4-i-i-4-代表在数轴上旋转了180度" class="headerlink" title="比如 4*i*i=-4 代表在数轴上旋转了180度"></a>比如 <code>4*i*i=-4</code> 代表在数轴上旋转了180度</h5><p><img src="https://note.youdao.com/yws/public/resource/083b6154a87fc9b36abce052e7369c8d/xmlnote/WEBRESOURCEd388d4d126fe37eddf38f5e45bc0147c/23237" alt="image"></p>
-<p>来看一个函数<code>$e^t$</code><br><img src="https://note.youdao.com/yws/public/resource/083b6154a87fc9b36abce052e7369c8d/xmlnote/WEBRESOURCE9ad10deb44c13b2cc6a2dbad96df5354/23233" alt="image"></p>
-<p>再加上一个参数i:<br><img src="https://note.youdao.com/yws/public/resource/083b6154a87fc9b36abce052e7369c8d/xmlnote/WEBRESOURCE0a6d646b45aa3e096a20b3f0c1b77510/23231" alt="image"></p>
-<p>变成了一个螺旋线，和电磁场非常像</p>
-<h4 id="更重要的意义在于保留了二维信息"><a href="#更重要的意义在于保留了二维信息" class="headerlink" title="更重要的意义在于保留了二维信息"></a>更重要的意义在于保留了二维信息</h4><p>如果分解一个实数8，可以有无数种分解方法，但是计算3+5i的话，可以分解出实部和虚部。可以让电场强度和复数磁场强度相加不损失各自的信息，而且满足电场与磁场垂直要求。<br><img src="https://note.youdao.com/yws/public/resource/083b6154a87fc9b36abce052e7369c8d/xmlnote/WEBRESOURCE4ba1f885390bb0b2025491366e1b6b74/23235" alt="image"></p>
-<p>正弦波可以看做自然数中的1，可以构成其他数字的基础元素。</p>
-<h5 id="复数的引入大大方便了涉及到的旋转计算"><a href="#复数的引入大大方便了涉及到的旋转计算" class="headerlink" title="复数的引入大大方便了涉及到的旋转计算"></a>复数的引入大大方便了涉及到的旋转计算</h5><p>比如计算合力，比如一个力是(3+i)，另一个力(1+3i)，求合力是多少？只需简单相加即可(4+4i)</p>
-<h5 id="复数涉及乘法的计算"><a href="#复数涉及乘法的计算" class="headerlink" title="复数涉及乘法的计算"></a>复数涉及乘法的计算</h5><p>比如一条船航向（ 3 + 4i）<br>如果该船的航向，逆时针增加45度，新的航向是多少<br><img src="https://note.youdao.com/yws/public/resource/083b6154a87fc9b36abce052e7369c8d/xmlnote/WEBRESOURCE74c87b124fe4f6a37e7db3ac6a086c94/23278" alt="image"></p>
-<p>( 3 + 4i ) * ( 1 + i ) = ( -1 + 7i )</p>
+        <blockquote>
+<p>在创业型公司，为了使迭代开发快速进行，提高开发、测试人员的效率，同时为了节省成本，在设计架构的时候，主要采取大部分组件选择开源，部分组件自研的方式。</p>
+</blockquote>
+<h5 id="1-整体架构模式"><a href="#1-整体架构模式" class="headerlink" title="1.  整体架构模式"></a>1.  整体架构模式</h5><blockquote>
+<p>整体服务的模式用的是微服务架构，至于一些最时髦的架构，如service mesh、serverless、faas等，做了简单的调研，优点缺点并存，由于现在业务量没有上去，考虑未来等架构更加成熟后，一步步迭代升级。</p>
+</blockquote>
+<p><strong>整体技术栈：</strong></p>
+<ul>
+<li>微服务框架：gRpc</li>
+<li>服务注册发现：自研DNS</li>
+<li>自动化部署：改造mesos+docker</li>
+<li>分布式追踪系统：zipkin</li>
+<li>错误报告聚合：sentry</li>
+</ul>
+<h5 id="2-gRpc-Wrapper"><a href="#2-gRpc-Wrapper" class="headerlink" title="2.  gRpc Wrapper"></a>2.  gRpc Wrapper</h5><blockquote>
+<p>主要针对grpc服务封装一套更加灵活、实用的、更为完整的调用框架。</p>
+</blockquote>
+<p>功能包括:</p>
+<ul>
+<li>拦截器(超时 地址)</li>
+<li>tracing</li>
+<li>基础配置(超时 数据包大小 服务发现)</li>
+<li>基础gRpc方法</li>
+</ul>
+<p>gprc的负载均衡基于域名dns实现。</p>
+<h5 id="3-分布式追踪"><a href="#3-分布式追踪" class="headerlink" title="3. 分布式追踪"></a>3. 分布式追踪</h5><blockquote>
+<p>微服务中，调用链很长，为了排查某个错误仅靠日志就变得很困难。于是采用了开源组件zipkin，对不同的架构体系zipkin均做了支持，如dubbo、sprint mvc等。下面介绍的是针对gRpc做的处理。</p>
+</blockquote>
+<p>ziplin主要是四个组件:collector、storage、api、web，zipkin架构如下:<br><img src="//hcyxy.tech/2019/10/09/task_design/ziplin.png" alt="image"></p>
+<p>追踪流程如下:<br><img src="//hcyxy.tech/2019/10/09/task_design/zipservice.png" alt="image"></p>
+<p>在追踪日志中，存在几个基础元素spanId（标明服务）、traceId（唯一标识）、parentId（父子关系），通过这些元素构造追踪链路树。</p>
+<ul>
+<li>前端在发送每个请求时，通过zipkin提供的组件，在header里加入基本几个元素；</li>
+<li>后端收到后，从http header中extract相关信息，放入上下文；</li>
+<li>rpc相关服务调用时，通过serverInterceptor和clientInterceptor进行记录；</li>
+<li>数据库相关的操作，只需在url后加上statementInterceptors=brave.mysql.TracingStatementInterceptor</li>
+</ul>
+<blockquote>
+<p>记录http请求中的请求，可以通过AOP拦截，也可以通过jax-rx中feature，注册HttpTracing来进行记录；gRpc的记录通过ClientInterceptor和ServerInterceptor中的headers来进行extrac，记录、传递；</p>
+</blockquote>
+<p>可以参考<a href="https://github.com/openzipkin/zipkin-finagle-example" target="_blank" rel="noopener">：grpc brave示例</a></p>
+<h5 id="4、web-server"><a href="#4、web-server" class="headerlink" title="4、web server"></a>4、web server</h5><blockquote>
+<p>我们的架构对用户，针对web用户采用的是一个产品提供一个服务，所以使用了更轻量级的web容器jetty+jersey+guice，对三者进行了一系列封装提供给业务方使用。</p>
+</blockquote>
+<p>jersey是一套jax-rs的扩展，guice是google一套依赖注入框架。</p>
 
       
     </div>
@@ -362,8 +393,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/10/27/有趣的条件概率/" rel="next" title="条件概率">
-                <i class="fa fa-chevron-left"></i> 条件概率
+              <a href="/2019/10/04/翻转链表/" rel="next" title="翻转链表">
+                <i class="fa fa-chevron-left"></i> 翻转链表
               </a>
             
           </div>
@@ -372,8 +403,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/10/29/矩阵最长上升路径/" rel="prev" title="矩阵最长上升路径">
-                矩阵最长上升路径 <i class="fa fa-chevron-right"></i>
+              <a href="/2019/10/09/业务架构组件设计/" rel="prev" title="业务架构组件设计">
+                业务架构组件设计 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -506,7 +537,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#复数（虚数）赋予了旋转的意义。"><span class="nav-number">1.</span> <span class="nav-text">复数（虚数）赋予了旋转的意义。</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#比如-4-i-i-4-代表在数轴上旋转了180度"><span class="nav-number">2.</span> <span class="nav-text">比如 4*i*i=-4 代表在数轴上旋转了180度</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#更重要的意义在于保留了二维信息"><span class="nav-number"></span> <span class="nav-text">更重要的意义在于保留了二维信息</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#复数的引入大大方便了涉及到的旋转计算"><span class="nav-number">1.</span> <span class="nav-text">复数的引入大大方便了涉及到的旋转计算</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#复数涉及乘法的计算"><span class="nav-number">2.</span> <span class="nav-text">复数涉及乘法的计算</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-整体架构模式"><span class="nav-number">1.</span> <span class="nav-text">1.  整体架构模式</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-gRpc-Wrapper"><span class="nav-number">2.</span> <span class="nav-text">2.  gRpc Wrapper</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-分布式追踪"><span class="nav-number">3.</span> <span class="nav-text">3. 分布式追踪</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4、web-server"><span class="nav-number">4.</span> <span class="nav-text">4、web server</span></a></li></ol></div>
             
 
           </div>

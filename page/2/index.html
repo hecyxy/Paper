@@ -232,6 +232,322 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://hcyxy.tech/2019/09/01/leetcode261 以图判树/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="hecy">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="万水千山">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/09/01/leetcode261 以图判树/" itemprop="url">leetcode261 以图判树</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-09-01T22:22:13+08:00">
+                2019-09-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/算法与数据结构/" itemprop="url" rel="index">
+                    <span itemprop="name">算法与数据结构</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <blockquote>
+<p>给n个节点[0,n-1]，和一个边的数组，检查其是否是一个树结构。</p>
+</blockquote>
+<p>For example:</p>
+<p>Given n = 5 and edges = [[0, 1], [0, 2], [0, 3], [1, 4]], return true.</p>
+<p>Given n = 5 and edges = [[0, 1], [1, 2], [2, 3], [1, 3], [1, 4]], return false.</p>
+<blockquote>
+<p>给出了无向图，判断是否为一棵树，如果是树，所有节点都必须是连接的，而且不能有环。工作就变成了：验证是否是连通图、是否有环。</p>
+</blockquote>
+<h5 id="DFS方式"><a href="#DFS方式" class="headerlink" title="DFS方式"></a>DFS方式</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">根据输入建图，然后遍历图找环，无环而且走过的节点数为n即是树。构图方式，可以自定义类，或者简便的使用哈希表。</span><br><span class="line">fun validTree(n: Int, edges: Array&lt;IntArray&gt;): Boolean &#123;</span><br><span class="line">        val directed = HashMap&lt;Int, ArrayList&lt;Int&gt;&gt;()</span><br><span class="line">        edges.forEach &#123; arr -&gt;</span><br><span class="line">            if (!directed.containsKey(arr[0])) &#123;</span><br><span class="line">                directed[arr[0]] = ArrayList()</span><br><span class="line">            &#125;</span><br><span class="line">            if (!directed.containsKey(arr[1])) &#123;</span><br><span class="line">                directed[arr[1]] = ArrayList()</span><br><span class="line">            &#125;</span><br><span class="line">            directed[arr[0]]?.add(arr[1])</span><br><span class="line">            directed[arr[1]]?.add(arr[0])</span><br><span class="line">        &#125;</span><br><span class="line">        val visited = HashSet&lt;Int&gt;()</span><br><span class="line">        if (!hasNoCycle(directed, visited, -1, 0)) return false</span><br><span class="line">        return visited.size == n</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">     fun hasNoCycle(directed: HashMap&lt;Int, ArrayList&lt;Int&gt;&gt;, visited: HashSet&lt;Int&gt;, parent: Int, current: Int): Boolean &#123;</span><br><span class="line">        if (visited.contains(current)) &#123;</span><br><span class="line">            return false</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            visited.add(current)</span><br><span class="line">            val children = directed[current] ?: return true</span><br><span class="line">            children.forEach &#123;</span><br><span class="line">//                if (it == parent) return@forEach</span><br><span class="line">                if (it != parent &amp;&amp; !hasNoCycle(directed, visited, current, it)) return false</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return true</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h5 id="BFS方式"><a href="#BFS方式" class="headerlink" title="BFS方式"></a>BFS方式</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">fun validTree(n: Int, edges: Array&lt;IntArray&gt;): Boolean &#123;</span><br><span class="line">        val graph = HashMap&lt;Int,HashSet&lt;Int&gt;&gt;(n)</span><br><span class="line">        val visited = HashSet&lt;Int&gt;()</span><br><span class="line">        edges.forEach &#123; arr -&gt;</span><br><span class="line">            if(!graph.containsKey(arr[0]))&#123;</span><br><span class="line">                graph[arr[0]] = HashSet()</span><br><span class="line">            &#125;</span><br><span class="line">            if(!graph.containsKey(arr[1]))&#123;</span><br><span class="line">                graph[arr[1]] = HashSet()</span><br><span class="line">            &#125;</span><br><span class="line">            graph[arr[0]]!!.add(arr[1])</span><br><span class="line">            graph[arr[1]]!!.add(arr[0])</span><br><span class="line">        &#125;</span><br><span class="line">        val queue = LinkedList&lt;Int&gt;()</span><br><span class="line">        queue.add(0)</span><br><span class="line">        while (queue.isNotEmpty())&#123;</span><br><span class="line">            val t = queue.peek()</span><br><span class="line">            queue.pop()</span><br><span class="line">            graph[t]?.forEach &#123;</span><br><span class="line">                if(visited.contains(it)) return false</span><br><span class="line">                visited.add(it)</span><br><span class="line">                queue.push(it)</span><br><span class="line">                graph[t]?.remove(t)</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return visited.size == n</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h5 id="连通图"><a href="#连通图" class="headerlink" title="连通图"></a>连通图</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">Union Find的方法，这种方法对于解决连通图的问题很有效，思想是我们遍历节点，如果两个节点相连，我们将其roots值连上，这样可以帮助我们找到环，我们初始化roots数组为-1，然后对于一个pair的两个节点分别调用find函数，得到的值如果相同的话，则说明环存在，返回false，不同的话，我们将其roots值union上。</span><br><span class="line"></span><br><span class="line">fun validTree(n: Int, edges: Array&lt;IntArray&gt;): Boolean &#123;</span><br><span class="line">        val roots = IntArray(n)</span><br><span class="line">        edges.forEach &#123; arr -&gt;</span><br><span class="line">            val x = find(roots, arr[0])</span><br><span class="line">            val y = find(roots, arr[1])</span><br><span class="line">            if (x == y) return false</span><br><span class="line">            roots[x] = y</span><br><span class="line">        &#125;</span><br><span class="line">        return edges.size == n - 1</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    private fun find(roots: IntArray, i: Int): Int &#123;</span><br><span class="line">        var c = i</span><br><span class="line">        while (roots[c] == -1) c = roots[c]</span><br><span class="line">        return c</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://hcyxy.tech/2019/08/31/leetcode269 火星词典/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="hecy">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="万水千山">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/08/31/leetcode269 火星词典/" itemprop="url">leetcode269 火星词典</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-08-31T22:13:22+08:00">
+                2019-08-31
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/算法与数据结构/" itemprop="url" rel="index">
+                    <span itemprop="name">算法与数据结构</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <blockquote>
+<p>有新的一个单词表，字母顺序不同于我们现在使用的顺序。给你一个单词数组，请给出正确的字母顺序。</p>
+<ul>
+<li>假设所有字母都是小写</li>
+<li>如果顺序是不可用，就返回空</li>
+<li>如果有多个合理的顺序返回一个即可</li>
+</ul>
+</blockquote>
+<p>Example 1:</p>
+<p>Input:<br>[<br>  “wrt”,<br>  “wrf”,<br>  “er”,<br>  “ett”,<br>  “rftt”<br>]</p>
+<p>Output: “wertf”<br>Example 2:</p>
+<p>Input:<br>[<br>  “z”,<br>  “x”<br>]</p>
+<p>Output: “zx”<br>Example 3:</p>
+<p>Input:<br>[<br>  “z”,<br>  “x”,<br>  “z”<br>] </p>
+<p>Output: “” </p>
+<p>Explanation: The order is invalid, so return “”.<br><strong>思路</strong>:<br><br>给一个单词字典，单词是按照字典序排序，求字母的排序。以题中例子，先看所有单词的第1个字符，可知顺序是w-&gt;e-r。然后对于两个连续的单词，找到第一个不相同的字符，比如 wrt和wrf，wr之后t在f之前，所以排序是 t-&gt;f。按照当前字母前面出现的字母个数排序，比如w前面有0个字母，e前面有w一个字母，r前面有e和w两个字母，所以排序是w-&gt;e-&gt;r。因此可以归结为一个拓扑问题，先建图，然后进行遍历。首先统计入度：w的入度是0，e的入度是1，r的入度是2。先把入度为0的节点放入结果中，然后取出w后面连接的节点，将他们的入度-1，如果有入度为0的节点，再放入结果中。</p>
+<p>time: 建图-&gt;O(n*k), Topological sort-&gt; O(26 + n) = O(n)，space: O(n)，主要是Map的大小，k表示单词平均长度。</p>
+<p>在图论中，拓扑排序（Topological Sorting）是一个有向无环图（DAG, Directed Acyclic Graph）的所有顶点的线性序列。拓扑排序通常用来“排序”具有依赖关系的任务。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line">fun alienOrder(words: Array&lt;String&gt;): String &#123;</span><br><span class="line">      if (words.isEmpty()) return &quot;&quot;</span><br><span class="line">      val graph = HashMap&lt;Char, HashSet&lt;Char&gt;&gt;()</span><br><span class="line">      val set = HashSet&lt;Char&gt;()</span><br><span class="line">      words.forEach &#123; w -&gt;</span><br><span class="line">          w.forEach &#123;</span><br><span class="line">              set.add(it)</span><br><span class="line">          &#125;</span><br><span class="line">      &#125;</span><br><span class="line">      val inDegree = IntArray(26)</span><br><span class="line">      for (k in 1 until words.size) &#123;</span><br><span class="line">          val preStr = words[k - 1]</span><br><span class="line">          val curStr = words[k]</span><br><span class="line">          for (i in 0 until Math.min(preStr.length, curStr.length)) &#123;</span><br><span class="line">              val preChar = preStr[i]</span><br><span class="line">              val curChar = curStr[i]</span><br><span class="line">              if (preChar != curChar) &#123;</span><br><span class="line">                  if (!graph.containsKey(preChar)) &#123;</span><br><span class="line">                      graph[preChar] = HashSet()</span><br><span class="line">                  &#125;</span><br><span class="line">                  if (!graph[preChar]!!.contains(curChar)) &#123;</span><br><span class="line">                      inDegree[curChar - &apos;a&apos;]++</span><br><span class="line">                  &#125;</span><br><span class="line">                  graph[preChar]!!.add(curChar)</span><br><span class="line">                  break</span><br><span class="line">              &#125;</span><br><span class="line">          &#125;</span><br><span class="line">      &#125;</span><br><span class="line">      val queue = LinkedList&lt;Char&gt;()</span><br><span class="line">      for (i in 0 until inDegree.size) &#123;</span><br><span class="line">          if (inDegree[i] == 0) &#123;</span><br><span class="line">              val c = &apos;a&apos; + i</span><br><span class="line">              println(&quot;c $c&quot;)</span><br><span class="line">              if (set.contains(c)) &#123;</span><br><span class="line">                  queue.offer(c)</span><br><span class="line">              &#125;</span><br><span class="line">          &#125;</span><br><span class="line">      &#125;</span><br><span class="line">      val sb = StringBuilder()</span><br><span class="line">      while (queue.isNotEmpty()) &#123;</span><br><span class="line">          val c = queue.poll()</span><br><span class="line">          sb.append(c)</span><br><span class="line">          if (graph.containsKey(c)) &#123;</span><br><span class="line">              graph[c]?.forEach &#123;</span><br><span class="line">                  inDegree[it - &apos;a&apos;]--</span><br><span class="line">                  if (inDegree[it - &apos;a&apos;] == 0) &#123;</span><br><span class="line">                      queue.offer(it)</span><br><span class="line">                  &#125;</span><br><span class="line">              &#125;</span><br><span class="line">          &#125;</span><br><span class="line">      &#125;</span><br><span class="line">      return if (sb.length != set.size) &quot;&quot; else sb.toString()</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<h5 id="DFS"><a href="#DFS" class="headerlink" title="DFS"></a>DFS</h5><blockquote>
+<p>图的深度优先搜索。深度优先的关键点在于如何检查环路，使用visited=0/1/2而不是布尔类型可以解决，即visited=0表示未访问UNVISITED，1表示访问中VISITING，2表示已访问VISITED。另外，深度优先搜索的话，graph用入边来表示，graph[i][j] = true &lt;=&gt; j-&gt;i，这样就容易通过递归方式，先解决所依赖的节点。</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line">private fun find(</span><br><span class="line">        alphabets: BooleanArray,</span><br><span class="line">        graph: Array&lt;BooleanArray&gt;,</span><br><span class="line">        tail: Int,</span><br><span class="line">        visited: IntArray,</span><br><span class="line">        sb: StringBuilder</span><br><span class="line">    ) &#123;</span><br><span class="line">        if (!alphabets[tail] || visited[tail] != 0) return</span><br><span class="line">        visited[tail] = 1</span><br><span class="line">        for (i in 0 until graph[tail].size) &#123;</span><br><span class="line">            if (graph[tail][i] &amp;&amp; alphabets[i] &amp;&amp; visited[i] == 1) return</span><br><span class="line">            if (graph[tail][i] &amp;&amp; alphabets[i] &amp;&amp; visited[i] == 0) find(alphabets, graph, i, visited, sb)</span><br><span class="line">        &#125;</span><br><span class="line">        visited[tail] = 2</span><br><span class="line">        sb.append((tail + &apos;a&apos;.toInt()).toChar())</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    fun dfsAlienOrder(words: Array&lt;String&gt;): String &#123;</span><br><span class="line">        val ws = arrayOfNulls&lt;CharArray&gt;(words.size)</span><br><span class="line">        val alphabets = BooleanArray(26)</span><br><span class="line">        var letters = 0</span><br><span class="line">        for (i in 0 until words.size) &#123;</span><br><span class="line">            ws[i] = words[i].toCharArray()</span><br><span class="line">            for (j in 0 until ws[i]!!.size) &#123;</span><br><span class="line">                if (!alphabets[(ws[i]!![j] - &apos;a&apos;)]) &#123;</span><br><span class="line">                    alphabets[ws[i]!![j] - &apos;a&apos;] = true</span><br><span class="line">                    letters++</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        val graph = Array(26) &#123; BooleanArray(26) &#125;</span><br><span class="line">        for (i in 0 until words.size - 1) &#123;</span><br><span class="line">            for (j in 0 until Math.min(words[i].length, words[i + 1].length)) &#123;</span><br><span class="line">                if (ws[i + 1]!![j] != ws[i]!![j]) &#123;</span><br><span class="line">                    graph[ws[i + 1]!![j] - &apos;a&apos;][ws[i]!![j] - &apos;a&apos;] = true</span><br><span class="line">                    break</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        val visited = IntArray(26)</span><br><span class="line">        val sb = StringBuilder()</span><br><span class="line">        for (i in alphabets.indices) &#123;</span><br><span class="line">            if (!alphabets[i] || visited[i] != 0) continue</span><br><span class="line">            find(alphabets, graph, i, visited, sb)</span><br><span class="line">        &#125;</span><br><span class="line">        return if (sb.length == letters) sb.toString() else &quot;&quot;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h5 id="BFS"><a href="#BFS" class="headerlink" title="BFS"></a>BFS</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line">fun bfsAlienOrder(words: Array&lt;String&gt;): String &#123;</span><br><span class="line">        val graph = HashMap&lt;Char, HashSet&lt;Char&gt;&gt;()</span><br><span class="line">        val ch = HashSet&lt;Char&gt;()</span><br><span class="line">        val inDegree = IntArray(26)</span><br><span class="line">        words.forEach &#123; w -&gt;</span><br><span class="line">            w.forEach &#123;</span><br><span class="line">                ch.add(it)</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        for (i in 0 until words.size - 1) &#123;</span><br><span class="line">            val mn = Math.min(words[i].length, words[i + 1].length)</span><br><span class="line">            var j = 0</span><br><span class="line">            while (j &lt; mn) &#123;</span><br><span class="line">                if (words[i][j] != words[i + 1][j]) &#123;</span><br><span class="line">                    if (!graph.containsKey(words[i][j])) &#123;</span><br><span class="line">                        graph[words[i][j]] = HashSet()</span><br><span class="line">                    &#125;</span><br><span class="line">                    if (!graph[words[i][j]]!!.contains(words[i + 1][j])) &#123;</span><br><span class="line">                        inDegree[words[i + 1][j] - &apos;a&apos;]++</span><br><span class="line">                    &#125;</span><br><span class="line">                    graph[words[i][j]]!!.add(words[i + 1][j])</span><br><span class="line">                    break</span><br><span class="line">                &#125;</span><br><span class="line">                j++</span><br><span class="line">            &#125;</span><br><span class="line">            if (j == mn &amp;&amp; words[i].length &gt; words[i + 1].length) return &quot;&quot;</span><br><span class="line">        &#125;</span><br><span class="line">        val queue = LinkedList&lt;Char&gt;()</span><br><span class="line">        val sb = StringBuilder()</span><br><span class="line">        ch.forEach &#123;</span><br><span class="line">            if (inDegree[it - &apos;a&apos;] == 0 &amp;&amp; ch.contains(it)) &#123;</span><br><span class="line">                queue.push(it)</span><br><span class="line">                sb.append(it)</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        while (queue.isNotEmpty()) &#123;</span><br><span class="line">            val c = queue.peek()</span><br><span class="line">            queue.pop()</span><br><span class="line">            graph[c]?.forEach &#123;</span><br><span class="line">                --inDegree[it - &apos;a&apos;]</span><br><span class="line">                if (inDegree[it - &apos;a&apos;] == 0) &#123;</span><br><span class="line">                    queue.push(it)</span><br><span class="line">                    sb.append(it)</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return if (sb.toString().length == ch.size) sb.toString() else &quot;&quot;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://hcyxy.tech/2019/08/30/leetcode133 克隆图/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1436,443 +1752,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://hcyxy.tech/2019/08/21/提高服务器并发处理能力/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="hecy">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="万水千山">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/08/21/提高服务器并发处理能力/" itemprop="url">提高服务器并发处理能力</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-08-21T21:28:39+08:00">
-                2019-08-21
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/JAVA/" itemprop="url" rel="index">
-                    <span itemprop="name">JAVA</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>(一）什么是服务器并发处理能力</p>
-<p>(二）有什么方法衡量服务器并发处理能力</p>
-<p>1.吞吐率</p>
-<p>2.压力测试</p>
-<p>（三）怎么提高服务器的并发处理能力</p>
-<p>1，提高CPU并发计算能力</p>
-<p>（1）多进程&amp;多线程</p>
-<p>（2）减少进程切换，使用线程，考虑进程绑定CPU</p>
-<p>（3）减少使用不必要的锁，考虑无锁编程</p>
-<p>（4）考虑进程优先级</p>
-<p>（5）关注系统负载</p>
-<p>（6）关注CPU使用率，除了用户空间和内核空间的CPU使用率以外，还要关注I/O wait</p>
-<p>2，减少系统调用</p>
-<p>3，考虑减少内存分配和释放</p>
-<p>（1）改善数据结构和算法复制度</p>
-<p>（2）使用内存池</p>
-<p>（3）考虑使用共享内存</p>
-<p>4，考虑使用持久连接</p>
-<p>5，改进I/O模型</p>
-<p>(1)DMA技术</p>
-<p>(2)异步I/O</p>
-<p>(3)改进多路I/O就绪通知策略，epoll</p>
-<p>(4)Sendfile</p>
-<p>(5)内存映射</p>
-<p>(6)直接I/O</p>
-<p>6，改进服务器并发策略</p>
-<p>（1）一个进程处理一个连接，非阻塞I/O，使用长连接</p>
-<p>（2）一个进程处理多个连接，异步I/O, 使用长连接</p>
-<p>7，改进硬件环境</p>
-<p>（一）什么是服务器并发处理能力？</p>
-<p>一台服务器在单位时间里能处理的请求越多，服务器的能力越高，也就是服务器并发处理能力越强</p>
-<p>服务器的本质工作就是，争取以最快的速度将内核缓冲区中的用户请求数据一个不剩地都拿出来，然后尽快处理，再将响应数据放到一块又能够与发送数据的缓冲区中，接着处理下一拨请求。</p>
-<p>（二）有什么方法衡量服务器并发处理能力？</p>
-<p>一，吞吐率</p>
-<p>量化指标：吞吐率，单位时间里服务器处理的最大请求数，单位req/s</p>
-<p>再深入一些，HTTP请求通常是对不同资源的请求，也就是请求不同的URL，有的是请求图片，有的是获取动态内容，有的是静态页面，显然这些请求所花费的时间各不相同，而这些请求再不同时间的组成比例又是不确定的，所以实际情况下的吞吐率是非常复杂的。</p>
-<p>正因为这些请求的性质不同，所以服务器并发能力强弱关键在于如何正对不同的请求性质来设计最优并发策略。如一台服务器处理诸多不同性质的请求，在一定程度上使得服务器的性能无法充分发挥。而并发策略的设计就是在服务器同时处理较多请求时，合理协调和充分利用CPU计算和I/O操作，使其在较大并发用户数的情况下提供较高吞吐率。</p>
-<p>另外，实际上多少用户同时发来请求并不是服务器所能决定的，一旦实际并发用户数过多，则势必影响站点质量。所以得出最大并发用户数的意义，在于了解服务器的承载能力，并且结合用户规模考虑适当的扩展方案。</p>
-<p>在考虑用户模型时，用户访问web站点时通常使用浏览器，浏览器对于同一域名下URL的并发下载是多线程的，不过有最大限制的，所以前面说到的最大并发数，具体到真实的用户，可能不是一对一的关系。</p>
-<p>而从服务器角度，实际并发用户数的可以理解为服务器当前维护的代表不同用户的文件描述符总数，也就是并发连接数。服务器一般会限制同时服务的最多用户数，比如apache的MaxClents参数。</p>
-<p>这里再深入一下，对于服务器来说，服务器希望支持高吞吐率，对于用户来说，用户只希望等待最少的时间，显然，双方不能满足，所以双方利益的平衡点，就是我们希望的最大并发用户数。</p>
-<p>二，压力测试</p>
-<p>有一个原理一定要先搞清楚，假如100个用户同时向服务器分别进行10个请求，与1个用户向服务器连续进行1000次请求，对服务器的压力是一样吗？实际上是不一样的，因对每一个用户，连续发送请求实际上是指发送一个请求并接收到响应数据后再发送下一个请求。这样对于1个用户向服务器连续进行1000次请求, 任何时刻服务器的网卡接收缓冲区中只有1个请求，而对于100个用户同时向服务器分别进行10个请求，服务器的网卡接收缓冲区最多有100个等待处理的请求，显然这时的服务器压力更大。</p>
-<p>压力测试前提考虑的条件：</p>
-<p>（1） 并发用户数</p>
-<p>（2） 总请求数</p>
-<p>（3） 请求资源描述</p>
-<p>并发用户数是指某一时刻同时向服务器发送请求的用户总数。</p>
-<p>压力测试中关系的时间有细分以下2种，</p>
-<p>（1) 用户平均请求等待时间 </p>
-<p>（这里暂不把数据在网络的传输时间，还有用户PC本地的计算时间计算入内）</p>
-<p>（2) 服务器平均请求处理时间</p>
-<p>用户平均请求等待时间主要用于衡量服务器在一定并发用户数下，单个用户的服务质量；而服务器平均请求处理时间就是吞吐率的倒数，一般来说，用户平均请求等待时间=服务器平均请求处理时间*并发用户数</p>
-<p>（三）怎么提高服务器的并发处理能力呢？</p>
-<p>一，提高CPU并发计算能力</p>
-<p>服务器之所以可以同时处理多个请求，在于操作系统通过多执行流体系设计使得多个任务可以轮流使用系统资源，这些资源包括CPU，内存以及I/O. 这里的I/O主要指磁盘I/O, 和网络I/O</p>
-<p>（1）多进程&amp;多线程</p>
-<p>多执行流的一般实现就是进程。多进程的好处不仅在于CPU时间的轮流使用，还在于对CPU计算和I/O操作进行很好的重叠利用，这里的I/O主要指磁盘I/O和网络I/O. 实际上，大多数进程的时间主要消耗在I/O操作上，现代计算机的DMA技术可以让CPU不参与I/O操作的全过程，比如进程通过系统调用，使得CPU向网卡或者磁盘等I/O设备发出指令，然后进程被挂起，释放出CPU资源，等待I/O设备完成工作后通过中断来通知进程重新就绪。对于单任务而言，CPU大部分时间空闲，这时候多进程的作用尤为重要。</p>
-<p>而且进程的优越性还在其相互独立带来的稳定性和健壮性方面。</p>
-<p>进程的缺点: 每个进程都有自己的独立空间和生命周期。当子进程被父进程创建后，便将父进程地址空间的所有数据复制到自己的地址空间中，完全继承父进程的上下文信息。进程的创建使用fork()系统调用，还是有一定的开销的，这个开销若太频繁，其可能成为影响性能的主要因素。</p>
-<p>那是否越多进程数越好呢? 请看下面讨论：</p>
-<p>（2）减少进程切换</p>
-<p>进程拥有独立的内存空间，每个进程都只能共享CPU寄存器。一个进程被挂起的本质是将它在CPU寄存器中的数据拿出来暂存在内存态堆栈着那个，而一个进程恢复工作的本质就是把它的数据重新装入CPU寄存器，这段装入和移出的数据称为“硬件上下文”，除此之外，进程上下文还包含进程允许所需的一切状态信息。</p>
-<p>当硬件上下文频繁装入和移出时，所消耗的时间是非常可观的。可用Nmon工具监视服务器每秒的上下文切换次数。</p>
-<p>为了尽量减少上下文切换次数，最简单的做法就是减少进程数，尽量使用线程并配合其它I/O模型来设计并发策略。</p>
-<p>还可以考虑使用进程绑定CPU技术，增加CPU缓存的命中率。若进程不断在各CPU上切换，这样旧的CPU缓存就会失效。</p>
-<p>（3）减少使用不必要的锁</p>
-<p>服务器处理大量并发请求时，多个请求处理任务时存在一些资源抢占竞争，这时一般采用“锁”机制来控制资源的占用，当一个任务占用资源时，我们锁住资源，这时其它任务都在等待锁的释放，这个现象称为锁竞争。</p>
-<p>通过锁竞争的本质，我们要意识到尽量减少并发请求对于共享资源的竞争。比如在允许情况下关闭服务器访问日志，这可以大大减少在锁等待时的延迟时间。要最大程度减少无辜的等待时间。</p>
-<p>这里说下无锁编程，就是由内核完成这个锁机制，主要是使用原子操作替代锁来实现对共享资源的访问保护,使用原子操作时，在进行实际的写操作时，使用了lock指令，这样就可以阻止其他任务写这块内存，避免出现数据竞争现象。原子操作速度比锁快，一般要快一倍以上。</p>
-<p>例如fwrite(), fopen()，其是使用append方式写文件，其原理就是使用了无锁编程，无锁编程的复杂度高，但是效率快，而且发生死锁概率低。</p>
-<p>（4）除了上述所说，要优化服务器的并发处理能力，还要考虑进程优先级（可由进程决定），进程调度器会动态调整运行队列中进程的优先级，通过top观察进程的PR值</p>
-<p>（5）还要关注系统负载，可在任何时刻查看/proc/loadavg, top中的load average也可看出</p>
-<p>（6）还要关注CPU使用率，除了用户空间和内核空间的CPU使用率以外，还要关注I/O wait,它是指CPU空闲并且等待I/O操作完成的时间比例。（top中查看wa的值）</p>
-<p>二，考虑系统调用</p>
-<p>进程若运行在用户态，这时可使用CPU和内存来完成一些任务，而当进程需要对硬件外设进行操作的时候（如读取磁盘文件，发送网络数据等），就必须切换到内核态，这时它拥有更多的权力来操纵整个计算机。</p>
-<p>而系统调用涉及进程从用户态到内核态的切换，导致一定的内存交换，这也是一定程度上的上下文切换，所以系统调用的开销通常认为比较昂贵的。</p>
-<p>所以要减少不必要的系统调用，也是服务器性能优化的一个方面。例如在apache中，修改httpd.conf文件，可以减少对文件路径中各级目录下检测是否存在.htacess文件这个open()系统调用； 还可以修改httpd.conf文件来减少多余的gettimeofday()系统调用。</p>
-<p> 但有时若使用一些简单的系统调用能代替大量的逻辑运算，这样反而使用系统调用更能优化性能</p>
-<p>三，考虑减少内存分配和释放</p>
-<p>服务器的工作过程中，需要大量的内存，使得内存的分配和释放工作尤为重要。</p>
-<p>可以通过改善数据结构和算法复制度来适当减少中间临时变量的内存分配及数据复制时间，而服务器本身也使用了各自的策略来提高效率。</p>
-<p>例如Apache,在运行开始时一次申请大片的内存作为内存池，若随后需要时就在内存池中直接获取，不需要再次分配，避免了频繁的内存分配和释放引起的内存整理时间。</p>
-<p>再如Nginx使用多线程来处理请求，使得多个线程之间可以共享内存资源，从而令它的内存总体使用量大大减少，另外，nginx分阶段的内存分配策略，按需分配，及时释放，使得内存使用量保持在很小的数量范围。</p>
-<p>顺便说下Linux进程的地址空间分段</p>
-<p>1、栈（存放着局部变量和函数参数等数据），向下生长   （可读可写可执行）</p>
-<p>2、堆（给动态分配内存是使用），向上生长        （可读可写可执行）</p>
-<p>3、数据段(保存全局数据和静态数据)              (可读可写不可执行)</p>
-<p>4、代码段（保存代码）               （可读可执行不可写）</p>
-<p>(1)代码段（.text）。这里存放的是CPU要执行的指令。代码段是可共享的，相同的代码在内存中只会有一个拷贝，同时这个段是只读的，防止程序由于错误而修改自身的指令。</p>
-<p>(2)初始化数据段（.data）。这里存放的是程序中需要明确赋初始值的变量，例如位于所有函数之外的全局变量：int val=100。需要强调的是，以上两段都是位于程序的可执行文件中，内核在调用exec函数启动该程序时从源程序文件中读入。</p>
-<p>(3)未初始化数据段（.bss）。位于这一段中的数据，内核在执行该程序前，将其初始化为0或者null。例如出现在任何函数之外的全局变量：int sum;</p>
-<p>(4)堆（Heap）。这个段用于在程序中进行动态内存申请，例如经常用到的malloc，new系列函数就是从这个段中申请内存。</p>
-<p>(5)栈（Stack）。函数中的局部变量以及在函数调用过程中产生的临时变量都保存在此段中</p>
-<p>还可以考虑使用共享内存</p>
-<p>共享内存指在多处理器的计算机系统中，可以被不同中央处理器（CPU）访问的大容量内存，也可以由不同进程共享，是非常快的进程通信方式。</p>
-<p>但是使用共享内存也有不好的地方，就是对于多机器时数据不好统一</p>
-<p>shell命令ipcs可用来显示系统下共享内存的状态，函数shmget可以创建或打开一块共享内存区，函数shmat将一个存在的共享内存段连接到本进程空间, 函数shmctl可以对共享内存段进行多种操作,函数shmdt函数分离该共享内存</p>
-<p>四，考虑使用持久连接</p>
-<p>持久连接也为长连接，它本身是TCP通信的一种普通方式，即在一次TCP连接中持续发送多分数据而不断开连接，与它相反的方式称为短连接，也就是建立连接后发送一份数据就断开，然后再次建立连接发送下一份数据， 周而复始。是否采用持久连接，完全取决于应用特点。从性能角度看，建立TCP连接的操作本身是一项不小的开销，在允许的情况下，连接次数越少，越有利于性能的提升; 尤其对于密集型的图片或网页等小数据请求处理有明显的加速所用。</p>
-<p>HTTP长连接需要浏览器和web服务器的共同协作，目前浏览器普遍支持长连接，表现在其发出的HTTP请求数据头中包含关于长连接的声明，如下： Connection: Keep-Alive</p>
-<p>主流的web服务器都支持长连接，比如apache中，可以用KeepAlive off关闭长连接。</p>
-<p>对于长连接的有效使用，还有关键一点在于长连接超时时间的设置，即长连接在什么时候关闭吗？ Apache的默认设置为5s, 若这个时间设置过长，则可能导致资源无效占有，维持大量空闲进程，影响服务器性能。</p>
-<p>五，改进I/O 模型</p>
-<p>I/O操作根据设备的不同分为很多类型，比如内存I/O, 网络I/O, 磁盘I/O.  对于网络I/O和磁盘I/O, 它们的速度要慢很多，尽管使用RAID磁盘阵列可通过并行磁盘磁盘来加快磁盘I/O速度，购买大连独享网络带宽以及使用高带宽网络适配器可以提高网络i/O的速度。但这些I/O操作需要内核系统调用来完成，这些需要CPU来调度，这使得CPU不得不浪费宝贵的时间来等待慢速I/O操作我们希望让CPU足够少的时间在i/O操作的调度上，如何让高速的CPU和慢速的I/O设备更好地协调工作，是现代计算机一直探讨的话题。各种I/O模型的本质区别在于CPU的参与方式。</p>
-<p>（1)DMA技术I/O设备和内存之间的数据传输方式由DMA控制器完成。在DMA模式下，CPU只需向DMA下达命令，让DMA控制器来处理数据的传送，这样可以大大节省系统资源。</p>
-<p>(2)异步I/O</p>
-<p>异步I/O指主动请求数据后便可以继续处理其它任务，随后等待I/O操作的通知，这样进程在数据读写时不发生阻塞。而同步则在数据就绪后在读写时必须阻塞。</p>
-<p>异步I/O是非阻塞的，当函数返回时，真正的I/O传输还没开始，这让CPU处理和I/O操作达到很好的重叠。</p>
-<p>顺便说说同步阻塞I/O的缺点，其虽然可以和多进程有效利用CPU资源，但代价是占用了大量的内存开销。而同步非阻塞I/O需要进程执行多次轮训查看数据是否就绪，花费了大量的CPU时间。</p>
-<p>(3)改进多路I/O就绪通知策略，epoll服务器同时处理大量的文件描述符是必不可少的，若采用同步非阻塞I/O模型，若同时接收TCP连接的数据，就必须轮流对每个socket调用接收数据的方法，不管这些socket有没有可接收的数据，都要询问一次，假如大部分socket并没有数据可以接收，那么进程便会浪费很多CPU时间用于检查这些socket.有没有可以接收的数据， 多路I/O就绪通知的出现，提供了对大量文件描述符就绪检查的高性能方案，它允许进程通过一种方法同时监视所有文件描述符，并可以快速获得所有就绪的文件描述符，然后只针对这些文件描述符进行数据访问。</p>
-<p>下面详细介绍被公认为linux 2.6下性能最好的多路I/O就绪通知方法epoll., 几乎具备select, poll, /dev/poll等模型的全部优点</p>
-<p>epoll可以同时支持水平触发和边缘触发，理论上边缘触发性能更高，但是代码实现复杂，因为任何意外的丢失事件都会造成请求处理错误。</p>
-<p>epoll主要有2大改进：</p>
-<p>（1）epoll只告知就绪的文件描述符，而且当调用epoll_wait()获得文件描述符时，返回并不是实际的描述符，而是一个代表就绪描述符数量的值，然后只需去epoll指定的一个数组中依次取得相应数量的文件描述符即可，这里使用了内存映射(mmap)技术，这样彻底省掉了这些文件描述符在系统调用时复制的开销。</p>
-<p>（2）epoll采用基于事件的就绪通知方式。其事先通过epoll_ctrl()注册每一个文件描述符，一旦某个文件描述符就绪时，内核会采用类似callback的回调机制，当进程调用epoll_wait()时得到通知</p>
-<p>(4)Sendfile</p>
-<p>大多数时候，我们都向服务器请求静态文件，比如图片，样式表等，在处理这些请求时，磁盘文件的数据先经过内核缓冲区，然后到用户内存空间，不需经过任何处理，其又被送到网卡对应的内核缓冲区，接着再被送入网卡进行发送。</p>
-<p>Linux提供sendfile()系统调用，可以讲磁盘文件的特定部分直接传送到代表客户端的socket描述符，加快了静态文件的请求速度，同时减少CPU和内存的开销。</p>
-<p>适用场景： 对于请求较小的静态文件，sendfile发挥的作用不那么明显，因发送数据的环节在整个过程中所占时间的比例相比于大文件请求时小很多。</p>
-<p>(5)内存映射</p>
-<p>Linux内核提供一种访问磁盘文件的特殊方式，它可以将内存中某块地址空间和我们指定的磁盘文件相关联，从而对这块内存的访问转换为对磁盘文件的访问。这种技术称为内存映射。</p>
-<p>多数情况下，内存映射可以提高磁盘I/O的性能，无须使用read()或write()等系统调用来访问文件，而是通过mmap()系统调用来建立内存和磁盘文件的关联，然后像访问内存一样自由访问文件。</p>
-<p>缺点：在处理较大文件时，内存映射会导致较大的内存开销，得不偿失。</p>
-<p>(6)直接I/O</p>
-<p>在linux 2.6中，内存映射和直接访问文件没有本质差异，因为数据需要经过2次复制，即在磁盘与内核缓冲区之间以及在内核缓冲区与用户态内存空间。</p>
-<p>引入内核缓冲区的目的在于提高磁盘文件的访问性能，然而对于一些复杂的应用，比如数据库服务器，它们为了进一步提高性能，希望绕过内核缓冲区，由自己在用户态空间实现并管理I/O缓冲区，比如数据库可根据更加合理的策略来提高查询缓存命中率。另一方面，绕过内核缓冲区也可以减少系统内存的开销，因内核缓冲区本身就在使用系统内存。</p>
-<p>Linux在open()系统调用中增加参数选项O_DIRECT,即可绕过内核缓冲区直接访问文件,实现直接I/O。</p>
-<p>在MySQL中，对于Innodb存储引擎，自身进行数据和索引的缓存管理，可在my.cnf配置中分配raw分区跳过内核缓冲区，实现直接I./O</p>
-<p>六，改进服务器并发策略</p>
-<p>服务器并发策略的目的，是让I/O操作和CPU计算尽量重叠进行，一方面让CPU在I/O等待时不要空闲，另一方面让CPU在I/O调度上尽量花最少的时间。</p>
-<p>（1）一个进程处理一个连接，非阻塞I/O，使用长连接</p>
-<p>Apache使用这个模型，其进程的开销限制了它的并发连接数，但从稳定性和兼容性的角度，则其相对安全，任何一个子进程的崩溃不会影响Apache本身，Apache父进程可以创建新的子进程；另一方面，Apache经过长期的考验和广发的使用，功能模块非常丰富。所以对于一些并发数要求不高（如150以内），还对其它功能有依赖，那么可考虑Apache这个模型。</p>
-<p>（2）一个进程处理多个连接，异步I/O, 使用长连接</p>
-<p>一个进程处理多个连接，潜在条件就是多路I/O就绪通知的应用。</p>
-<p>服务器通常维护者大量的空闲连接，有些可能由于使用长连接而在等待超时，有些可能是网络传输的延时等等，这时epoll只会关注活跃连接，而不在死连接上浪费时间，但是select和poll会扫描所有文件描述符，这个是个非常昂贵的开销。一个典型的应用就是图片服务器，它们希望为用户提供网页中大量图片的快速下载，采用长连接，但是这些大量连接在等待超时关闭前，处于空闲状态，这种情况下，epoll依然能很好工作。</p>
-<p>POSIX的标准库(aio.h)中定义了AIO的一系列接口，它几乎屏蔽了一切网络通信的细节，对使用者而言非常简单。AIO没有提供非阻塞的open()方法，进程仍使用open()系统调用来打开文件，然后填充一些I/O请求的数据结构（struct aiocb），接下来调用aid_read()或aid_write()来发起异步I/O操作，一旦请求进入操作队列后，函数便返回，进程可以在此调用aid_error()来检查正在运行的I/O操作的状态</p>
-<p>aiocb中相关的域</p>
-<p>AIO接口API</p>
-<p>关于进程的数量，这个不是越多越好的。大量的进程可以维持更多的活跃连接数，但每个连接的下载速度要远远小于前者（因上下文切换的CPU时间减少，有更多的时间用于发起sendfile()系统调用），则怎么决定worker的进程数取决于应用，例如是希望为更多的用户同时提供慢速下载服务，还是希望为有限的用户提供快速的下载服务。</p>
-<p>对于动态内容，如PHP脚本，worker进程通常只是负责转发请求给独立的fastcgi进程，或者作为反向代理服务器将请求转发给后端服务器，worker进程不太依赖太多的本地资源，可以适当提高并发连接数，但太多的worker进程又会带来更多的上下文切换开销和内存开销，从而整体上所有连接的相应时间变长。</p>
-<p>而读取磁盘文件可以考虑使用异步I/O，在某些场景比性能sendfile()更出色。</p>
-<p>七，改进硬件环境</p>
-<p>还有一点要提及的是硬件环境，服务器的硬件配置对站点代理的性能提升肯定是有的，但这里不作详细讨论。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://hcyxy.tech/2019/07/30/leetcode72 编辑距离/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="hecy">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="万水千山">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/07/30/leetcode72 编辑距离/" itemprop="url">leetcode72 编辑距离</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-07-30T21:53:10+08:00">
-                2019-07-30
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/算法与数据结构/" itemprop="url" rel="index">
-                    <span itemprop="name">算法与数据结构</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <blockquote>
-<p>给定两个单词word1 和word2，计算出将word1转换成word2 所使用的最少操作数。</p>
-</blockquote>
-<p>你可以对一个单词进行如下三种操作：</p>
-<ul>
-<li>插入一个字符</li>
-<li>删除一个字符<br>-替换一个字符</li>
-</ul>
-<p>编辑距离算法被数据科学家广泛应用，是用作机器翻译和语音识别评价标准的基本算法。</p>
-<p>最简单的方法是检查所有可能的编辑序列，从中找出最短的一条。但这个序列总数可能达到指数级，但完全不需要这么多，因为我们只要找到距离最短的那条而不是所有可能的序列。</p>
-<p>解决问题解决的好不好，首先看抽象问题的能力。首先想到的是最大匹配，先改，再换，再删。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">fun minDistance(word1: String, word2: String): Int &#123;</span><br><span class="line">        val n = word1.length</span><br><span class="line">        val m = word2.length</span><br><span class="line"></span><br><span class="line">        // if one of the strings is empty</span><br><span class="line">        if (n * m == 0)</span><br><span class="line">            return n + m</span><br><span class="line"></span><br><span class="line">        // array to store the convertion history</span><br><span class="line">        val d = Array(n + 1) &#123; IntArray(m + 1) &#125;</span><br><span class="line"></span><br><span class="line">        // init boundaries</span><br><span class="line">        for (i in 0 until n + 1) &#123;</span><br><span class="line">            d[i][0] = i</span><br><span class="line">        &#125;</span><br><span class="line">        for (j in 0 until m + 1) &#123;</span><br><span class="line">            d[0][j] = j</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        // DP compute</span><br><span class="line">        for (i in 1 until n + 1) &#123;</span><br><span class="line">            for (j in 1 until m + 1) &#123;</span><br><span class="line">                val left = d[i - 1][j] + 1</span><br><span class="line">                val down = d[i][j - 1] + 1</span><br><span class="line">                var leftDown = d[i - 1][j - 1]</span><br><span class="line">                if (word1[i - 1] != word2[j - 1])</span><br><span class="line">                    leftDown += 1</span><br><span class="line">                //dp[i-1][j-1] 表示替换操作，dp[i-1][j] 表示删除操作，dp[i][j-1] 表示插入操作。</span><br><span class="line">                d[i][j] = Math.min(left, Math.min(down, leftDown))</span><br><span class="line"></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return d[n][m]</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1923,7 +1802,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">68</span>
+                  <span class="site-state-item-count">70</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
