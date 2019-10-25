@@ -232,6 +232,250 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://hcyxy.tech/2018/10/12/多个数组最小范围/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="hecy">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="无病呻吟">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/10/12/多个数组最小范围/" itemprop="url">多个有序数组最小数字范围</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-12T21:01:28+08:00">
+                2018-10-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/算法与数据结构/" itemprop="url" rel="index">
+                    <span itemprop="name">算法与数据结构</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h5 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h5><p>有k个有序的数组，请找到一个最小的数字范围。使得这k个有序数组中，每个数组都至少有一个数字在该范围中。 例如：</p>
+<p>1: 4, 10, 15, 24, 26</p>
+<p>2: 0, 9, 12, 20</p>
+<p>3: 5, 18, 22, 30</p>
+<p>所得最小范围为[20,24]，其中，20在2中，22在3中，24在1中。</p>
+<h5 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h5><p>得到的最小数组最少包含3各元素，假设最小范围是[a,b,c],a&#60;b&#60;c，a b c 来自不同的有序数组。 还有一种情况是[a,b,d,c],这种情况下d只能来自b所在的数组。</p>
+<ul>
+<li>如果d来自a，有更小范围 c-b</li>
+<li>如果d来自c，有更小范围 d-a</li>
+</ul>
+<p>d所在b的数组，范围大小无影响。从分析中得出，只需要考虑在最终排序中，考虑邻近的、来自不同有序数组的元素作为备选范围。假设p1,p2,p3分别指向三个数组第一个元素，代表三个数组移动的数组下标。</p>
+<table>
+<thead>
+<tr>
+<th>步骤</th>
+<th>指针当前值</th>
+<th>最大值</th>
+<th>最小值</th>
+<th>min_range_value</th>
+<th>移动指针</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> 1</td>
+<td>4,0,5</td>
+<td>5</td>
+<td>0</td>
+<td>5</td>
+<td>p2</td>
+</tr>
+<tr>
+<td> 1</td>
+<td>4,9,5</td>
+<td>5</td>
+<td>0</td>
+<td>5</td>
+<td>p1</td>
+</tr>
+<tr>
+<td> 1</td>
+<td>10,9,5</td>
+<td>5</td>
+<td>0</td>
+<td>5</td>
+<td>p3</td>
+</tr>
+<tr>
+<td> 1</td>
+<td>10,9,18</td>
+<td>5</td>
+<td>0</td>
+<td>9</td>
+<td>p2</td>
+</tr>
+<tr>
+<td> 1</td>
+<td>10,12,18</td>
+<td>5</td>
+<td>0</td>
+<td>8</td>
+<td>p1</td>
+</tr>
+<tr>
+<td> 1</td>
+<td>15,12,18</td>
+<td>5</td>
+<td>0</td>
+<td>6</td>
+<td>p2</td>
+</tr>
+<tr>
+<td> 1</td>
+<td>15,20,18</td>
+<td>5</td>
+<td>0</td>
+<td>5</td>
+<td>p1</td>
+</tr>
+<tr>
+<td> 1</td>
+<td>24,20,18</td>
+<td>5</td>
+<td>0</td>
+<td>6</td>
+<td>p3</td>
+</tr>
+<tr>
+<td> 1</td>
+<td>24,20,22</td>
+<td>5</td>
+<td>0</td>
+<td>4</td>
+<td>p2</td>
+</tr>
+<tr>
+<td> end</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p> 每次要移动指针当前值最小的数值所在数组的指针，直到某个数组数字遍历完毕</p>
+<h5 id="代码实现如下："><a href="#代码实现如下：" class="headerlink" title="代码实现如下："></a>代码实现如下：</h5> <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">solve</span><span class="params">(<span class="keyword">int</span>[] a, <span class="keyword">int</span>[] b, <span class="keyword">int</span>[] c)</span> </span>&#123;</span><br><span class="line">       Map&lt;Integer, ArrayList&lt;<span class="keyword">int</span>[]&gt;&gt; map = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">       <span class="keyword">int</span> i = <span class="number">0</span>, j = <span class="number">0</span>, k = <span class="number">0</span>;</span><br><span class="line">       <span class="keyword">int</span> min = Integer.MAX_VALUE;</span><br><span class="line">       <span class="keyword">for</span> (; i &lt; a.length &amp;&amp; j &lt; b.length &amp;&amp; k &lt; c.length; ) &#123;</span><br><span class="line">           <span class="keyword">int</span> mMax = findMax(a[i], b[j], c[k]);</span><br><span class="line">           <span class="keyword">int</span>[] temp = findMin(a[i], b[j], c[k]);</span><br><span class="line">           <span class="keyword">int</span> mMin = temp[<span class="number">0</span>];</span><br><span class="line">           <span class="keyword">if</span> (mMax - mMin &lt; min) &#123;</span><br><span class="line">               min = mMax - mMin;</span><br><span class="line">               <span class="keyword">if</span> (map.containsKey(min)) &#123;</span><br><span class="line">                   map.get(min).add(<span class="keyword">new</span> <span class="keyword">int</span>[]&#123;mMin, mMax&#125;);</span><br><span class="line">                   map.put(min, map.get(min));</span><br><span class="line">               &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                   ArrayList&lt;<span class="keyword">int</span>[]&gt; list = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">                   list.add(<span class="keyword">new</span> <span class="keyword">int</span>[]&#123;mMin, mMax&#125;);</span><br><span class="line">                   map.put(min, list);</span><br><span class="line">               &#125;</span><br><span class="line">           &#125;</span><br><span class="line">           <span class="keyword">if</span> (temp[<span class="number">1</span>] == <span class="number">0</span>) ++i;</span><br><span class="line">           <span class="keyword">else</span> <span class="keyword">if</span> (temp[<span class="number">1</span>] == <span class="number">1</span>) ++j;</span><br><span class="line">           <span class="keyword">else</span> ++k;</span><br><span class="line">       &#125;</span><br><span class="line">       System.out.println(min);</span><br><span class="line">       ArrayList&lt;<span class="keyword">int</span>[]&gt; arr = map.get(min);</span><br><span class="line">       <span class="keyword">for</span> (<span class="keyword">int</span> r = <span class="number">0</span>; r &lt; arr.size(); r++) &#123;</span><br><span class="line">           System.out.print(<span class="string">"min:"</span> + arr.get(r)[<span class="number">0</span>]);</span><br><span class="line">           System.out.print(<span class="string">"max:"</span> + arr.get(r)[<span class="number">1</span>]);</span><br><span class="line">           System.out.println();</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   <span class="function"><span class="keyword">int</span> <span class="title">findMax</span><span class="params">(<span class="keyword">int</span> a, <span class="keyword">int</span> b, <span class="keyword">int</span> c)</span> </span>&#123;</span><br><span class="line">       <span class="keyword">int</span> max = <span class="number">0</span>;</span><br><span class="line">       <span class="keyword">if</span> (a &gt; max) &#123;</span><br><span class="line">           max = a;</span><br><span class="line">       &#125;</span><br><span class="line">       <span class="keyword">if</span> (b &gt; max) &#123;</span><br><span class="line">           max = b;</span><br><span class="line">       &#125;</span><br><span class="line">       <span class="keyword">if</span> (c &gt; max) &#123;</span><br><span class="line">           max = c;</span><br><span class="line">       &#125;</span><br><span class="line">       <span class="keyword">return</span> max;</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   <span class="keyword">int</span>[] findMin(<span class="keyword">int</span> a, <span class="keyword">int</span> b, <span class="keyword">int</span> c) &#123;</span><br><span class="line">       <span class="keyword">int</span>[] temp = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">2</span>];</span><br><span class="line">       <span class="keyword">int</span> min = Integer.MAX_VALUE;</span><br><span class="line">       <span class="keyword">if</span> (a &lt; min) &#123;</span><br><span class="line">           min = a;</span><br><span class="line">           temp[<span class="number">1</span>] = <span class="number">0</span>;</span><br><span class="line">       &#125;</span><br><span class="line">       <span class="keyword">if</span> (b &lt; min) &#123;</span><br><span class="line">           min = b;</span><br><span class="line">           temp[<span class="number">1</span>] = <span class="number">1</span>;</span><br><span class="line">       &#125;</span><br><span class="line">       <span class="keyword">if</span> (c &lt; min) &#123;</span><br><span class="line">           min = c;</span><br><span class="line">           temp[<span class="number">1</span>] = <span class="number">2</span>;</span><br><span class="line">       &#125;</span><br><span class="line">       temp[<span class="number">0</span>] = min;</span><br><span class="line">       <span class="keyword">return</span> temp;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<h6 id="越来越感觉java写的代码十分臃肿，建议使用kotlin，十分好用。"><a href="#越来越感觉java写的代码十分臃肿，建议使用kotlin，十分好用。" class="headerlink" title="越来越感觉java写的代码十分臃肿，建议使用kotlin，十分好用。"></a>越来越感觉java写的代码十分臃肿，建议使用kotlin，十分好用。</h6><h6 id="这个题的著名变种是从网页中产生包含所有查询词的最小的摘要。"><a href="#这个题的著名变种是从网页中产生包含所有查询词的最小的摘要。" class="headerlink" title="这个题的著名变种是从网页中产生包含所有查询词的最小的摘要。"></a>这个题的著名变种是从网页中产生包含所有查询词的最小的摘要。</h6>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://hcyxy.tech/2018/10/10/数字最小范围/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1924,190 +2168,6 @@ jstack（JVM Stack Trace for java）
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://hcyxy.tech/2018/07/08/分类-线性模型/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="hecy">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="无病呻吟">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/07/08/分类-线性模型/" itemprop="url">分类-线性模型</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-08T10:18:01+08:00">
-                2018-07-08
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/机器学习/" itemprop="url" rel="index">
-                    <span itemprop="name">机器学习</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"> </script>
-
-<p><strong>简介</strong><br></p>
-<h2 id="主要减少两种很流行但是不同的方法，对数模型、logit模型：线性判别分析和线性逻辑回归。增广空间中的线性函数映射到原空间中的二次函数，即线性决策边界对应二次决策边界。"><a href="#主要减少两种很流行但是不同的方法，对数模型、logit模型：线性判别分析和线性逻辑回归。增广空间中的线性函数映射到原空间中的二次函数，即线性决策边界对应二次决策边界。" class="headerlink" title="主要减少两种很流行但是不同的方法，对数模型、logit模型：线性判别分析和线性逻辑回归。增广空间中的线性函数映射到原空间中的二次函数，即线性决策边界对应二次决策边界。"></a>主要减少两种很流行但是不同的方法，对数模型、logit模型：线性判别分析和线性逻辑回归。增广空间中的线性函数映射到原空间中的二次函数，即线性决策边界对应二次决策边界。</h2><p>LDA与逻辑回归最大的区别是一个是判别模型一个是生成模型。监督机器学习方法可以分为<strong>生成方法和判别方法。</strong> 常见的生成方法有混合高斯模型、朴素贝叶斯法、隐形马尔科夫模型，常见的判别方法有SVM、LR。生成方法学习出的是生成模型，判别方法学习出的是判别模型。<strong>数据直接学习决策函数Y=f(x)或条件概率分布P(Y|X)得到的预测模型就是判别模型</strong>，即判别方法关心的是对于给定的输入X应该预测什么样的输出Y。 <strong>由数据学习联合概率分布P(X,Y)，然后由P(Y|X)=P(X,Y)/P(X)求出概率分布P(Y|X)作为预测模型，该方法表示了给定输入X与产生输出Y的生成关系。</strong> 生成模型：朴素贝叶斯、隐马尔科夫；判别模型：knn、感知机、决策树、逻辑回归、线性回归、最大熵模型、SVM、提升、条件随机场<br></p>
-<p> <strong>定义训练数据(C,X)，$$C={c_1,c_2,…,c_n}$$是哪个训练样本的label,$$X={x_1,x_2,…,x_n}$$是n个样本的特征。定义单个测试数据$$(\hat{c},\hat{x})$$,$$\hat{c}$$为测试数据label,$$\hat{x}$$是测试样本的特征。</strong></p>
-<ul>
-<li>判别模型求解思路：条件分布$$\rightarrow$$  模型参数后验概率最大$$\rightarrow$$ (似然函数 参数先验)最大$$\rightarrow$$最大似然</li>
-<li>给定输入$$\hat{x}$$,生成模型可以给出输入和输出的联合分布$$P(\hat{x},\hat{c})$$，所以生成方法的目标是求出这个联合分布。以朴素贝叶斯为例：联合分布$$\rightarrow$$求解类别先验概率和类别条件概率。</li>
-<li>生成模型可以还原联合概率分布，判别不行；生成方法的学习收敛更快，样本容量增加时，学到的模型可以更快的收敛于真实模型。存在隐变量时，仍可以利用生成方法学习，判别方法不能用；判别学习不能反应训练数据本身的特性，但它寻找最优分类面，反映的是异类数据之间的差异，直接面对预测，往往学习的准确率较高，由于直接学习P(Y|X)或Y=f(X)从而可以简化学习；生成模型是从大量数据中找规律，属于统计学习；而判别模型只关心不同类型数据的差别，利用差别来分类。<br></li>
-</ul>
-<hr>
-<p><strong>LDA</strong>线性判别分析<br><br>很多技术都基于类密度模型：</p>
-<ul>
-<li>线性和二次判别分析利用高斯密度</li>
-<li>更灵活的混合高斯模型允许非线性的决策边界</li>
-<li>非参数密度估计允许最大的灵活性</li>
-<li>朴素贝叶斯假设类别条件先验概率相互独立</li>
-</ul>
-<p>对于贝叶斯公式而言，最重要的就是类条件概率$$f_k(x)$$,很多算法之所以不同就是这个类条件概率密度函数的参数形式的假设不同，比如：<br></p>
-<ul>
-<li>线性判别分析LDA，假设$$f_k(x)$$均值不同，方差相同的高斯分布；</li>
-<li>二次判别分析QDA假设其均值、方差均不同；</li>
-<li>高斯混合模型GMM假设$$f_k(x)$$是不同的高斯分布组合</li>
-<li>很多非参数方法假设其实参数的密度函数，比如直方图</li>
-<li>朴素贝叶斯假设其是$$C_k$$边缘密度函数，即类别之间是独立同分布的</li>
-</ul>
-<p>各种算法的不同，基本上都是来至于对条件概率密度函数不同。<br><br>贝叶斯公式为：<br><br>$$Pr(G=k|X=x)=\tfrac{f_k(x)\pi_k}{\sum_{l=1}^Kf_l(x)\pi_l}$$<br><br>因为LDA假设$$f_k(x)$$均值不同，方差相同的高斯分布，所以其类条件概率密度函数为：<br><br>$$f_k(x)=\tfrac{1}{(2\pi)^{p/2}|\sum|^{1/2}}exp(-\frac{1}{2}(x-u_k)^T\sum^{-1}(x-u_k))$$<br><br>特征x的维度为p维，类别$$C_k$$均值为$$u_k$$，所有类别方差为$$\sum$$，对于二分类问题有：<br><br>$$log\frac{P(C_1|x)}{P(C_2|x)}=log\frac{f_1(x)}{f_2(x)}+log\frac{\pi_1}{\pi_2}$$<br><br>因此可以得到决策函数或判别函数为：<br><br>$$\delta_k(x)=x^T\sum^{-1}u_k-\frac{1}{2}u_k^T\sum^{-1}u_k+log\pi_k$$<br><br>其中的参数是从数据中估计出来的：</p>
-<ul>
-<li>$$u_k=N_k/N,N_k$$是类别Ck的样本数，N是样本总数</li>
-<li>$$u_k=\frac{1}{N_k}\sum_{x\in C_k}x$$就是类别Ck的均值</li>
-<li>$$\sum=\frac{1}{N-K}\sum_{k=1}^K\sum_{x\in C_k}(x-u_k)(x-u_k)^T$$<br><br><strong>二次判别分析QDA</strong><br><br>均值、方差都不同的高斯分布，由于$$\sum_k$$不一样，所以其二次项存在，其决策面为：<br><br>$$log\frac{P(C1|x)}{P(C2|x)}=log\frac{f_1(x)}{f_2(x)}+log\frac{\pi_1}{\pi_2}=x^T(\sum_1^{-1}-\sum_2^{-1})x+x^T\sum^{-1}(\mu_1-\mu_2)-\frac{1}{2}(\mu_1+\mu_2)^T\sum^{-1}(\mu_1-\mu_2)+log\frac{\pi_1}{\pi_2}-1/2log\frac{\sum_1}{\sum_2}$$<br><br>其对应判别函数为：<br><br>$$\delta_k(x)=-1/2(x-\mu_k)^T\sum^{-1}(x-\mu_k)-1/2log|\sum_k|+log\pi_k$$<br><br><strong>Fisher判别式</strong><br><br>从贝叶斯公式出发，得到线性判别分析公式，也可以从另一个角度来看线性判别分析，就是Fisher判别式，Fisher判别式就是线性判别分析LDA，Fisher判别式更侧重于LDA的数据降维的能力。<br><br>线性判别的基本思想是将高维的模式样本投影到最佳鉴别矢量空间，以达到抽取分类信息和压缩特征空间维数的效果，<strong>投影后保证模式样本在新的子空间有最大类间距离和最小的类内距离。</strong> 即模式在该空间有最佳的可分离性，因此它是一种有效的特征抽取方式。<br><br>QDA与LDA相同的是也假设每个类的观测值都来自于高斯分布，与LDA不同的是QDA假设每个类都有它们自己的协方差矩阵。<br><br>LDA需要(k-1)(p+1)个参数，KDA需要(k-1)(p(p+3)/2+1)个参数。为什么LDA和QDA的分类性能比较好，因为这些数据只支持简单的线性和二次决策边界。<br></li>
-<li>真实分类是线性时，LR和LDA通常表现更好，真实边界是一般的非线性时，QDA表现更好，当真实的分类边界更复杂时，KNN会表现更好。</li>
-<li>LR和LDA都将产生线性决策边界，两种唯一的不同是LR的系数估计是通过极大似然估计，LDA的系数是运用正态分布的均值和方差的估计值得到的；LR适合二分类问题，对于多分类问题，LDA更常见；</li>
-<li>样本能够完全线性分类时，LR参数估计会出现不稳定情况，LR方法不适合。LDA参数估计不会出现这种情况；样本量较小且自变量分布近似于高斯分布，LDA比LR表现更好；</li>
-<li>LDA和QDA都是建立在自变量服从正态分布的假设上，当自变量的分布确实是几乎服从正态分布时，两种方法表现的较好；选择LDA和QDA的关键在于偏置-方差权衡。</li>
-<li>QDA可以认为是非参数学习法KNN和具有线性分类边界LR及LDA方法的折中，QDA假设分类边界是二次的，能够比线性模型更准确的为更多问题建立模型；同时由于其二次边界的额外假设，样本量较小时，其能够优于KNN方法。</li>
-<li>KNN是非参数学习方法，不对分类边界做任何假设，分类边界为高度非线性便会优于LR和LDA，但是其不能反映每个自变量对因变量的影响</li>
-<li>LR可以适用于含有定性自变量的模型，对于定性的自变量LR会将其转换为虚拟变量，但是LDA QDA KNN都不适用于定性的自变量。</li>
-<li>LDA容忍部分误差，为了减少方差。<br><br><strong>RDA Regularization Discriminant Analysis</strong><br><br>RDA是LDA和QDA的一个折中，把各个协方差矩阵转为一个统一的矩阵。这个方法和岭回归有些类似：<br><br>$$\hat{\sum_k}(\alpha)=\alpha\hat{\sum_k}+(1-\alpha)\hat{\sum}$$<br><br>$$\hat{\sum}$$是LDA中合并的协方差矩阵<br><br><strong>降秩线性判别</strong><br><br>可以把LDA看作是一个作限制的高斯分类器。之所以受欢迎是因为有一个额外的限制,可以查看数据的低维投影。p维数据有K个分类，假如p比k大的多，可能就要降维处理，舍去某些属性。在确定最近的中心时，可以舍去与子空间正交的距离，因为对每个类贡献的相同。<br><br>费舍尔问题本质上就是最大化瑞利商。<br></li>
-</ul>
-<hr>
-<p><strong>逻辑回归</strong><br><br>逻辑回归来源于在x中通过线性函数来模拟k分类的后验概率的愿望，同时保证概率加起来为1，范围是0-1之间。模型像这种形式：<br><br>$$log\frac{Pr(G=1|X=x)}{Pr(G=K|X=x)}=\beta_{10}+\beta_1^Tx$$<br><br>$$log\frac{Pr(G=K-1|X=x)}{Pr(G=K|X=x)}=\beta_{(K-1)0}+\beta_K^Tx$$<br><br>尽管这个模型使用最后一个类做分母，但是这个选择是任意的，这个和下面的的等价：<br><br>$$Pr(G=k|X=x)=\tfrac{exp(\beta_{k0}+\beta_k^Tx)}{1+\sum_{l=1}^{K-1}exp(\beta_{l0}+\beta_l^Tx)},k=1,…,K-1$$<br><br>$$Pr(G=K|X=x)=\tfrac{1}{1+\sum_{l=1}^{K-1}exp(\beta_{l0}+\beta_l^Tx)}$$<br><br>为了强调对参数集的依赖性$$\theta={\beta_{10},\beta_1^T,…,\beta_{(K-1)0},\beta_{K-1}^T}$$<br></p>
-<h2 id="表示概率：-Pr-G-k-X-x-p-k-x-theta"><a href="#表示概率：-Pr-G-k-X-x-p-k-x-theta" class="headerlink" title="表示概率：$$Pr(G=k|X=x)=p_k(x;\theta)$$"></a>表示概率：$$Pr(G=k|X=x)=p_k(x;\theta)$$<br></h2><p><strong>二次近似推断</strong><br><br><strong>近似推断 变分推断 KL散度 平均场mean field</strong><br><br>概率推断你的核心任务就是计算某分布下某个函数的期望、或者计算边缘概率分布、条件概率分布。EM算法中，就是利用对数似然函数在隐变量后验分布下的期望。这些往往需要积分或求和操作，但这些操作不是那么容易，积分中可能有很复杂的形式，无法直接求解。如果分布是类似指数族分布这样具有共轭分布、容易得到解析解的分布形式。但是如果变量空间有很高的维度，这样做数值积分就不太可能。这两个原因导致进行精确计算往往是不可能的。<br><br>近似计算有随机和确定两条路子。随机方法就是MCMC之类的采样法。确定近似法就是变分。变分法的优点主要：有解析解、计算开销小、易于在大规模问题中应用。缺点：推导出想要的形式比较困难。可以在不同的场合应用变分法或采样法。变分法相当于把微积分从变量推广到函数上了。<br><br>这里是用高斯分布去近似目标分布的极值点。也叫拉普拉斯近似。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2158,7 +2218,7 @@ jstack（JVM Stack Trace for java）
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">65</span>
+                  <span class="site-state-item-count">66</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

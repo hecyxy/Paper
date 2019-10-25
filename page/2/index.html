@@ -232,6 +232,160 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://hcyxy.tech/2019/08/28/leetcode198 213打家劫舍/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="hecy">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="无病呻吟">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/08/28/leetcode198 213打家劫舍/" itemprop="url">leetcode198 213打家劫舍</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-08-28T20:57:12+08:00">
+                2019-08-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/算法与数据结构/" itemprop="url" rel="index">
+                    <span itemprop="name">算法与数据结构</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <blockquote>
+<p>你是一个专业的小偷，计划偷窃沿街的房屋。每间房内都藏有一定的现金，影响你偷窃的唯一制约因素就是相邻的房屋装有相互连通的防盗系统，如果两间相邻的房屋在同一晚上被小偷闯入，系统会自动报警。</p>
+</blockquote>
+<h5 id="动态规划"><a href="#动态规划" class="headerlink" title="动态规划"></a>动态规划</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">fun rob(nums: IntArray): Int &#123;</span><br><span class="line">        if (nums.isEmpty()) return 0</span><br><span class="line">        if (nums.size == 1) return nums[0]</span><br><span class="line">        if (nums.size == 2) return Math.max(nums[0], nums[1])</span><br><span class="line">        if (nums.size == 3) return Math.max(nums[1], nums[0] + nums[2])</span><br><span class="line">        val result = IntArray(nums.size)</span><br><span class="line">        result[0] = nums[0]</span><br><span class="line">        result[1] = nums[1]</span><br><span class="line">        result[2] = nums[0] + nums[2]</span><br><span class="line">        for (i in 3 until nums.size) &#123;</span><br><span class="line">            result[i] = nums[i] + Math.max(result[i - 3], result[i - 2])</span><br><span class="line">        &#125;</span><br><span class="line">        return Math.max(result[nums.size - 1], result[nums.size - 2])</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>第二种更简洁的：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">fun rob(nums: IntArray): Int &#123;</span><br><span class="line">        var prevMax = 0</span><br><span class="line">        var currMax = 0</span><br><span class="line">        for (x in nums) &#123;</span><br><span class="line">            val temp = currMax</span><br><span class="line">            currMax = Math.max(prevMax + x, currMax)</span><br><span class="line">            prevMax = temp</span><br><span class="line">        &#125;</span><br><span class="line">        return currMax</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+<h5 id="2、213"><a href="#2、213" class="headerlink" title="2、213"></a>2、213</h5><blockquote>
+<p>相比第二题，数组第一个元素和最后一个元素时联通的</p>
+</blockquote>
+<pre><code>* 解题思路：
+* 难点-&gt;最后一个既然是和第一个相连的，不然一个动态规划等式就能解决了
+* dp[i] = Math.max(dp[i - 2] + nums[i], dp[i - 1]);
+* 突破这个难点，使用两个规划数组，一个从0开始，n-1结束，另一个从1开始，n结束
+* 求出两个数组的最大值
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">fun rob(nums: IntArray): Int &#123;</span><br><span class="line">        val length = nums.size</span><br><span class="line">        if (length == 0) return 0</span><br><span class="line">        if (length == 1) return nums[0]</span><br><span class="line">        if (length == 2) return Math.max(nums[0], nums[1])</span><br><span class="line">        //0-&gt;n-1</span><br><span class="line">        val dp = IntArray(length - 1)</span><br><span class="line">        dp[0] = nums[0]</span><br><span class="line">        dp[1] = Math.max(nums[0], nums[1])</span><br><span class="line">        for (i in 2 until length - 1) &#123;</span><br><span class="line">            dp[i] = Math.max(dp[i - 2] + nums[i], dp[i - 1])</span><br><span class="line">        &#125;</span><br><span class="line">        //1-&gt;n</span><br><span class="line">        val dp1 = IntArray(length - 1)</span><br><span class="line">        dp1[0] = nums[1]</span><br><span class="line">        dp1[1] = Math.max(nums[1], nums[2])</span><br><span class="line">        for (i in 3 until length) &#123;</span><br><span class="line">            dp1[i - 1] = Math.max(dp1[i - 3] + nums[i], dp1[i - 2])</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        return Math.max(dp[length - 2], dp1[length - 2])</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://hcyxy.tech/2019/08/27/leetcode322 零钱兑换/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1716,157 +1870,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://hcyxy.tech/2019/07/27/leetcode432 全O(1)数据结构/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="hecy">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="无病呻吟">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/07/27/leetcode432 全O(1)数据结构/" itemprop="url">leetcode432 全O(1)数据结构</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-07-27T22:10:11+08:00">
-                2019-07-27
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/算法与数据结构/" itemprop="url" rel="index">
-                    <span itemprop="name">算法与数据结构</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <blockquote>
-<p>实现一个数据结构支持以下操作：</p>
-</blockquote>
-<ol>
-<li>Inc(key) - 插入一个新的值为 1 的 key。或者使一个存在的 key 增加一，保证 key 不为空字符串。</li>
-<li>Dec(key) - 如果这个 key 的值是 1，那么把他从数据结构中移除掉。否者使一个存在的 key 值减一。如果这个 key 不存在，这个函数不做任何事情。key 保证不为空字符串。</li>
-<li>GetMaxKey() - 返回 key 中值最大的任意一个。如果没有元素存在，返回一个空字符串””。</li>
-<li>GetMinKey() - 返回 key 中值最小的任意一个。如果没有元素存在，返回一个空字符串””。</li>
-</ol>
-<p>思路：实现O(1)的时间复杂度，首先想到哈希，方法和题目146.LRU缓存机制类似，使用哈希+双向链表，本题的关键元素有3个，key，value和节点位置，因此需要维护2张哈希表（分别保存key-value的map和value-node的map）和1个双向链表（升序）<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br></pre></td><td class="code"><pre><span class="line">import java.util.*</span><br><span class="line">import kotlin.collections.HashMap</span><br><span class="line"></span><br><span class="line">class AllOne &#123;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    /** Initialize your data structure here. */</span><br><span class="line">    data class LinkNode(</span><br><span class="line">        var keySet: HashSet&lt;String&gt; = HashSet(),</span><br><span class="line">        var pre: LinkNode? = null,</span><br><span class="line">        var next: LinkNode? = null</span><br><span class="line">    ) &#123;</span><br><span class="line">        override fun toString(): String &#123;</span><br><span class="line">            return &quot;&quot;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    private val keyMap = HashMap&lt;String, Int&gt;()</span><br><span class="line">    private val valueMap = HashMap&lt;Int, LinkNode&gt;()</span><br><span class="line"></span><br><span class="line">    private var head: LinkNode</span><br><span class="line">    private var tail: LinkNode</span><br><span class="line"></span><br><span class="line">    init &#123;</span><br><span class="line">        head = LinkNode()</span><br><span class="line">        tail = LinkNode()</span><br><span class="line">        head.next = tail</span><br><span class="line">        tail.pre = head</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    fun insertNode(key: String, curValue: Int, dir: Int) &#123;</span><br><span class="line">        val newNode = LinkNode()</span><br><span class="line">        valueMap[curValue + dir] = newNode</span><br><span class="line">        newNode.keySet.add(key)</span><br><span class="line">        //当前值为0直接假如尾部</span><br><span class="line">        if (curValue == 0) &#123;</span><br><span class="line">            newNode.next = head.next</span><br><span class="line">            head.next?.pre = newNode</span><br><span class="line">            newNode.pre = head</span><br><span class="line">            head.next = newNode</span><br><span class="line">            return</span><br><span class="line">        &#125;</span><br><span class="line">        val curNode = valueMap[curValue]</span><br><span class="line">        if (dir == 1) &#123;</span><br><span class="line">            newNode.next = curNode?.next</span><br><span class="line">            curNode?.next?.pre = newNode</span><br><span class="line">            newNode.pre = curNode</span><br><span class="line">            curNode?.next = newNode</span><br><span class="line">        &#125; else if (dir == -1) &#123;</span><br><span class="line">            newNode.pre = curNode?.pre</span><br><span class="line">            newNode.next = curNode</span><br><span class="line">            curNode?.pre?.next = newNode</span><br><span class="line">            curNode?.pre = newNode</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    fun removeNode(curValue: Int) &#123;</span><br><span class="line">        val curNode = valueMap[curValue]</span><br><span class="line">        val keySet = curNode?.keySet</span><br><span class="line">        if (keySet == null || keySet.isEmpty()) &#123;</span><br><span class="line">            valueMap.remove(curValue)</span><br><span class="line">            curNode?.next?.pre = curNode?.pre</span><br><span class="line">            curNode?.pre?.next = curNode?.next</span><br><span class="line">            curNode?.next = null</span><br><span class="line">            curNode?.pre = null</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /** Inserts a new key &lt;Key&gt; with value 1. Or increments an existing key by 1. */</span><br><span class="line">    fun inc(key: String) &#123;</span><br><span class="line">        if (keyMap.containsKey(key)) &#123;</span><br><span class="line">            val curValue = keyMap[key]!!</span><br><span class="line">            valueMap[curValue]?.keySet?.remove(key)</span><br><span class="line">            keyMap.replace(key, curValue + 1)</span><br><span class="line">            if (valueMap.containsKey(curValue + 1)) &#123;</span><br><span class="line">                valueMap[curValue + 1]!!.keySet.add(key)</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                insertNode(key, curValue, 1)</span><br><span class="line">            &#125;</span><br><span class="line">            removeNode(curValue)</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            keyMap[key] = 1</span><br><span class="line">            if (valueMap.containsKey(1)) &#123;</span><br><span class="line">                valueMap[1]?.keySet?.add(key)</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                insertNode(key, 0, 1)</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /** Decrements an existing key by 1. If Key&apos;s value is 1, remove it from the data structure. */</span><br><span class="line">    fun dec(key: String) &#123;</span><br><span class="line">        if (keyMap.containsKey(key)) &#123;</span><br><span class="line">            val curValue = keyMap[key]!!</span><br><span class="line">            val curNode = valueMap[curValue]</span><br><span class="line">            curNode?.keySet?.remove(key)</span><br><span class="line">            if (curValue == 1) &#123;</span><br><span class="line">                keyMap.remove(key)</span><br><span class="line">                removeNode(curValue)</span><br><span class="line">                return</span><br><span class="line">            &#125;</span><br><span class="line">            keyMap.replace(key, curValue - 1)</span><br><span class="line">            if (valueMap.containsKey(curValue - 1)) &#123;</span><br><span class="line">                valueMap[curValue - 1]?.keySet?.add(key)</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                insertNode(key, curValue, -1)</span><br><span class="line">            &#125;</span><br><span class="line">            removeNode(curValue)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /** Returns one of the keys with maximal value. */</span><br><span class="line">    fun getMaxKey(): String &#123;</span><br><span class="line">        return if (tail.pre == head) &quot;&quot;</span><br><span class="line">        else tail.pre!!.keySet.iterator().next()</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /** Returns one of the keys with Minimal value. */</span><br><span class="line">    fun getMinKey(): String &#123;</span><br><span class="line">        return if (head.next == tail) &quot;&quot;</span><br><span class="line">        else head.next!!.keySet.iterator().next()</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1917,7 +1920,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">65</span>
+                  <span class="site-state-item-count">66</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

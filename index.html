@@ -232,7 +232,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://hcyxy.tech/2019/10/06/优化程序性能/">
+    <link itemprop="mainEntityOfPage" href="http://hcyxy.tech/2019/10/18/优化程序性能/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="hecy">
@@ -251,7 +251,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/10/06/优化程序性能/" itemprop="url">优化程序性能</a></h1>
+                <a class="post-title-link" href="/2019/10/18/优化程序性能/" itemprop="url">优化程序性能</a></h1>
         
 
         <div class="post-meta">
@@ -263,8 +263,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-10-06T18:35:21+08:00">
-                2019-10-06
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-10-18T18:35:21+08:00">
+                2019-10-18
               </time>
             
 
@@ -421,6 +421,192 @@
 <p>一直以为优化到这种程度的代码很少，无意间看到阿里的中间件性能挑战赛上竟然深入了解到如此地步，于是就深入了解了一下。上述均来自对c语言的反编译，使用的gcc查看汇编语言十分方便；很多同学用的高级语言，比如java，先将hsdis-amd64.dylib放到jre/lib目录下，使用java -XX:+UnlockDiagnosticVMOptions -XX:+PrintAssembly命令即可，通常产生指令会非常多，难读。</p>
 </blockquote>
 <p>阿里巴巴treelink比赛分享下载链接:<a href="https://download.csdn.net/download/u011730199/11905664" target="_blank" rel="noopener">https://download.csdn.net/download/u011730199/11905664</a><br><br>参考文献:《深入理解计算机系统》</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://hcyxy.tech/2019/10/09/业务架构组件设计/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="hecy">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="无病呻吟">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/10/09/业务架构组件设计/" itemprop="url">业务架构组件设计</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-10-09T20:43:08+08:00">
+                2019-10-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/计算机系统/" itemprop="url" rel="index">
+                    <span itemprop="name">计算机系统</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <blockquote>
+<p>在创业型公司，为了使迭代开发快速进行，提高开发、测试人员的效率，同时为了节省成本，在设计架构的时候，主要采取大部分组件选择开源，部分组件自研的方式。</p>
+</blockquote>
+<h5 id="1-整体架构模式"><a href="#1-整体架构模式" class="headerlink" title="1.  整体架构模式"></a>1.  整体架构模式</h5><blockquote>
+<p>整体服务的模式用的是微服务架构，至于一些最时髦的架构，如service mesh、serverless、faas等，做了简单的调研，优点缺点并存，由于现在业务量没有上去，考虑未来等架构更加成熟后，一步步迭代升级。</p>
+</blockquote>
+<p><strong>整体技术栈：</strong></p>
+<ul>
+<li>微服务框架：gRpc</li>
+<li>服务注册发现：自研DNS</li>
+<li>自动化部署：改造mesos+docker</li>
+<li>分布式追踪系统：zipkin</li>
+<li>错误报告聚合：sentry</li>
+</ul>
+<h5 id="2-gRpc-Wrapper"><a href="#2-gRpc-Wrapper" class="headerlink" title="2.  gRpc Wrapper"></a>2.  gRpc Wrapper</h5><blockquote>
+<p>主要针对grpc服务封装一套更加灵活、实用的、更为完整的调用框架。</p>
+</blockquote>
+<p>功能包括:</p>
+<ul>
+<li>拦截器(超时 地址)</li>
+<li>tracing</li>
+<li>基础配置(超时 数据包大小 服务发现)</li>
+<li>基础gRpc方法</li>
+</ul>
+<p>gprc的负载均衡基于域名dns实现。</p>
+<h5 id="3-分布式追踪"><a href="#3-分布式追踪" class="headerlink" title="3. 分布式追踪"></a>3. 分布式追踪</h5><blockquote>
+<p>微服务中，调用链很长，为了排查某个错误仅靠日志就变得很困难。于是采用了开源组件zipkin，对不同的架构体系zipkin均做了支持，如dubbo、sprint mvc等。下面介绍的是针对gRpc做的处理。</p>
+</blockquote>
+<p>ziplin主要是四个组件:collector、storage、api、web，zipkin架构如下:<br><img src="https://note.youdao.com/yws/public/resource/be984da286301499e54350cb770e25b9/xmlnote/WEBRESOURCE817956fab1359bb7f2a7714bf6c4af3a/43013" alt="image"></p>
+<p>追踪流程如下:<br><img src="https://note.youdao.com/yws/public/resource/be984da286301499e54350cb770e25b9/xmlnote/WEBRESOURCE44d58e3f191ba0d71f3f0e4be1740b9c/43002" alt="image"></p>
+<p>在追踪日志中，存在几个基础元素spanId（标明服务）、traceId（唯一标识）、parentId（父子关系），通过这些元素构造追踪链路树。</p>
+<ul>
+<li>前端在发送每个请求时，通过zipkin提供的组件，在header里加入基本几个元素；</li>
+<li>后端收到后，从http header中extract相关信息，放入上下文；</li>
+<li>rpc相关服务调用时，通过serverInterceptor和clientInterceptor进行记录；</li>
+<li>数据库相关的操作，只需在url后加上statementInterceptors=brave.mysql.TracingStatementInterceptor</li>
+</ul>
+<blockquote>
+<p>记录http请求中的请求，可以通过AOP拦截，也可以通过jax-rx中feature，注册HttpTracing来进行记录；gRpc的记录通过ClientInterceptor和ServerInterceptor中的headers来进行extrac，记录、传递；</p>
+</blockquote>
+<p>可以参考<a href="https://github.com/openzipkin/zipkin-finagle-example" target="_blank" rel="noopener">：grpc brave示例</a></p>
+<h5 id="4、web-server"><a href="#4、web-server" class="headerlink" title="4、web server"></a>4、web server</h5><blockquote>
+<p>我们的架构对用户，针对web用户采用的是一个产品提供一个服务，所以使用了更轻量级的web容器jetty+jersey+guice，对三者进行了一系列封装提供给业务方使用。</p>
+</blockquote>
+<p>jersey是一套jax-rs的扩展，guice是google一套依赖注入框架。</p>
 
           
         
@@ -1720,160 +1906,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://hcyxy.tech/2019/08/28/leetcode198 213打家劫舍/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="hecy">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="无病呻吟">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/08/28/leetcode198 213打家劫舍/" itemprop="url">leetcode198 213打家劫舍</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-08-28T20:57:12+08:00">
-                2019-08-28
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/算法与数据结构/" itemprop="url" rel="index">
-                    <span itemprop="name">算法与数据结构</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <blockquote>
-<p>你是一个专业的小偷，计划偷窃沿街的房屋。每间房内都藏有一定的现金，影响你偷窃的唯一制约因素就是相邻的房屋装有相互连通的防盗系统，如果两间相邻的房屋在同一晚上被小偷闯入，系统会自动报警。</p>
-</blockquote>
-<h5 id="动态规划"><a href="#动态规划" class="headerlink" title="动态规划"></a>动态规划</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">fun rob(nums: IntArray): Int &#123;</span><br><span class="line">        if (nums.isEmpty()) return 0</span><br><span class="line">        if (nums.size == 1) return nums[0]</span><br><span class="line">        if (nums.size == 2) return Math.max(nums[0], nums[1])</span><br><span class="line">        if (nums.size == 3) return Math.max(nums[1], nums[0] + nums[2])</span><br><span class="line">        val result = IntArray(nums.size)</span><br><span class="line">        result[0] = nums[0]</span><br><span class="line">        result[1] = nums[1]</span><br><span class="line">        result[2] = nums[0] + nums[2]</span><br><span class="line">        for (i in 3 until nums.size) &#123;</span><br><span class="line">            result[i] = nums[i] + Math.max(result[i - 3], result[i - 2])</span><br><span class="line">        &#125;</span><br><span class="line">        return Math.max(result[nums.size - 1], result[nums.size - 2])</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-<p>第二种更简洁的：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">fun rob(nums: IntArray): Int &#123;</span><br><span class="line">        var prevMax = 0</span><br><span class="line">        var currMax = 0</span><br><span class="line">        for (x in nums) &#123;</span><br><span class="line">            val temp = currMax</span><br><span class="line">            currMax = Math.max(prevMax + x, currMax)</span><br><span class="line">            prevMax = temp</span><br><span class="line">        &#125;</span><br><span class="line">        return currMax</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
-<h5 id="2、213"><a href="#2、213" class="headerlink" title="2、213"></a>2、213</h5><blockquote>
-<p>相比第二题，数组第一个元素和最后一个元素时联通的</p>
-</blockquote>
-<pre><code>* 解题思路：
-* 难点-&gt;最后一个既然是和第一个相连的，不然一个动态规划等式就能解决了
-* dp[i] = Math.max(dp[i - 2] + nums[i], dp[i - 1]);
-* 突破这个难点，使用两个规划数组，一个从0开始，n-1结束，另一个从1开始，n结束
-* 求出两个数组的最大值
-</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">fun rob(nums: IntArray): Int &#123;</span><br><span class="line">        val length = nums.size</span><br><span class="line">        if (length == 0) return 0</span><br><span class="line">        if (length == 1) return nums[0]</span><br><span class="line">        if (length == 2) return Math.max(nums[0], nums[1])</span><br><span class="line">        //0-&gt;n-1</span><br><span class="line">        val dp = IntArray(length - 1)</span><br><span class="line">        dp[0] = nums[0]</span><br><span class="line">        dp[1] = Math.max(nums[0], nums[1])</span><br><span class="line">        for (i in 2 until length - 1) &#123;</span><br><span class="line">            dp[i] = Math.max(dp[i - 2] + nums[i], dp[i - 1])</span><br><span class="line">        &#125;</span><br><span class="line">        //1-&gt;n</span><br><span class="line">        val dp1 = IntArray(length - 1)</span><br><span class="line">        dp1[0] = nums[1]</span><br><span class="line">        dp1[1] = Math.max(nums[1], nums[2])</span><br><span class="line">        for (i in 3 until length) &#123;</span><br><span class="line">            dp1[i - 1] = Math.max(dp1[i - 3] + nums[i], dp1[i - 2])</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        return Math.max(dp[length - 2], dp1[length - 2])</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1924,7 +1956,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">65</span>
+                  <span class="site-state-item-count">66</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
