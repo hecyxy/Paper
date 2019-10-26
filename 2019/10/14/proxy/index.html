@@ -79,20 +79,20 @@
 
 
 
-<meta name="description" content="在创业型公司，为了使迭代开发快速进行，提高开发、测试人员的效率，同时为了节省成本，在设计架构的时候，主要采取大部分组件选择开源，部分组件自研的方式。  1.  整体架构模式 整体服务的模式用的是微服务架构，至于一些最时髦的架构，如service mesh、serverless、faas等，做了简单的调研，优点缺点并存，由于现在业务量没有上去，考虑未来等架构更加成熟后，一步步迭代升级。  整体技术">
+<meta name="description" content="公司中有些产品、数据分析相关的人员想要查看业务库中的数据，但是给他们账号直接查，太过不安全；因此设计实现了一个mysql proxy，通过管理中心申请权限，通过代理端口登录mysql，进行数据操纵，实现一些审计功能针对一些不安全的查询进行拒绝；把每位同学的执行记录记录下来，方便进行排查；  mysql proxy实现 mysql proxy本质就是利用proxy再做一次record、转发，通信组">
+<meta name="keywords" content="微信:LEILE111 email:hcy_xy@qq.com">
 <meta property="og:type" content="article">
-<meta property="og:title" content="业务架构组件设计">
-<meta property="og:url" content="http://hcyxy.tech/2019/10/09/业务架构组件设计/index.html">
+<meta property="og:title" content="mysql proxy设计实现">
+<meta property="og:url" content="http://hcyxy.tech/2019/10/14/proxy/index.html">
 <meta property="og:site_name" content="万水千山">
-<meta property="og:description" content="在创业型公司，为了使迭代开发快速进行，提高开发、测试人员的效率，同时为了节省成本，在设计架构的时候，主要采取大部分组件选择开源，部分组件自研的方式。  1.  整体架构模式 整体服务的模式用的是微服务架构，至于一些最时髦的架构，如service mesh、serverless、faas等，做了简单的调研，优点缺点并存，由于现在业务量没有上去，考虑未来等架构更加成熟后，一步步迭代升级。  整体技术">
+<meta property="og:description" content="公司中有些产品、数据分析相关的人员想要查看业务库中的数据，但是给他们账号直接查，太过不安全；因此设计实现了一个mysql proxy，通过管理中心申请权限，通过代理端口登录mysql，进行数据操纵，实现一些审计功能针对一些不安全的查询进行拒绝；把每位同学的执行记录记录下来，方便进行排查；  mysql proxy实现 mysql proxy本质就是利用proxy再做一次record、转发，通信组">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://hcyxy.tech/2019/10/09/业务架构组件设计/ziplin.png">
-<meta property="og:image" content="http://hcyxy.tech/2019/10/09/业务架构组件设计/zipservice.png">
-<meta property="og:updated_time" content="2019-10-25T15:55:09.312Z">
+<meta property="og:image" content="http://hcyxy.tech/2019/10/14/proxy/proxy.jpg">
+<meta property="og:updated_time" content="2019-10-26T02:32:35.558Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="业务架构组件设计">
-<meta name="twitter:description" content="在创业型公司，为了使迭代开发快速进行，提高开发、测试人员的效率，同时为了节省成本，在设计架构的时候，主要采取大部分组件选择开源，部分组件自研的方式。  1.  整体架构模式 整体服务的模式用的是微服务架构，至于一些最时髦的架构，如service mesh、serverless、faas等，做了简单的调研，优点缺点并存，由于现在业务量没有上去，考虑未来等架构更加成熟后，一步步迭代升级。  整体技术">
-<meta name="twitter:image" content="http://hcyxy.tech/2019/10/09/业务架构组件设计/ziplin.png">
+<meta name="twitter:title" content="mysql proxy设计实现">
+<meta name="twitter:description" content="公司中有些产品、数据分析相关的人员想要查看业务库中的数据，但是给他们账号直接查，太过不安全；因此设计实现了一个mysql proxy，通过管理中心申请权限，通过代理端口登录mysql，进行数据操纵，实现一些审计功能针对一些不安全的查询进行拒绝；把每位同学的执行记录记录下来，方便进行排查；  mysql proxy实现 mysql proxy本质就是利用proxy再做一次record、转发，通信组">
+<meta name="twitter:image" content="http://hcyxy.tech/2019/10/14/proxy/proxy.jpg">
 
 
 
@@ -122,13 +122,13 @@
 
 
 
-  <link rel="canonical" href="http://hcyxy.tech/2019/10/09/业务架构组件设计/"/>
+  <link rel="canonical" href="http://hcyxy.tech/2019/10/14/proxy/"/>
 
 
 
 
 
-  <title>业务架构组件设计 | 万水千山</title>
+  <title>mysql proxy设计实现 | 万水千山</title>
   
 
 
@@ -235,7 +235,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://hcyxy.tech/2019/10/09/业务架构组件设计/">
+    <link itemprop="mainEntityOfPage" href="http://hcyxy.tech/2019/10/14/proxy/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="hecy">
@@ -252,7 +252,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">业务架构组件设计</h1>
+          <h1 class="post-title" itemprop="name headline">mysql proxy设计实现</h1>
         
 
         <div class="post-meta">
@@ -264,8 +264,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-10-09T20:43:08+08:00">
-                2019-10-09
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-10-14T21:15:36+08:00">
+                2019-10-14
               </time>
             
 
@@ -306,6 +306,11 @@
           
 
           
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>	阅读数
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
 
           
 
@@ -325,50 +330,28 @@
 
       
         <blockquote>
-<p>在创业型公司，为了使迭代开发快速进行，提高开发、测试人员的效率，同时为了节省成本，在设计架构的时候，主要采取大部分组件选择开源，部分组件自研的方式。</p>
+<p>公司中有些产品、数据分析相关的人员想要查看业务库中的数据，但是给他们账号直接查，太过不安全；因此设计实现了一个mysql proxy，通过管理中心申请权限，通过代理端口登录mysql，进行数据操纵，实现一些审计功能针对一些不安全的查询进行拒绝；把每位同学的执行记录记录下来，方便进行排查；</p>
 </blockquote>
-<h5 id="1-整体架构模式"><a href="#1-整体架构模式" class="headerlink" title="1.  整体架构模式"></a>1.  整体架构模式</h5><blockquote>
-<p>整体服务的模式用的是微服务架构，至于一些最时髦的架构，如service mesh、serverless、faas等，做了简单的调研，优点缺点并存，由于现在业务量没有上去，考虑未来等架构更加成熟后，一步步迭代升级。</p>
+<h4 id="mysql-proxy实现"><a href="#mysql-proxy实现" class="headerlink" title="mysql proxy实现"></a>mysql proxy实现</h4><blockquote>
+<p>mysql proxy本质就是利用proxy再做一次record、转发，通信组件选用的是netty；</p>
 </blockquote>
-<p><strong>整体技术栈：</strong></p>
+<p>整体流程图如下：<br><img src="//hcyxy.tech/2019/10/14/proxy/proxy.jpg" alt="image"></p>
+<p>红色部分都是可以进行重新改的地方。</p>
+<h5 id="1-1-监听多端口"><a href="#1-1-监听多端口" class="headerlink" title="1.1 监听多端口"></a>1.1 监听多端口</h5><blockquote>
+<p>不同的人员需要连接不同的数据库、连接不同环境(测试、预发、生产环境)。因此proxy需要监听不同的端口，实现连接不同环境的数据库。</p>
+</blockquote>
 <ul>
-<li>微服务框架：gRpc</li>
-<li>服务注册发现：自研DNS</li>
-<li>自动化部署：改造mesos+docker</li>
-<li>分布式追踪系统：zipkin</li>
-<li>错误报告聚合：sentry</li>
+<li>启动时，利用grpc的流式接口，获取实例列表，即需要监听、连接哪些数据库，然后利用netty实现监听多个端口，应对不同环境的实例连接；</li>
+<li>为用户的连接实现一个连接池，多个用户连接，用同一个连接实现，避免建立过多的连接。</li>
 </ul>
-<h5 id="2-gRpc-Wrapper"><a href="#2-gRpc-Wrapper" class="headerlink" title="2.  gRpc Wrapper"></a>2.  gRpc Wrapper</h5><blockquote>
-<p>主要针对grpc服务封装一套更加灵活、实用的、更为完整的调用框架。</p>
-</blockquote>
-<p>功能包括:</p>
+<h5 id="1-2-转发过滤"><a href="#1-2-转发过滤" class="headerlink" title="1.2 转发过滤"></a>1.2 转发过滤</h5><p>netty中分为FrontHandler主要用于处理client的连接，BackendHandler实现与mysql的连接。</p>
 <ul>
-<li>拦截器(超时 地址)</li>
-<li>tracing</li>
-<li>基础配置(超时 数据包大小 服务发现)</li>
-<li>基础gRpc方法</li>
-</ul>
-<p>gprc的负载均衡基于域名dns实现。</p>
-<h5 id="3-分布式追踪"><a href="#3-分布式追踪" class="headerlink" title="3. 分布式追踪"></a>3. 分布式追踪</h5><blockquote>
-<p>微服务中，调用链很长，为了排查某个错误仅靠日志就变得很困难。于是采用了开源组件zipkin，对不同的架构体系zipkin均做了支持，如dubbo、sprint mvc等。下面介绍的是针对gRpc做的处理。</p>
-</blockquote>
-<p>ziplin主要是四个组件:collector、storage、api、web，zipkin架构如下:<br><img src="//hcyxy.tech/2019/10/09/业务架构组件设计/ziplin.png" alt="image"></p>
-<p>追踪流程如下:<br><img src="//hcyxy.tech/2019/10/09/业务架构组件设计/zipservice.png" alt="image"></p>
-<p>在追踪日志中，存在几个基础元素spanId（标明服务）、traceId（唯一标识）、parentId（父子关系），通过这些元素构造追踪链路树。</p>
-<ul>
-<li>前端在发送每个请求时，通过zipkin提供的组件，在header里加入基本几个元素；</li>
-<li>后端收到后，从http header中extract相关信息，放入上下文；</li>
-<li>rpc相关服务调用时，通过serverInterceptor和clientInterceptor进行记录；</li>
-<li>数据库相关的操作，只需在url后加上statementInterceptors=brave.mysql.TracingStatementInterceptor</li>
+<li>FrontHandler解析client连接1信息，再通过grpc流式接口，获取真实的连接信息；</li>
+<li>Backend负责封装真正的连接信息，与mysql通信。</li>
 </ul>
 <blockquote>
-<p>记录http请求中的请求，可以通过AOP拦截，也可以通过jax-rx中feature，注册HttpTracing来进行记录；gRpc的记录通过ClientInterceptor和ServerInterceptor中的headers来进行extrac，记录、传递；</p>
+<p>博主联系方式wx：LEILE111；邮箱:<a href="mailto:hcy_xy@qq.com" target="_blank" rel="noopener">hcy_xy@qq.com</a></p>
 </blockquote>
-<p>可以参考<a href="https://github.com/openzipkin/zipkin-finagle-example" target="_blank" rel="noopener">：grpc brave示例</a></p>
-<h5 id="4、web-server"><a href="#4、web-server" class="headerlink" title="4、web server"></a>4、web server</h5><blockquote>
-<p>我们的架构对用户，针对web用户采用的是一个产品提供一个服务，所以使用了更轻量级的web容器jetty+jersey+guice，对三者进行了一系列封装提供给业务方使用。</p>
-</blockquote>
-<p>jersey是一套jax-rs的扩展，guice是google一套依赖注入框架。</p>
 
       
     </div>
@@ -393,8 +376,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/10/04/翻转链表/" rel="next" title="翻转链表">
-                <i class="fa fa-chevron-left"></i> 翻转链表
+              <a href="/2019/10/09/taskdesign/" rel="next" title="业务架构组件设计">
+                <i class="fa fa-chevron-left"></i> 业务架构组件设计
               </a>
             
           </div>
@@ -403,8 +386,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2019/10/09/taskdesign/" rel="prev" title="业务架构组件设计">
-                业务架构组件设计 <i class="fa fa-chevron-right"></i>
+              <a href="/2019/10/18/优化程序性能/" rel="prev" title="优化程序性能">
+                优化程序性能 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -537,7 +520,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-整体架构模式"><span class="nav-number">1.</span> <span class="nav-text">1.  整体架构模式</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-gRpc-Wrapper"><span class="nav-number">2.</span> <span class="nav-text">2.  gRpc Wrapper</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-分布式追踪"><span class="nav-number">3.</span> <span class="nav-text">3. 分布式追踪</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4、web-server"><span class="nav-number">4.</span> <span class="nav-text">4、web server</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#mysql-proxy实现"><span class="nav-number">1.</span> <span class="nav-text">mysql proxy实现</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-1-监听多端口"><span class="nav-number">1.1.</span> <span class="nav-text">1.1 监听多端口</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1-2-转发过滤"><span class="nav-number">1.2.</span> <span class="nav-text">1.2 转发过滤</span></a></li></ol></li></ol></div>
             
 
           </div>
@@ -581,6 +564,26 @@
 
 
         
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      访客数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人
+    </span>
+  
+
+  
+    <span class="site-pv">
+      总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
 
 
 
