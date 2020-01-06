@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="在某乎上，总会看见以下问题：  SICP这本书怎么样？ 一些人给另一些人极力推荐SICP  带着好奇心去看了这本书，看了前三章，用基本的语言演绎了过程抽象、数据抽象，递归妙处；但是还是想不到该如何使用。看到好多人在推荐这本书时说这本书是MIT入门书籍，然后去查了查，发现这本书早就不是MIT不是教材了。 具体原因如下： why MIT stopped teaching sicp? In this t">
+<meta property="og:type" content="article">
+<meta property="og:title" content="20200106随笔">
+<meta property="og:url" content="http://hcyxy.tech/2020/01/06/20200106suibi/index.html">
+<meta property="og:site_name" content="万水千山">
+<meta property="og:description" content="在某乎上，总会看见以下问题：  SICP这本书怎么样？ 一些人给另一些人极力推荐SICP  带着好奇心去看了这本书，看了前三章，用基本的语言演绎了过程抽象、数据抽象，递归妙处；但是还是想不到该如何使用。看到好多人在推荐这本书时说这本书是MIT入门书籍，然后去查了查，发现这本书早就不是MIT不是教材了。 具体原因如下： why MIT stopped teaching sicp? In this t">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2020-01-06T15:38:18.113Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="20200106随笔">
+<meta name="twitter:description" content="在某乎上，总会看见以下问题：  SICP这本书怎么样？ 一些人给另一些人极力推荐SICP  带着好奇心去看了这本书，看了前三章，用基本的语言演绎了过程抽象、数据抽象，递归妙处；但是还是想不到该如何使用。看到好多人在推荐这本书时说这本书是MIT入门书籍，然后去查了查，发现这本书早就不是MIT不是教材了。 具体原因如下： why MIT stopped teaching sicp? In this t">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://hcyxy.tech/2020/01/06/20200106suibi/"/>
+
+
+
+
+
+  <title>20200106随笔 | 万水千山</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">万水千山</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">wechat:LEILE111 email:hcy_xy@qq.com</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://hcyxy.tech/2020/01/06/20200106suibi/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="hecy">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="万水千山">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">20200106随笔</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-01-06T21:50:38+08:00">
+                2020-01-06
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/随笔/" itemprop="url" rel="index">
+                    <span itemprop="name">随笔</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>	阅读数
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>在某乎上，总会看见以下问题：</p>
+<ul>
+<li>SICP这本书怎么样？</li>
+<li>一些人给另一些人极力推荐SICP</li>
+</ul>
+<p>带着好奇心去看了这本书，看了前三章，用基本的语言演绎了过程抽象、数据抽象，递归妙处；但是还是想不到该如何使用。看到好多人在推荐这本书时说这本书是MIT入门书籍，然后去查了查，发现这本书早就不是MIT不是教材了。</p>
+<p>具体原因如下：</p>
+<h6 id="why-MIT-stopped-teaching-sicp"><a href="#why-MIT-stopped-teaching-sicp" class="headerlink" title="why MIT stopped teaching sicp?"></a>why MIT stopped teaching sicp?</h6><blockquote>
+<p>In this talk at the NYC Lisp meetup, Gerry Sussman was asked why MIT stopped teaching the legendary 6.001 course, which was based on Sussman and Abelson’s classic text The Structure and Interpretation of Computer Programs (SICP). Sussman’s answer was that: (1) he and Hal Abelson got tired of teaching it (having done it since the 1980s). So in 1997, they walked into the department head’s office and said: “We quit. Figure out what to do.” And more importantly, (2) that they felt that the SICP curriculum no longer prepared engineers for what engineering is like today. Sussman said that in the 80s and 90s, engineers built complex systems by combining simple and well-understood parts. The goal of SICP was to provide the abstraction language for reasoning about such systems.<br>Today, this is no longer the case. Sussman pointed out that engineers now routinely write code for complicated hardware that they don’t fully understand (and often can’t understand because of trade secrecy.) The same is true at the software level, since programming environments consist of gigantic libraries with enormous functionality. According to Sussman, his students spend most of their time reading manuals for these libraries to figure out how to stitch them together to get a job done. He said that programming today is “More like science. You grab this piece of library and you poke at it. You write programs that poke it and see what it does. And you say, ‘Can I tweak it to do the thing I want?’”. The “analysis-by-synthesis” view of SICP — where you build a larger system out of smaller, simple parts — became irrelevant. Nowadays, we do programming by poking.</p>
+</blockquote>
+<p>总结起来就是这门课跟不上时代，上实际90年代，工程师都是通过组合简单的过程，常常会造成系统很复杂，所以学习这门课可以锻炼学生的抽象能力；但如今大多数程序员都是在学如何使用library；</p>
+<h6 id="What-should-we-consider-fundamental"><a href="#What-should-we-consider-fundamental" class="headerlink" title="What should we consider fundamental?"></a>What should we consider fundamental?</h6><p>A fair question, and a full answer would be too long for a comment (though it would fit in a blog post, which I’ll go ahead and write now since this seems to be an issue). But I’ll take a whack at the TL;DR version here.</p>
+<p>AI, ML, and NLP and web design are application areas, not fundamentals. (You didn’t list computer graphics, computer vision, robotics, embedded systems – all applications, not fundamentals.) You can cover all the set theory and graph theory you need in a day. Most people get this in high school. The stuff you need is just not that complicated. You can safely skip category theory. What you do need is some amount of time spent on the idea that computer programs are mathematical objects which can be reasoned about mathematically. This is the part that the vast majority of people are missing nowadays, and it can be a little tricky to wrap your brain around at first. You need to understand what a fixed point is and why it matters. You need automata theory, but again, the basics are really not that complicated. You need to know about Turing-completeness, and that in addition to Turing machines there are PDAs and FSAs. You need to know that TMs can do things that PDAs can’t (like parse context-sensitive grammars), and that PDAs can to things that FSAs can’t (like parse context-free grammars) and that FSAs can parse regular expressions, and that’s all they can do.</p>
+<p>You need some programming language theory. You need to know what a binding is, and that there are two types of bindings that matter: lexical and dynamic. You need to know what an environment is (a mapping between names and bindings) and how environments are chained. You need to know how evaluation and compilation are related, and the role that environments play in both processes. You need to know the difference between static and dynamic typing. You need to know how to compile a high-level language down to an RTL. For operating systems, you need to know what a process is, what a thread is, some of the ways in which parallel processes lead to problems, and some of the mechanisms for dealing with those problems, including the fact that some of those mechanisms require hardware support (e.g. atomic test-and-set instructions). You need a few basic data structures. Mainly what you need is to understand that what data structures are really all about is making associative maps that are more efficient for certain operations under certain circumstances.</p>
+<p>You need a little bit of database knowledge. Again, what you really need to know is that what databases are really all about is dealing with the architectural differences between RAM and non-volatile storage, and that a lot of these are going away now that these architectural differences are starting to disappear. That’s really about it.</p>
+<p>来源：<a href="http://lambda-the-ultimate.org/node/5335?dt_dapp=1" target="_blank" rel="noopener">http://lambda-the-ultimate.org/node/5335?dt_dapp=1</a></p>
+<p>其实上来直接看SICP，会有些不明所以，建议线看一看the little schemer，重点就是8、9、10章讲lambda、y combinator和intepretor；</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/10/18/优化程序性能/" rel="next" title="优化程序性能">
+                <i class="fa fa-chevron-left"></i> 优化程序性能
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">hecy</p>
+              <p class="site-description motion-element" itemprop="description">dreamer</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">68</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">18</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/hecyxy" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:hcy_xy@qq.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-gmail"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-6"><a class="nav-link" href="#why-MIT-stopped-teaching-sicp"><span class="nav-number">1.</span> <span class="nav-text">why MIT stopped teaching sicp?</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#What-should-we-consider-fundamental"><span class="nav-number">2.</span> <span class="nav-text">What should we consider fundamental?</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">hecy</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      访客数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人
+    </span>
+  
+
+  
+    <span class="site-pv">
+      总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
