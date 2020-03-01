@@ -232,6 +232,240 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://hcyxy.tech/2019/07/01/计算学习理论PAC/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="hecy">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="万水千山">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/07/01/计算学习理论PAC/" itemprop="url">计算学习理论PAC VC</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-07-01T23:37:14+08:00">
+                2019-07-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/机器学习/" itemprop="url" rel="index">
+                    <span itemprop="name">机器学习</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <blockquote>
+<p>看了很多机器学习算法，又看了很多深度学习框架后，又回过头来看PAC的理论支撑。</p>
+</blockquote>
+<p><strong>PAC结论：同等条件下，模型越复杂泛化误差越大；同一模型，样本满足一定情况且数量越大，泛化误差越小(模型越复杂需要的样本更多)；</strong></p>
+<p>PAC可以帮你解释什么？</p>
+<ul>
+<li>为什么机器学习以后在训练样本之外的数据上有效？</li>
+<li>为什么大多数场景不需要深度学习？</li>
+<li>为什么深度学习需要大量数据？</li>
+</ul>
+<h4 id="1-推断未知的数据"><a href="#1-推断未知的数据" class="headerlink" title="1. 推断未知的数据"></a>1. 推断未知的数据</h4><p><code>$\mathcal H$</code>代表Hypothesis set中方程数量,用sample中h(x)!=f(x)的比例推断总体中h(x)!=f(x)概率，h(x)!=f(x)表示一个error，<code>$E_{in}$</code>表示在sample中出现的error期望，总体中出现error期望<code>$E_{out}$</code>，对于h来说：</p>
+<ul>
+<li><code>$E_{out}=\epsilon[h(x)!=f(x)]$</code></li>
+<li><code>$E_{in}(h)=\frac{1}{N}\sum^{N}_{n=1}[h(x_{n}!=y_{n})]$</code></li>
+</ul>
+<p>霍夫丁不等式：<br></p>
+<blockquote>
+<p><code>$P[|E_{in}(h)-E_{out}(h)|&gt;\epsilon]&lt;=2exp^{-2\epsilon^2N}$</code></p>
+</blockquote>
+<p>当右边商界足够小时，可以说h在sample中表现错误率与h在总体中表现是差不多的。</p>
+<p>对于一个固定的h，<code>$E_{in}$</code>与<code>$E_{out}$</code>很接近，也不一定是好的learing，因为这两个可能同时很大，代表误差很大，此时需要一个验证流程，使用历史数据判断某个h是不是误差够小；</p>
+<h5 id="1-2-误差数据"><a href="#1-2-误差数据" class="headerlink" title="1.2 误差数据"></a>1.2 误差数据</h5><p>由于抽样误差造成样本分布于总体分布相差很大的样本，就是误差数据。比如h1是个很好的预测方程，但是遇到误差数据，就会造成<code>$E_{in}(h1)$</code>很大假如h2是个不好的预测，但遇到误差样本，反而<code>$E_{in}h2$</code>很小，对于误差样本，会造成：</p>
+<blockquote>
+<p><code>$|E_{in}(h)-E_{out}(h)|&gt;\epsilon$</code></p>
+</blockquote>
+<p>出现误差数据的概率是：</p>
+<blockquote>
+<p><code>$P(BAD)&lt;=2Mexp^{-2\epsilon^2N}$</code></p>
+</blockquote>
+<p>如果假设集合(hypothesis set)中方程数量<code>$|\mathcal{H}|=M$</code>是有限个，并且N足够大时，有很大概率保证不会遇到误差数据,不管<code>$\mathcal{A}$</code>挑选了任意一个g，都可以保证<code>$E_{out}(g)    \approx E_{in}(g)$</code>，learning主要考虑两个问题：</p>
+<ul>
+<li>能否保证<code>$E_{in}(g)$</code>和<code>$E_{out}(g)$</code>很接近？(hypothesis set中方程个数会不会太多，训练数据量是否足够)</li>
+<li>能够使<code>$E_{in}(g) \approx 0$</code>,或者说使其足够小</li>
+</ul>
+<ol>
+<li>如果M很小，第一个问题会做的很好，因为遇到坏的概率很小；但由于选择性很小，很难找到<code>$E_{in}(g)$</code>较小的g；</li>
+<li>如果M很大，选择方程的时候自由度很大，更有机会选到<code>$E_{in}$</code>很低的方程，但遇到误差数据的可能性大大增加。</li>
+</ol>
+<p>由于上述公式中，推算时union bound是基于独立性的假设，<code>$\mathcal H$</code>，遭遇误差数据被明显放大，将公式升级为：<br><br><code>$P[|E_{in}(g)-E_{out}(g)|&gt;\epsilon ]  &lt;= 2effective(N)exp(-2\epsilon^2N)$</code></p>
+<h6 id="成长函数"><a href="#成长函数" class="headerlink" title="成长函数"></a>成长函数</h6><p><code>$\mathcal H$</code>作用于D最多产生多少种dichotomy(结果)，这个结果与<code>$\mathcal H$</code>和数量N有关，定义成长函数：<br><br><code>$max|\mathcal H(x_1,x_2,...,x_n)|$</code></p>
+<h6 id="打散shatter-突破点break-point"><a href="#打散shatter-突破点break-point" class="headerlink" title="打散shatter 突破点break point"></a>打散shatter 突破点break point</h6><p>当<code>$\mathcal H$</code>作用于有N个inputs的<code>$\mathcal D$</code>时，产生的最大dichotomy是<code>$2^N$</code>，当成长函数<code>$m_{\mathcal H}(N)&lt;2^N$</code>，这个k值就是break point,此时<code>$m_{\mathcal H}(k)$</code>就是其能shatter的数量。</p>
+<h5 id="成长函数上界"><a href="#成长函数上界" class="headerlink" title="成长函数上界"></a>成长函数上界</h5><p><code>$B(N,k)=2\alpha+\beta&lt;=B(N-1,k)+B(N-1,k-1)$</code><br>方程数量看上去是无穷的，但真正有效的方程数量却是有限的，可以用成长函数<code>$ m_{\mathcal H}(N)$</code>来描述<code>$\mathcal H$</code>作用于<code>$\mathcal D$</code>会产生多少种有效的方程。</p>
+<h4 id="2、VC维"><a href="#2、VC维" class="headerlink" title="2、VC维"></a>2、VC维</h4><p>如果一个<code>$\mathcal H$</code>的vc dimension即为<code>$d_{vc}(\mathcal H)$</code>，是这个<code>$\mathcal H$</code>最多能shatter掉的点的数量，如果无论多少点都能打散，则<code>$d_{vc}(h)=\infty$</code><br></p>
+<blockquote>
+<p><code>$d_{vc}$</code>和break point的关系:<code>$k=d_{vc}+1$</code>,<code>$m_{\mathcal H} = \sum^{d_{vc}}_{i=0}(N,i)$</code>,利用数学归纳法可得：<code>$m_{\mathcal H}=\sum_{i=0}^{d_{vc}}(N,i)&lt;=N^{d_{vc}+1}$</code></p>
+</blockquote>
+<h5 id="更一般的vc-bound"><a href="#更一般的vc-bound" class="headerlink" title="更一般的vc bound"></a>更一般的vc bound</h5><p>上面的公式中，<code>$m_{\mathcal H}(N)$</code>描述的是<code>$\mathcal H$</code>作用于数据量为N的资料D的有效方程数，因此<code>$\mathcal H$</code>当中每个h作用都能算出一个<code>$E_{in}$</code>，一共有<code>$m_{\mathcal H}(N)$</code>个，但是在总体中out of sample，<code>$E_{out}$</code>是无限的，不能直接套用union bound，假设我们能从总体当中再获得一份N笔的验证资料<code>$D&#39;$</code>,对于任何一个h可以算出作用于<code>$D&#39;$</code>上的<code>$E_{in}&#39;$</code>，因此如果<code>$E_{in}$</code>和<code>$E_{out}$</code>离很远，有非常大可能<code>$E_{in}$</code>和<code>$E_{in}&#39;$</code>也离很远，当N很大，<code>$E_{in}$</code>和<code>$E_{in}&#39;$</code>可以看错服从以<code>$E_{out}$</code>为中心的近似正态分布。新推出的VC-bound：</p>
+<blockquote>
+<p><code>$\begin{aligned}
+\mathbb{P}[BAD] &amp;= \mathbb{P}[\exists h \in \mathcal{H}\text{ s.t. } |E_{in}(h)-E_{out}(h)|\gt \epsilon] \\\
+&amp;\leq 4m_{\mathcal{H}}(2N)exp(-\frac{1}{8}\epsilon^2N)
+\end{aligned}$</code></p>
+</blockquote>
+<p>其中<code>$m_{\mathcal H}(N)是假设集合的成长函数 $</code>：<br></p>
+<blockquote>
+<p><code>$\begin{aligned}
+\\m_{\mathcal{H}}(N)\leq \sum_{i=0}^{d_{vc}}\binom {N}{i}\leq N^{d_{vc}} \\\
+\textit{( for }N\geq 2, d_{vc}\geq 2\textit{ )}
+\end{aligned}$</code></p>
+</blockquote>
+<p>因为寻找所有Hypothesis set是困难的，再利用<code>$N^{d_{vc}}$</code>来控制住所有vc dimension的假设集合的成长函数，对于任意一个从<code>$\mathcal H$</code>中的g有：<br></p>
+<blockquote>
+<p><code>$\begin{aligned}
+&amp;\;\;\;\,\mathbb{P}[|E_{in}(g) - E_{out}(g)\gt \epsilon|] \\\
+&amp;\leq \mathbb{P}[BAD]\\\
+&amp;= \mathbb{P}[\exists h \in \mathcal{H}\text{ s.t. } |E_{in}(h)-E_{out}(h)|\gt \epsilon] \\\
+&amp;\leq 4m_{\mathcal{H}}(2N)exp(-\frac{1}{8}\epsilon^2N) \\\
+&amp;\leq 4(2N)^{d_{vc}}exp(-\frac{1}{8}\epsilon^2N) \\\
+&amp;\textit{( if }d_{vc}\textit{ is finite )}
+\end{aligned}$</code></p>
+</blockquote>
+<p>让机器学习学到东西，有三个条件：</p>
+<ul>
+<li><code>$\mathcal H$</code>的<code>$d_{vc}$</code>是有限的，vcBound才存在;(good <code>$\mathcal H$</code>)</li>
+<li>N足够大(对于特定<code>$d_{vc}$</code>)，这样才能保证上面不等式bound不会太大(good <code>$\mathcal D</code>)</li>
+<li>算法<code>$\mathcal A$</code>有办法从<code>$\mathcal H$</code>挑一个使得<code>$E_{in}$</code>最小的方程g(good <code>$\mathcal A$</code>)</li>
+</ul>
+<p>很多情况都只考虑第三点，忽略了前两点，在traing set表现的还好，在test set表现不好，目前只关注前两点。</p>
+<h4 id="3、简单-复杂"><a href="#3、简单-复杂" class="headerlink" title="3、简单 复杂"></a>3、简单 复杂</h4><p>lerning最关注的两个问题：1、能否使<code>$E_{in}$</code>和<code>$E_{out}$</code>很接近；2、能否使<code>$E_{in}$</code>足够小；</p>
+<ul>
+<li>对于相同的<code>$\mathcal D$</code>而言，<code>$d_{vc}$</code>小的模型，vc bound比较小，容易保证<code>$E_{in}$</code>和<code>$E_{out}$</code>很接近，很难做到较小的<code>$E_{in}$</code>.</li>
+<li>对于相同<code>$\mathcal D$</code>而言，<code>$d_{vc}$</code>大的模型，比较容易实现小的<code>$E_{in}$</code>，但是VC Bound很大，很难保证模型对<code>$\mathcal D$</code>之外的世界也能有同样强的预测能力</li>
+</ul>
+<p>令之前得到的VC Bound为<code>$\delta$</code>,误差数据<code>$[|E_{in}(g)-E_{out}(g)|\gt \epsilon]$</code>发生概率小于<code>$\delta$</code>，则正常数据<code>$[|E_{in}(g)-E_{out}(g)|\leq \epsilon]$</code>发生概率大于置信度<code>$1-\delta$</code><br><br><code>$\begin{aligned}
+\text{set}\;\;\;\;\delta &amp;= 4(2N)^{d_{vc}}exp(-\frac{1}{8}\epsilon^2N)\\\
+\sqrt{\frac{8}{N}ln(\frac{4(2N)^{d_{vc}}}{\delta})} &amp;= \epsilon
+\end{aligned}$</code><br></p>
+<p>因此<code>$E_{in}$</code>和<code>$E_{out}$</code>有如下关系：<br><br><code>$E_{in}(g)-\sqrt{\frac{8}{N}ln(\frac{4(2N)^{d_{vc}}}{\delta})} \leq E_{out}(g) \leq E_{in}(g)+\sqrt{\frac{8}{N}ln(\frac{4(2N)^{d_{vc}}}{\delta})}$</code></p>
+<p>令<code>$\Omega (N,\mathcal{H},\delta)=\sqrt{...}$</code>，即可得到模型越复杂，<code>$E_{in}$</code>与<code>$E_{out}$</code>离的越远。</p>
+<p><img src="https://note.youdao.com/yws/public/resource/09bc4f7ae923faa6ab39481ed0af755f/xmlnote/WEBRESOURCE682053125a48af2ebf41b5bf21f14fc8/32890" alt="image"></p>
+<p>随着<code>$d_{vc}$</code>上升<code>$E_{in}$</code>不断降低，<code>$\Omega</code>不断上升，上升与下降的速度在每个阶段都是不同的，因此我们能够寻找一个二者兼顾的，比较合适的<code>$d_{vc}^{*}$</code>，用来决定应该使用多复杂的模型。</p>
+<p>反过来，如果我们需要使用 <code>$d_{vc}=3$</code>这种复杂程度的模型，并且想保证 ϵ=0.1 ，置信度 1−δ=90% ，可以通过VC Bound来求得大致需要的数据量 N 。通过简单的计算可以得到理论上，我们需要 N≈10,000<code>$d_{vc}$</code>数据，但VC Bound事实上是一个极为宽松的bound，因为它对于任何演算法<code>$\mathcal{A}$</code>，任何分布的数据，任何目标函数 f 都成立，所以经验上，常常认为 N≈10dvc 就可以有不错的结果。</p>
+<p>备用图片地址：<a href="http://beader.me/mlnotebook/section2/images/model_complexity_curve.png" target="_blank" rel="noopener">http://beader.me/mlnotebook/section2/images/model_complexity_curve.png</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://hcyxy.tech/2019/06/24/乘飞机概率题/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2332,159 +2566,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://hcyxy.tech/2019/03/02/趣题2/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="hecy">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="万水千山">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/03/02/趣题2/" itemprop="url">数据密集型应用</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-02T16:08:20+08:00">
-                2019-03-02
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/算法与数据结构/" itemprop="url" rel="index">
-                    <span itemprop="name">算法与数据结构</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h5 id="题目1：有一个黑匣子，黑匣子里有一个关于-x-的多项式-p-x-。我们不知道它有多少项，但已知所有的系数都是正整数。每一次，你可以给黑匣子输入一个整数，黑匣子将返回把这个整数代入多项式后的值。那么，最少需要多少次，-我们可以得到这个多项式每项的系数呢？答案是两次。"><a href="#题目1：有一个黑匣子，黑匣子里有一个关于-x-的多项式-p-x-。我们不知道它有多少项，但已知所有的系数都是正整数。每一次，你可以给黑匣子输入一个整数，黑匣子将返回把这个整数代入多项式后的值。那么，最少需要多少次，-我们可以得到这个多项式每项的系数呢？答案是两次。" class="headerlink" title="题目1：有一个黑匣子，黑匣子里有一个关于 x 的多项式 p(x) 。我们不知道它有多少项，但已知所有的系数都是正整数。每一次，你可以给黑匣子输入一个整数，黑匣子将返回把这个整数代入多项式后的值。那么，最少需要多少次， 我们可以得到这个多项式每项的系数呢？答案是两次。"></a>题目1：有一个黑匣子，黑匣子里有一个关于 x 的多项式 p(x) 。我们不知道它有多少项，但已知所有的系数都是正整数。每一次，你可以给黑匣子输入一个整数，黑匣子将返回把这个整数代入多项式后的值。那么，最少需要多少次， 我们可以得到这个多项式每项的系数呢？答案是两次。</h5><ul>
-<li>第一次，输入1，于是得到整个多项式所有系数的和，记作S；</li>
-<li>第二次，输入S+1，于是黑匣子返回的是：<code>$a_n*(S+1)^n+a_{n-1}(S+1)^{n-1}+...+a_0$</code></li>
-<li>要得到<code>$a_n,...,a_0$</code>，只需要把这个值换成S+1进制，依次读出每一位上的数。</li>
-</ul>
-<p>第一次得到S是为了保证对任意系数<code>$a_i,a_i&lt;=S$</code> </p>
-<p>其实输入e，一次就够了。</p>
-<h5 id="题目2：有一个n个元素的数组，除了一个元素只出现一次外，其他元素都出现两次，让你找出这个只出现一次的元素是几，要求时间复杂度为O-n-且不再开辟新的内存空间。"><a href="#题目2：有一个n个元素的数组，除了一个元素只出现一次外，其他元素都出现两次，让你找出这个只出现一次的元素是几，要求时间复杂度为O-n-且不再开辟新的内存空间。" class="headerlink" title="题目2：有一个n个元素的数组，除了一个元素只出现一次外，其他元素都出现两次，让你找出这个只出现一次的元素是几，要求时间复杂度为O(n)且不再开辟新的内存空间。"></a>题目2：有一个n个元素的数组，除了一个元素只出现一次外，其他元素都出现两次，让你找出这个只出现一次的元素是几，要求时间复杂度为O(n)且不再开辟新的内存空间。</h5><p>将所有元素做异或运算，即a[1] XOR a[2] XOR a[3] XOR…XOR a[n]，所得的结果就是那个只出现一次的数字，时间复杂度为O(n)</p>
-<h5 id="升级版：有一个n个元素的数组，除了两个数只出现一次外，其余元素都出现两次，让你找出这两个只出现一次的数分别是几，要求时间复杂度为O-n-且再开辟的内存空间固定-与n无关"><a href="#升级版：有一个n个元素的数组，除了两个数只出现一次外，其余元素都出现两次，让你找出这两个只出现一次的数分别是几，要求时间复杂度为O-n-且再开辟的内存空间固定-与n无关" class="headerlink" title="升级版：有一个n个元素的数组，除了两个数只出现一次外，其余元素都出现两次，让你找出这两个只出现一次的数分别是几，要求时间复杂度为O(n)且再开辟的内存空间固定(与n无关)"></a>升级版：有一个n个元素的数组，除了两个数只出现一次外，其余元素都出现两次，让你找出这两个只出现一次的数分别是几，要求时间复杂度为O(n)且再开辟的内存空间固定(与n无关)</h5><ul>
-<li>把所有结果异或，得到的就是那两个只出现一次的元素异或的结果；</li>
-<li>这个结果至少某一位是不同的，找到为1的那位，以这位是1还是0为标准，将数组的n个元素分为两部分，将这一位为0的所有元素做异或运算，得出的数就是只出现一次的数中的一个；；将这一位为的所有元素做异或，得出的数就是只出现一次数中的另一个。</li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2535,7 +2616,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">68</span>
+                  <span class="site-state-item-count">69</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2546,7 +2627,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-count">10</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
