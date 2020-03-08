@@ -232,6 +232,161 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://hcyxy.tech/2019/09/04/leetcode684 685冗余连接/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="hecy">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="万水千山">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/09/04/leetcode684 685冗余连接/" itemprop="url">leetcode684 685冗余连接</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-09-04T22:41:13+08:00">
+                2019-09-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/算法与数据结构/" itemprop="url" rel="index">
+                    <span itemprop="name">算法与数据结构</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <blockquote>
+<p>输入一个图，该图由一个有着N个节点 (节点值不重复1, 2, …, N) 的树及一条附加的边构成。附加的边的两个顶点包含在1到N中间，这条附加的边不属于树中已存在的边。</p>
+</blockquote>
+<p>结果图是一个以边组成的二维数组。每一个边的元素是一对[u, v]，满足u &lt; v，表示连接顶点u和v的无向图的边。</p>
+<p>返回一条可以删去的边，使得结果图是一个有着N个节点的树。如果有多个答案，则返回二维数组中最后出现的边。答案边[u, v] 应满足相同的格式u &lt; v。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br></pre></td><td class="code"><pre><span class="line">fun findRedundantConnection(edges: Array&lt;IntArray&gt;): IntArray &#123;</span><br><span class="line">        val nums = IntArray(1000)</span><br><span class="line">        edges.forEach &#123; arr -&gt;</span><br><span class="line">            val r1 = find(arr[0], nums)</span><br><span class="line">            val r2 = find(arr[1], nums)</span><br><span class="line">            if (r1 == r2) &#123;</span><br><span class="line">                return arr</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                nums[r1] = r2</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return intArrayOf()</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    fun find(y: Int, nums: IntArray): Int &#123;</span><br><span class="line">        var x = y</span><br><span class="line">        while (nums[x] != 0) &#123;</span><br><span class="line">            x = nums[x]</span><br><span class="line">        &#125;</span><br><span class="line">        return x</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 深度优先搜索</span><br><span class="line">     */</span><br><span class="line">    fun dfs(edges: Array&lt;IntArray&gt;): IntArray &#123;</span><br><span class="line">        val graph = HashMap&lt;Int, HashSet&lt;Int&gt;&gt;()</span><br><span class="line">        edges.forEach &#123; arr -&gt;</span><br><span class="line">            if (hasCycle(arr[0], arr[1], graph, -1)) return arr</span><br><span class="line">            if (!graph.containsKey(arr[0])) &#123;</span><br><span class="line">                graph[arr[0]] = HashSet()</span><br><span class="line">            &#125;</span><br><span class="line">            if (!graph.containsKey(arr[1])) &#123;</span><br><span class="line">                graph[arr[1]] = HashSet()</span><br><span class="line">            &#125;</span><br><span class="line">            graph[arr[0]]!!.add(arr[1])</span><br><span class="line">            graph[arr[1]]!!.add(arr[0])</span><br><span class="line">        &#125;</span><br><span class="line">        return intArrayOf()</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    private fun hasCycle(cur: Int, target: Int, map: HashMap&lt;Int, HashSet&lt;Int&gt;&gt;, pre: Int): Boolean &#123;</span><br><span class="line">        if (map[cur]?.contains(target) == true) &#123;</span><br><span class="line">            return true</span><br><span class="line">        &#125;</span><br><span class="line">        map[cur]?.forEach &#123;</span><br><span class="line">            if (it == pre) return@forEach</span><br><span class="line">            if (hasCycle(it, target, map, cur)) return true</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        return false</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    fun bfs(edges: Array&lt;IntArray&gt;): IntArray &#123;</span><br><span class="line">        val graph = HashMap&lt;Int, HashSet&lt;Int&gt;&gt;()</span><br><span class="line">        edges.forEach &#123; arr -&gt;</span><br><span class="line">            val queue = LinkedList&lt;Int&gt;()</span><br><span class="line">            val set = HashSet&lt;Int&gt;()</span><br><span class="line">            queue.offer(arr[0])</span><br><span class="line">            set.add(arr[0])</span><br><span class="line">            while (queue.isNotEmpty()) &#123;</span><br><span class="line">                val t = queue.poll()</span><br><span class="line">                if (graph[t]?.contains(arr[1]) == true) return arr</span><br><span class="line">                graph[t]?.forEach &#123;</span><br><span class="line">                    if (set.contains(it)) return@forEach</span><br><span class="line">                    queue.push(it)</span><br><span class="line">                    set.add(it)</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            if (!graph.containsKey(arr[0])) &#123;</span><br><span class="line">                graph[arr[0]] = HashSet()</span><br><span class="line">            &#125;</span><br><span class="line">            if (!graph.containsKey(arr[1])) &#123;</span><br><span class="line">                graph[arr[1]] = HashSet()</span><br><span class="line">            &#125;</span><br><span class="line">            graph[arr[0]]!!.add(arr[1])</span><br><span class="line">            graph[arr[1]]!!.add(arr[0])</span><br><span class="line">        &#125;</span><br><span class="line">        return intArrayOf()</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h5 id="685-有向图-冗余连接"><a href="#685-有向图-冗余连接" class="headerlink" title="685 有向图 冗余连接"></a>685 有向图 冗余连接</h5><blockquote>
+<p>在本问题中，有根树指满足以下条件的有向图。该树只有一个根节点，所有其他节点都是该根节点的后继。每一个节点只有一个父节点，除了根节点没有父节点。</p>
+</blockquote>
+<p>输入一个有向图，该图由一个有着N个节点 (节点值不重复1, 2, …, N) 的树及一条附加的边构成。附加的边的两个顶点包含在1到N中间，这条附加的边不属于树中已存在的边。</p>
+<p>结果图是一个以边组成的二维数组。 每一个边 的元素是一对 [u, v]，用以表示有向图中连接顶点 u and v和顶点的边，其中父节点u是子节点v的一个父节点。</p>
+<p>返回一条能删除的边，使得剩下的图是有N个节点的有根树。若有多个答案，返回最后出现在给定二维数组的答案。</p>
+<p>解题思路：<br><br>主要是判断有无环，再判断有没有入度为2的节点。<br>先来找入度为2的点，如果有的话，那么我们将当前产生入度为2的后加入的那条边标记为second，前一条边标记为first。然后我们来找环，为了方便起见，找环使用联合查找Union Find的方法，当我们找到了环之后，如果first不存在，说明是第二种情况，我们返回刚好组成环的最后加入的那条边。如果first存在，说明是第三种情况，我们返回first。如果没有环存在，说明是第一种情况，我们返回second</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">fun findRedundantDirectedConnection(edges: Array&lt;IntArray&gt;): IntArray &#123;</span><br><span class="line">        val n = edges.size</span><br><span class="line">        var first: IntArray? = null</span><br><span class="line">        val second = IntArray(2)</span><br><span class="line">        val root = IntArray(n + 1)</span><br><span class="line">        edges.forEach &#123; arr -&gt;</span><br><span class="line">            if (root[arr[1]] == 0) &#123;</span><br><span class="line">                root[arr[1]] = arr[0]</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                first = intArrayOf(root[arr[1]], arr[1])</span><br><span class="line">                second[0] = arr[0]</span><br><span class="line">                second[1] = arr[1]</span><br><span class="line">                arr[1] = 0</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        for (i in 0..n) &#123;</span><br><span class="line">            root[i] = i</span><br><span class="line">        &#125;</span><br><span class="line">        edges.forEach &#123; arr -&gt;</span><br><span class="line">            if (arr[1] == 0) return@forEach</span><br><span class="line">            val x = getRoot(root, arr[0])</span><br><span class="line">            val y = getRoot(root, arr[1])</span><br><span class="line">            if (x == y) return if (first == null || first!!.isEmpty()) arr else first!!</span><br><span class="line">            root[x] = y</span><br><span class="line">        &#125;</span><br><span class="line">        return second</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    private fun getRoot(root: IntArray, i: Int): Int &#123;</span><br><span class="line">        var y = i</span><br><span class="line">        while (y != root[y]) &#123;</span><br><span class="line">            root[y] = root[root[y]]</span><br><span class="line">            y = root[y]</span><br><span class="line">        &#125;</span><br><span class="line">        return y</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://hcyxy.tech/2019/09/03/leetcode207 210课程表/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1616,151 +1771,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://hcyxy.tech/2019/08/24/leetcode582 杀死进程/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="hecy">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="万水千山">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/08/24/leetcode582 杀死进程/" itemprop="url">leetcode582 杀死进程</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-08-24T22:32:16+08:00">
-                2019-08-24
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/算法与数据结构/" itemprop="url" rel="index">
-                    <span itemprop="name">算法与数据结构</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <blockquote>
-<p>给你n个进程，每个进程都有一个唯一的PID（process id）和PPID（parent process id）。每个进程最多只有一个父进程，但可能有多个子进程。如果一个进程的PPID为0，表示它没有父进程。如果一个进程被杀死，那么它的子进程也会被杀死。</p>
-</blockquote>
-<p>分析：每个进程最多只有一个父进程，但可能有多个子进程，因此进程之间的关系可以用一棵树来表示。父进程对应树中的父节点，而子进程对应树中的子节点。解决这个问题的第一步是根据输入的PID和PPID两个链表构建出一个树。<strong>树是一种特殊的图（Graph）。图有两种常用的表示方法，一是基于邻接表，二是基于邻接矩阵。由于树是一类比较稀疏的图，一般用邻接表更为高效。</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line"></span><br><span class="line">    private val childMap = HashMap&lt;Int, HashSet&lt;Int&gt;&gt;()</span><br><span class="line">    fun kill(pid: List&lt;Int&gt;, ppid: List&lt;Int&gt;, number: Int): List&lt;Int&gt; &#123;</span><br><span class="line">        var i = 0</span><br><span class="line">        while (i &lt; pid.size) &#123;</span><br><span class="line">            childMap[ppid[i]] = childMap.getOrDefault(ppid[i], HashSet())</span><br><span class="line">            childMap[ppid[i]]?.add(pid[i])</span><br><span class="line">            i++</span><br><span class="line">        &#125;</span><br><span class="line">        val result = ArrayList&lt;Int&gt;()</span><br><span class="line">        dfskill(number, result)</span><br><span class="line">        bfskill(number, result)</span><br><span class="line">        return result</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    fun dfskill(number: Int, list: ArrayList&lt;Int&gt;) &#123;</span><br><span class="line">        if (!childMap.containsKey(number)) &#123;</span><br><span class="line">            return</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            list.add(number)</span><br><span class="line">            if (childMap.containsKey(number)) &#123;</span><br><span class="line">                val child = childMap[number]!!.toList()</span><br><span class="line">                child.forEach &#123;</span><br><span class="line">                    dfskill(it, list)</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    fun bfskill(number: Int, list: ArrayList&lt;Int&gt;) &#123;</span><br><span class="line">        val queue = LinkedList&lt;Int&gt;()</span><br><span class="line">        if (childMap.containsKey(number)) queue.add(number)</span><br><span class="line">        while (queue.isNotEmpty()) &#123;</span><br><span class="line">            val process = queue.remove()</span><br><span class="line">            list.add(process)</span><br><span class="line">            if (childMap.containsKey(process)) &#123;</span><br><span class="line">                queue.addAll(childMap[process]!!.toList())</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1811,7 +1821,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">71</span>
+                  <span class="site-state-item-count">72</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
