@@ -232,6 +232,184 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://hcyxy.tech/2020/03/08/async program/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="hecy">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="万水千山">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/03/08/async program/" itemprop="url">异步编程的几种方式</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-08T14:03:12+08:00">
+                2020-03-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/编程语言/" itemprop="url" rel="index">
+                    <span itemprop="name">编程语言</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <blockquote>
+<p>几十年来，我们都在如何防止我们的应用程序被阻塞。开发桌面应用、移动应用、服务端程序，都想避免让用户等待；有很多途径来解决这种问题：</p>
+<ul>
+<li>线程</li>
+<li>回调</li>
+<li>futures、promises</li>
+<li>响应式扩展</li>
+<li>协程</li>
+</ul>
+</blockquote>
+<h4 id="1-线程"><a href="#1-线程" class="headerlink" title="1. 线程"></a>1. 线程</h4><p>假如有一个任务需要长时间运行，而且会阻塞用户界面，我们可以在一个单独的线程中运行这个线程，避免阻塞UI，但是存在很多缺点：</p>
+<ul>
+<li>线程有昂贵的上下文切换；</li>
+<li>线程数量受底层操作系统的限制；</li>
+<li>线程并不总是可用，如在JS中不支持线程；</li>
+<li>线程不容易使用，线程的Debug、竞态条件是多线程中常见的问题</li>
+</ul>
+<h4 id="2-回调"><a href="#2-回调" class="headerlink" title="2. 回调"></a>2. 回调</h4><p>将一个函数作为参数传递给另一个函数，处理完成后调用此函数，但是会存在以下问题：</p>
+<ul>
+<li>回调嵌套的难度。通常被用作回调的函数，经常最终需要自己的回调。导致一些列回调嵌套并导致出现难以理解的代码；</li>
+<li>错误处理很复杂。嵌套模型使错误处理和传播更加复杂。</li>
+</ul>
+<h4 id="3-Futures，Promises"><a href="#3-Futures，Promises" class="headerlink" title="3. Futures，Promises"></a>3. Futures，Promises</h4><p>发起调用的时候，在某些时候将它返回一个Promise的可被操作的对象；对异步调用结果的一个封装；</p>
+<h4 id="4-响应式扩展"><a href="#4-响应式扩展" class="headerlink" title="4. 响应式扩展"></a>4. 响应式扩展</h4><p>Rx背后的想法是走向所谓的可观察流，将数据视为流，并且可观察；Rx很简单，Observer Pattern带有一系列扩展，允许对数据进行操作；<strong>方法上与Futures非常相似，但是人们可以将Future视为一个离散元素，而Rx返回一个流</strong> 因此提出了一种新的编程模型方式：<strong>一切都是流，并且是可观察的。</strong></p>
+<h4 id="5-CPS变换-Coroutine与async-await"><a href="#5-CPS变换-Coroutine与async-await" class="headerlink" title="5. CPS变换 Coroutine与async/await"></a>5. CPS变换 Coroutine与async/await</h4><p>无论是响应式还是Promise，仍然没有摆脱手工构造Continuation，开发者要把业务逻辑改写为回调函数；对于线性逻辑基本可以应付自如，如果逻辑复杂一点呢？</p>
+<ul>
+<li>O -&gt; A -&gt; B -&gt; Z (promise is ok)</li>
+<li>O -&gt; A ( B or C ) -&gt; Z(Rx is Ok)</li>
+<li>O -&gt; A -&gt; B -&gt; (C-&gt;A or Z) how to solve it?</li>
+</ul>
+<p>在C#、JS、py中提供了async/await，摆脱了回调函数，在异步函数调用时加上await，<strong>编译器会自动将它转为协程</strong></p>
+<p>CPS变换：把普通函数转成一个CPS函数，即Continuation也能作为一个调用参数。函数不仅能从头运行，还能根据Continuation的指示继续从某个点运行，比如IO调用的地方。</p>
+<blockquote>
+<p>此时函数变成了一个状态机，每次调用或者调用其他异步函数，状态机都会做一些计算和状态转换。Kotlin中的实现会将Continuation编译为一个新的对象。Jvm上有一个实现，在Bytecode中实现CPS变换 <a href="https://github.com/electronicarts/ea-async" target="_blank" rel="noopener">ea-async</a></p>
+</blockquote>
+<h4 id="6-用户态线程"><a href="#6-用户态线程" class="headerlink" title="6. 用户态线程"></a>6. 用户态线程</h4><p>有了async/await后，易用性有了很大提升。更彻底的实现是用户态线程，代表的有golang、jvm中的quasar；用户态线程把操作系统提供的线程机制完全抛弃，不去用这个VM的虚拟化机制。比如硬件有16个线程，就把若干用户态线程调度到16个系统线程上运行；同时所有可能阻塞系统级线程的如sleep、recv，会阻塞对应的系统线程。go runtime接管这样的系统调用，用统一的event loop来调度。</p>
+<h4 id="7-小结"><a href="#7-小结" class="headerlink" title="7. 小结"></a>7. 小结</h4><p>以上方案中，Promise、Reactive本质还是回调函数，只是提升了易用性；async/await和用户态线程是更彻底的实现，前者通过编译器的CPS变换创造出CPS式的函数调用；后者绕开操作系统，重新实现一套线程和调度机制。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://hcyxy.tech/2020/03/07/readpapers/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1853,170 +2031,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://hcyxy.tech/2019/09/03/leetcode207 210课程表/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="hecy">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="万水千山">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/09/03/leetcode207 210课程表/" itemprop="url">leetcode207 210课程表</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-09-03T22:53:16+08:00">
-                2019-09-03
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/算法与数据结构/" itemprop="url" rel="index">
-                    <span itemprop="name">算法与数据结构</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <blockquote>
-<p>现在你总共有 n 门课需要选，记为0到n-1。</p>
-</blockquote>
-<p>在选修某些课程之前需要一些先修课程。例如，想要学习课程 0 ，你需要先完成课程 1 ，我们用一个匹配来表示他们: [0,1]</p>
-<blockquote>
-<p>判断：给你n个节点，若干条边，组成的是否是有向无环图。</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">fun canFinish(numCourses: Int, prerequisites: Array&lt;IntArray&gt;): Boolean &#123;</span><br><span class="line">        if (numCourses &lt;= 0) return false</span><br><span class="line">        if (prerequisites.isEmpty()) return true</span><br><span class="line">        val graph = HashMap&lt;Int, HashSet&lt;Int&gt;&gt;()</span><br><span class="line">        if (prerequisites.isEmpty()) return true</span><br><span class="line">        prerequisites.forEach &#123; arr -&gt;</span><br><span class="line">            if (!graph.containsKey(arr[0])) &#123;</span><br><span class="line">                graph[arr[0]] = HashSet()</span><br><span class="line">            &#125;</span><br><span class="line">            graph[arr[0]]!!.add(arr[1])</span><br><span class="line">        &#125;</span><br><span class="line">        val visited = IntArray(numCourses)</span><br><span class="line">        for (i in 0 until numCourses) &#123;</span><br><span class="line">            if (dfs(graph, visited, i)) &#123;</span><br><span class="line">                return false</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return true</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    private fun dfs(graph: HashMap&lt;Int, HashSet&lt;Int&gt;&gt;, visited: IntArray, current: Int): Boolean &#123;</span><br><span class="line">        if (visited[current] == 1) &#123;</span><br><span class="line">            return true</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        if(visited[current] == 2)&#123;</span><br><span class="line">            return false</span><br><span class="line">        &#125;</span><br><span class="line">        visited[current] = 1</span><br><span class="line">        val childNode = graph[current]</span><br><span class="line">        childNode?.forEach &#123;</span><br><span class="line">            if(dfs(graph,visited,it))&#123;</span><br><span class="line">                return true</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        visited[current] = 2</span><br><span class="line">        return false</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>210 现在你总共有 n 门课需要选，记为0到n-1。</p>
-</blockquote>
-<p>在选修某些课程之前需要一些先修课程。例如，想要学习课程 0 ，你需要先完成课程1 ，我们用一个匹配来表示他们: [0,1]</p>
-<p>给定课程总量以及它们的先决条件，返回你为了学完所有课程所安排的学习顺序。</p>
-<p>可能会有多个正确的顺序，你只要返回一种就可以了。如果不可能完成所有课程，返回一个空数组。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">    fun findOrder(numCourses: Int, prerequisites: Array&lt;IntArray&gt;): IntArray &#123;</span><br><span class="line">        val map = HashMap&lt;Int, HashSet&lt;Int&gt;&gt;()</span><br><span class="line">        val inDegree = IntArray(numCourses)</span><br><span class="line"></span><br><span class="line">        prerequisites.forEach &#123; arr -&gt;</span><br><span class="line">            if (!map.containsKey(arr[1])) &#123;</span><br><span class="line">                map[arr[1]] = HashSet()</span><br><span class="line">            &#125;</span><br><span class="line">            inDegree[arr[0]]++</span><br><span class="line">            map[arr[1]]!!.add(arr[0])</span><br><span class="line">        &#125;</span><br><span class="line">        val queue = LinkedList&lt;Int&gt;()</span><br><span class="line">        for (i in 0 until inDegree.size) &#123;</span><br><span class="line">            if (inDegree[i] == 0) &#123;</span><br><span class="line">                queue.offer(i)</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        val result = arrayListOf&lt;Int&gt;()</span><br><span class="line">        while (queue.isNotEmpty()) &#123;</span><br><span class="line">            val p = queue.poll()</span><br><span class="line">            result.add(p)</span><br><span class="line">            map[p]?.forEach &#123;</span><br><span class="line">                inDegree[it]--</span><br><span class="line">                if (inDegree[it] == 0) &#123;</span><br><span class="line">                    queue.offer(it)</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        if(result.size != numCourses) return intArrayOf()</span><br><span class="line">        return result.toIntArray()</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h5 id="630-课程表三"><a href="#630-课程表三" class="headerlink" title="630 课程表三"></a>630 课程表三</h5><p>这里有 n 门不同的在线课程，他们按从 1 到 n编号。每一门课程有一定的持续上课时间（课程时间）t 以及关闭时间第 d天。一门课要持续学习 t 天直到第 d 天时要完成，你将会从第 1 天开始。</p>
-<p>给出 n 个在线课程用 (t, d) 对表示。你的任务是找出最多可以修几门课。</p>
-<p>example:<br><br>输入: [[100, 200], [200, 1300], [1000, 1250], [2000, 3200]]<br>输出: 3<br>解释:<br>这里一共有 4 门课程, 但是你最多可以修 3 门:<br>首先, 修第一门课时, 它要耗费 100 天，你会在第 100 天完成, 在第 101 天准备下门课。<br>第二, 修第三门课时, 它会耗费 1000 天，所以你将在第 1100 天的时候完成它, 以及在第 1101 天开始准备下门课程。<br>第三, 修第二门课时, 它会耗时 200 天，所以你将会在第 1300 天时完成它。<br>第四门课现在不能修，因为你将会在第 3300 天完成它，这已经超出了关闭日期。</p>
-<p><strong>贪心法</strong><br><br>先对数组以d排序，在遍历数组的过程中维护当前日期，若课程可选，那么增加当前日期，若不可选，从已经选过的课程中找出一个耗时最长的课程，若该课程耗时比当前课程长，那么替换。重复此过程。替换的过程中只需要找到最长耗时课程就可以了，因此可以用优先级队列进行优化</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">fun scheduleCourse(courses: Array&lt;IntArray&gt;): Int &#123;</span><br><span class="line">        Arrays.sort&lt;IntArray&gt;(courses) &#123; a, b -&gt;</span><br><span class="line">            a[1] - b[1]</span><br><span class="line">        &#125;</span><br><span class="line">        val queue = PriorityQueue&lt;Int&gt; &#123; a, b -&gt;</span><br><span class="line">            b - a</span><br><span class="line">        &#125;</span><br><span class="line">        var time = 0</span><br><span class="line">        courses.forEach &#123; arr -&gt;</span><br><span class="line">            if (arr[0] &gt; arr[1]) return@forEach</span><br><span class="line">            if (time + arr[0] &lt;= arr[1]) &#123;</span><br><span class="line">                queue.offer(arr[0])</span><br><span class="line">                time += arr[0]</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                if (queue.isNotEmpty() &amp;&amp; queue.peek() &gt; arr[0]) &#123;</span><br><span class="line">                    time += arr[0] - queue.poll()</span><br><span class="line">                    queue.offer(arr[0])</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return queue.size</span><br><span class="line"></span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -2062,7 +2081,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">70</span>
+                  <span class="site-state-item-count">71</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2073,7 +2092,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-count">11</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>

@@ -232,6 +232,156 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://hcyxy.tech/2019/08/23/leetcode32 最长有效括号/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="hecy">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="万水千山">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/08/23/leetcode32 最长有效括号/" itemprop="url">leetcode32 最长有效括号</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-08-23T22:17:25+08:00">
+                2019-08-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/算法与数据结构/" itemprop="url" rel="index">
+                    <span itemprop="name">算法与数据结构</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <blockquote>
+<p>定一个只包含 ‘(‘和 ‘)’的字符串，找出最长的包含有效括号的子串的长度。</p>
+</blockquote>
+<p>示例1:</p>
+<p>输入: “(()”<br>输出: 2<br>解释: 最长有效括号子串为 “()”<br>示例 2:</p>
+<p>输入: “)()())”<br>输出: 4<br>解释: 最长有效括号子串为 “()()”</p>
+<p><strong>解动态规划的题主要是找到有效模型</strong></p>
+<h5 id="1、动态规划"><a href="#1、动态规划" class="headerlink" title="1、动态规划"></a>1、动态规划</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">fun longestValidParentheses(s: String): Int &#123;</span><br><span class="line">        var maxans = 0</span><br><span class="line">        val dp = IntArray(s.length)</span><br><span class="line">        for (i in 1 until s.length) &#123;</span><br><span class="line">            if (s[i] == &apos;)&apos;) &#123;</span><br><span class="line">                if (s[i - 1] == &apos;(&apos;) &#123;</span><br><span class="line">                    dp[i] = (if (i &gt;= 2) dp[i - 2] else 0) + 2</span><br><span class="line">                &#125; else if (i - dp[i - 1] &gt; 0 &amp;&amp; s[i - dp[i - 1] - 1] == &apos;(&apos;) &#123;</span><br><span class="line">                    dp[i] = dp[i - 1] + (if (i - dp[i - 1] &gt;= 2) dp[i - dp[i - 1] - 2] else 0) + 2</span><br><span class="line">                &#125;</span><br><span class="line">                maxans = Math.max(maxans, dp[i])</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return maxans</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h5 id="2、栈的方式"><a href="#2、栈的方式" class="headerlink" title="2、栈的方式"></a>2、栈的方式</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">fun longestValidParentheses(s: String): Int &#123;</span><br><span class="line">        var maxans = 0</span><br><span class="line">        val stack = Stack&lt;Int&gt;()</span><br><span class="line">        stack.push(-1)</span><br><span class="line">        for (i in 0 until s.length) &#123;</span><br><span class="line">            if (s[i] == &apos;(&apos;) &#123;</span><br><span class="line">                stack.push(i)</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                stack.pop()</span><br><span class="line">                if (stack.empty()) &#123;</span><br><span class="line">                    stack.push(i)</span><br><span class="line">                &#125; else &#123;</span><br><span class="line">                    maxans = Math.max(maxans, i - stack.peek())</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return maxans</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h5 id="3、双指针"><a href="#3、双指针" class="headerlink" title="3、双指针"></a>3、双指针</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">fun longestValidParentheses(s: String): Int &#123;</span><br><span class="line">        var left = 0</span><br><span class="line">        var right = 0</span><br><span class="line">        var maxlength = 0</span><br><span class="line">        for (i in 0 until s.length) &#123;</span><br><span class="line">            if (s[i] == &apos;(&apos;) &#123;</span><br><span class="line">                left++</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                right++</span><br><span class="line">            &#125;</span><br><span class="line">            if (left == right) &#123;</span><br><span class="line">                maxlength = Math.max(maxlength, 2 * right)</span><br><span class="line">            &#125; else if (right &gt;= left) &#123;</span><br><span class="line">                right = 0</span><br><span class="line">                left = right</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        right = 0</span><br><span class="line">        left = right</span><br><span class="line">        for (i in s.length - 1 downTo 0) &#123;</span><br><span class="line">            if (s[i] == &apos;(&apos;) &#123;</span><br><span class="line">                left++</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                right++</span><br><span class="line">            &#125;</span><br><span class="line">            if (left == right) &#123;</span><br><span class="line">                maxlength = Math.max(maxlength, 2 * left)</span><br><span class="line">            &#125; else if (left &gt;= right) &#123;</span><br><span class="line">                right = 0</span><br><span class="line">                left = right</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return maxlength</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://hcyxy.tech/2019/08/21/提高服务器并发处理能力/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1689,156 +1839,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://hcyxy.tech/2019/07/20/search sort/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="hecy">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="万水千山">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/07/20/search sort/" itemprop="url">搜索排序</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-07-20T20:11:31+08:00">
-                2019-07-20
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/算法与数据结构/" itemprop="url" rel="index">
-                    <span itemprop="name">算法与数据结构</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="1、有序数组合并"><a href="#1、有序数组合并" class="headerlink" title="1、有序数组合并"></a>1、有序数组合并</h4><blockquote>
-<p>有A、B两个数组都是排好序的，A的剩余空间能装下B，现在要把B合并到A中；</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">fun merge(a: IntArray, b: IntArray, lastA: Int, lastB: Int) &#123;</span><br><span class="line">    var indexA = lastA - 1</span><br><span class="line">    var indexB = lastB - 1</span><br><span class="line">    var indexMerged = lastA + lastB - 1</span><br><span class="line">    while (indexB &gt;= 0) &#123;</span><br><span class="line">        if (indexA &gt;= 0 &amp;&amp; a[indexA] &gt; b[indexB]) &#123;</span><br><span class="line">            a[indexMerged] = a[indexA]</span><br><span class="line">            indexA--</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            a[indexMerged] = b[indexB]</span><br><span class="line">            indexB--</span><br><span class="line">        &#125;</span><br><span class="line">        indexMerged--</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1884,7 +1889,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">70</span>
+                  <span class="site-state-item-count">71</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1895,7 +1900,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-count">11</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
